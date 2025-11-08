@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Mirato Kompanitë - Pastro.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #dbeafe 0%, #dcfce7 100%);
+        }
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        .btn-success {
+            background: #22c55e;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .btn-success:hover {
+            background: #16a34a;
+        }
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .status-approved {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen py-8">
+    <!-- Header -->
+    <header class="bg-white shadow-sm mb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <a href="demo-sq-fixed.html" class="flex items-center cursor-pointer hover:opacity-80 transition-opacity">
+                    <i data-lucide="building-2" class="h-8 w-8 text-blue-600"></i>
+                    <h1 class="ml-2 text-2xl font-bold text-gray-900">Pastro.com</h1>
+                    <span class="ml-3 text-lg text-gray-600">| Admin Panel</span>
+                </a>
+                <nav class="flex items-center space-x-4">
+                    <button id="refreshBtn" onclick="handleRefresh()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                        <i data-lucide="refresh-cw" class="h-4 w-4 mr-2"></i>
+                        Refresh
+                    </button>
+                    <a href="demo-sq-fixed.html" class="text-gray-700 hover:text-blue-600 transition-colors">← Kthehu në Kryefaqe</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Page Header -->
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Mirato Kompanitë</h2>
+            <p class="text-gray-600">Kontrolloni dhe miratoni kompanitë e regjistruara para se të shfaqen në platformë</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Në Pritje</p>
+                        <p id="pendingCount" class="text-3xl font-bold text-yellow-600">0</p>
+                    </div>
+                    <i data-lucide="clock" class="h-12 w-12 text-yellow-400"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Të Miratuara</p>
+                        <p id="approvedCount" class="text-3xl font-bold text-green-600">0</p>
+                    </div>
+                    <i data-lucide="check-circle" class="h-12 w-12 text-green-400"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Të Refuzuara</p>
+                        <p id="rejectedCount" class="text-3xl font-bold text-red-600">0</p>
+                    </div>
+                    <i data-lucide="x-circle" class="h-12 w-12 text-red-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="bg-white rounded-xl shadow-lg p-4 mb-6">
+            <div class="flex space-x-4">
+                <button onclick="filterCompanies('all')" id="filterAll" class="px-4 py-2 rounded-lg font-medium transition-colors text-gray-700 hover:bg-gray-100">
+                    Të Gjitha
+                </button>
+                <button onclick="filterCompanies('pending')" id="filterPending" class="px-4 py-2 rounded-lg font-medium transition-colors bg-blue-600 text-white">
+                    Në Pritje
+                </button>
+                <button onclick="filterCompanies('approved')" id="filterApproved" class="px-4 py-2 rounded-lg font-medium transition-colors text-gray-700 hover:bg-gray-100">
+                    Të Miratuara
+                </button>
+                <button onclick="filterCompanies('rejected')" id="filterRejected" class="px-4 py-2 rounded-lg font-medium transition-colors text-gray-700 hover:bg-gray-100">
+                    Të Refuzuara
+                </button>
+            </div>
+        </div>
+
+        <!-- Companies List -->
+        <div id="companiesList" class="space-y-4">
+            <!-- Companies will be loaded dynamically -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-12 bg-white rounded-xl shadow-lg">
+            <i data-lucide="building-2" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
+            <h3 class="text-xl font-medium text-gray-900 mb-2">Nuk ka kompani për të miratuar</h3>
+            <p class="text-gray-600">Të gjitha kompanitë janë përpunuar.</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        let allCompanies = [];
+        let filteredCompanies = [];
+        // Restore last selected filter
+        let currentFilter = localStorage.getItem('adminCompaniesFilter') || 'pending';
+
+        // Helper: update stats UI
+        function updateStatsUI(pending, approved, rejected) {
+            const p = document.getElementById('pendingCount');
+            const a = document.getElementById('approvedCount');
+            const r = document.getElementById('rejectedCount');
+            if (p) p.textContent = pending;
+            if (a) a.textContent = approved;
+            if (r) r.textContent = rejected;
+        }
+
+        // Helper: recompute stats from current allCompanies (client-side)
+        function recomputeStatsFromAllCompanies() {
+            const pending = allCompanies.filter(c => (c.status || 'pending') === 'pending').length;
+            const approved = allCompanies.filter(c => c.status === 'approved').length;
+            const rejected = allCompanies.filter(c => c.status === 'rejected').length;
+            updateStatsUI(pending, approved, rejected);
+        }
+
+        // Load companies on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is admin
+            const currentUser = localStorage.getItem('currentUser');
+            
+            if (!currentUser) {
+                alert('Ju duhet të jeni të kyçur si admin për të aksesuar këtë faqe.');
+                window.location.href = 'signin-sq.html';
+                return;
+            }
+            
+            const user = JSON.parse(currentUser);
+            
+            // Check if user is admin
+            if (user.role !== 'admin' && user.email !== 'admin@pastro.com') {
+                alert('Kjo faqe është vetëm për administratorë. Ju nuk keni akses.');
+                window.location.href = 'demo-sq-fixed.html';
+                return;
+            }
+            
+            // 1) Show cached data immediately (no flicker, works offline)
+            try {
+                const cache = localStorage.getItem('adminCompaniesCache');
+                if (cache) {
+                    allCompanies = JSON.parse(cache) || [];
+                    const statsCache = JSON.parse(localStorage.getItem('adminCompaniesStatsCache') || '{}');
+                    updateStatsUI(Number(statsCache.pending||0), Number(statsCache.approved||0), Number(statsCache.rejected||0));
+                    filterCompanies(currentFilter);
+                } else {
+                    // If no cache, still highlight tab
+                    filterCompanies(currentFilter);
+                }
+            } catch(_) {
+                filterCompanies(currentFilter);
+            }
+            // 2) Then refresh from API in background
+            loadCompanies();
+        });
+
+        async function loadCompanies() {
+            console.log('=== Loading Companies from API ===');
+            
+            // Determine API base URL
+            let apiBase = 'http://localhost:3000';
+            
+            try {
+                // Try port 3000 first
+                const response = await fetch(`${apiBase}/api/admin/companies`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    allCompanies = data.companies || [];
+                    
+                    console.log('Total companies from API:', allCompanies.length);
+                    console.log('Companies data:', allCompanies);
+                    
+                    // Update stats from API
+                    if (data.stats) {
+                        updateStatsUI(data.stats.pending || 0, data.stats.approved || 0, data.stats.rejected || 0);
+                    } else {
+                        recomputeStatsFromAllCompanies();
+                    }
+                    // Cache list + stats for persistence across manual refresh
+                    try {
+                        localStorage.setItem('adminCompaniesCache', JSON.stringify(allCompanies));
+                        localStorage.setItem('adminCompaniesStatsCache', JSON.stringify({
+                            pending: document.getElementById('pendingCount').textContent,
+                            approved: document.getElementById('approvedCount').textContent,
+                            rejected: document.getElementById('rejectedCount').textContent
+                        }));
+                        // Also cache approved companies for homepage
+                        const approvedLite = (allCompanies || [])
+                          .filter(c => (c.status||'').toLowerCase() === 'approved')
+                          .map(c => ({ id: c.id, name: c.name, description: c.description||'', phone: c.phone, cities: c.cities||[], services: c.services||[] }));
+                        localStorage.setItem('approvedCompaniesCache', JSON.stringify(approvedLite));
+                    } catch (_) {}
+                    
+                    // Reload filter with current filter (preserves tab selection)
+                    const savedFilter = localStorage.getItem('adminCompaniesFilter') || currentFilter;
+                    currentFilter = savedFilter;
+                    filterCompanies(currentFilter);
+                    
+                    console.log('=== End Loading Companies ===');
+                    return;
+                }
+            } catch (error) {
+                console.warn('Failed to fetch from port 3000, trying 3001:', error);
+            }
+            
+            // Try port 3001 if 3000 fails
+            try {
+                apiBase = 'http://localhost:3001';
+                const response = await fetch(`${apiBase}/api/admin/companies`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    allCompanies = data.companies || [];
+                    
+                    console.log('Total companies from API (port 3001):', allCompanies.length);
+                    
+                    // Update stats from API
+                    if (data.stats) {
+                        updateStatsUI(data.stats.pending || 0, data.stats.approved || 0, data.stats.rejected || 0);
+                    } else {
+                        recomputeStatsFromAllCompanies();
+                    }
+                    // Cache list + stats
+                    try {
+                        localStorage.setItem('adminCompaniesCache', JSON.stringify(allCompanies));
+                        localStorage.setItem('adminCompaniesStatsCache', JSON.stringify({
+                            pending: document.getElementById('pendingCount').textContent,
+                            approved: document.getElementById('approvedCount').textContent,
+                            rejected: document.getElementById('rejectedCount').textContent
+                        }));
+                        const approvedLite = (allCompanies || [])
+                          .filter(c => (c.status||'').toLowerCase() === 'approved')
+                          .map(c => ({ id: c.id, name: c.name, description: c.description||'', phone: c.phone, cities: c.cities||[], services: c.services||[] }));
+                        localStorage.setItem('approvedCompaniesCache', JSON.stringify(approvedLite));
+                    } catch (_) {}
+                    
+                    // Reload filter with current filter (preserves tab selection)
+                    const savedFilter = localStorage.getItem('adminCompaniesFilter') || currentFilter;
+                    currentFilter = savedFilter;
+                    filterCompanies(currentFilter);
+                    
+                    console.log('=== End Loading Companies ===');
+                    return;
+                }
+            } catch (error) {
+                console.error('Failed to fetch from both ports:', error);
+                
+                // Prefer admin cache first (keeps same state on manual refresh)
+                const cache = localStorage.getItem('adminCompaniesCache');
+                if (cache) {
+                    try {
+                        allCompanies = JSON.parse(cache) || [];
+                        const statsCache = JSON.parse(localStorage.getItem('adminCompaniesStatsCache') || '{}');
+                        updateStatsUI(Number(statsCache.pending||0), Number(statsCache.approved||0), Number(statsCache.rejected||0));
+                        filterCompanies(currentFilter);
+                        return;
+                    } catch (_) {}
+                }
+                // Fallback to demo local companies last
+                const registeredCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                allCompanies = registeredCompanies.map(c => ({ ...c, status: c.status || 'pending' }));
+                recomputeStatsFromAllCompanies();
+                filterCompanies(currentFilter);
+            }
+        }
+
+        function filterCompanies(status) {
+            currentFilter = status;
+            try { localStorage.setItem('adminCompaniesFilter', currentFilter); } catch(_) {}
+            
+            // Update active tab
+            document.querySelectorAll('[id^="filter"]').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('text-gray-700', 'hover:bg-gray-100');
+            });
+            
+            const activeBtn = document.getElementById(`filter${status.charAt(0).toUpperCase() + status.slice(1)}` || 'filterAll');
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-700', 'hover:bg-gray-100');
+                activeBtn.classList.add('bg-blue-600', 'text-white');
+            }
+            
+            if (status === 'all') {
+                // Show all companies that have a status (or treat missing status as 'pending')
+                filteredCompanies = allCompanies.filter(c => c.status);
+            } else {
+                filteredCompanies = allCompanies.filter(c => {
+                    // Treat missing status as 'pending' for filtering
+                    const companyStatus = c.status || 'pending';
+                    return companyStatus === status;
+                });
+            }
+            
+            console.log(`Filtered companies for status '${status}':`, filteredCompanies.length);
+            console.log('Filtered companies data:', filteredCompanies);
+            
+            displayCompanies();
+        }
+
+        function displayCompanies() {
+            const companiesList = document.getElementById('companiesList');
+            const emptyState = document.getElementById('emptyState');
+            
+            console.log('Displaying companies. Filtered count:', filteredCompanies.length);
+            
+            if (filteredCompanies.length === 0) {
+                console.log('No companies to display. Showing empty state.');
+                companiesList.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            console.log('Rendering companies:', filteredCompanies.map(c => ({ id: c.id, name: c.name, status: c.status })));
+            
+            companiesList.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            
+            companiesList.innerHTML = filteredCompanies.map(company => {
+                const statusClass = company.status === 'pending' ? 'status-pending' :
+                                   company.status === 'approved' ? 'status-approved' : 'status-rejected';
+                const statusText = company.status === 'pending' ? 'Në Pritje' :
+                                  company.status === 'approved' ? 'E Miratuar' : 'E Refuzuar';
+                
+                return `
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-start space-x-4 flex-1">
+                                ${company.photos && company.photos.length > 0 ? `
+                                    <img src="${typeof company.photos[0] === 'string' ? company.photos[0] : (company.photos[0].dataUrl || '')}" 
+                                         alt="${company.name}" 
+                                         class="h-20 w-20 rounded-lg object-cover" />
+                                ` : `
+                                    <div class="h-20 w-20 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <i data-lucide="building-2" class="h-10 w-10 text-blue-600"></i>
+                                    </div>
+                                `}
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-3 mb-2">
+                                        <h3 class="text-xl font-semibold text-gray-900">${company.name}</h3>
+                                        <span class="${statusClass}">${statusText}</span>
+                                    </div>
+                                    <div class="space-y-1 text-sm text-gray-600">
+                                        <p><strong>Email:</strong> ${company.email || 'N/A'}</p>
+                                        <p><strong>Telefon:</strong> ${company.phone || 'N/A'}</p>
+                                        <p><strong>Qytetet:</strong> ${company.cities ? company.cities.join(', ') : 'N/A'}</p>
+                                        <p><strong>Shërbimet:</strong> ${company.services ? company.services.length : 0}</p>
+                                    </div>
+                                    ${company.description ? `
+                                        <p class="text-gray-600 mt-3 text-sm">${company.description}</p>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            ${company.status === 'pending' ? `
+                                <div class="flex space-x-2 ml-4">
+                                    <button onclick="approveCompany('${company.id}')" class="btn-success">
+                                        <i data-lucide="check" class="h-4 w-4 inline mr-2"></i>
+                                        Mirato
+                                    </button>
+                                    <button onclick="rejectCompany('${company.id}')" class="btn-danger">
+                                        <i data-lucide="x" class="h-4 w-4 inline mr-2"></i>
+                                        Refuzo
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            lucide.createIcons();
+        }
+
+        async function handleRefresh() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            if (refreshBtn) {
+                refreshBtn.disabled = true;
+                refreshBtn.innerHTML = '<i data-lucide="refresh-cw" class="h-4 w-4 mr-2 animate-spin"></i> Duke rifreskuar...';
+                lucide.createIcons();
+            }
+            
+            try {
+                await loadCompanies();
+                if (refreshBtn) {
+                    refreshBtn.innerHTML = '<i data-lucide="refresh-cw" class="h-4 w-4 mr-2"></i> Refresh';
+                    lucide.createIcons();
+                }
+            } catch (error) {
+                console.error('Error refreshing:', error);
+                // Mos e pastro ekranin – ruaj gjendjen ekzistuese dhe shfaq cache
+                try {
+                    const cache = localStorage.getItem('adminCompaniesCache');
+                    const statsCache = JSON.parse(localStorage.getItem('adminCompaniesStatsCache') || '{}');
+                    if (cache) {
+                        allCompanies = JSON.parse(cache) || [];
+                        updateStatsUI(Number(statsCache.pending||0), Number(statsCache.approved||0), Number(statsCache.rejected||0));
+                        filterCompanies(currentFilter);
+                    }
+                } catch(_) {}
+            } finally {
+                if (refreshBtn) {
+                    refreshBtn.disabled = false;
+                }
+            }
+        }
+
+        async function approveCompany(companyId) {
+            console.log('Approving company with ID:', companyId);
+            
+            if (!confirm('Jeni të sigurt që doni të miratoni këtë kompani? Kompania do të shfaqet në platformë pas miratimit.')) {
+                return;
+            }
+            
+            // Determine API base URL
+            let apiBase = 'http://localhost:3000';
+            let success = false;
+            
+            try {
+                const response = await fetch(`${apiBase}/api/admin/companies/${companyId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status: 'APPROVED' }),
+                    mode: 'cors'
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Approval response:', data);
+                
+                if (data.success) {
+                    success = true;
+                    // Update local company status immediately
+                    const companyIndex = allCompanies.findIndex(c => c.id === companyId || c.id === companyId.toString());
+                    if (companyIndex !== -1) {
+                        allCompanies[companyIndex].status = 'approved';
+                    }
+                    
+                    // Update stats immediately
+                    recomputeStatsFromAllCompanies();
+                    
+                    // Persist cache immediately (before API refresh)
+                    try {
+                        localStorage.setItem('adminCompaniesCache', JSON.stringify(allCompanies));
+                        const p = document.getElementById('pendingCount').textContent;
+                        const a = document.getElementById('approvedCount').textContent;
+                        const r = document.getElementById('rejectedCount').textContent;
+                        localStorage.setItem('adminCompaniesStatsCache', JSON.stringify({pending:p, approved:a, rejected:r}));
+                        // Also cache approved companies for homepage
+                        const approvedLite = (allCompanies || [])
+                          .filter(c => (c.status||'').toLowerCase() === 'approved')
+                          .map(c => ({ id: c.id, name: c.name, description: c.description||'', phone: c.phone, cities: c.cities||[], services: c.services||[] }));
+                        localStorage.setItem('approvedCompaniesCache', JSON.stringify(approvedLite));
+                    } catch(_) {}
+
+                    // Switch to approved tab immediately to show the newly approved company
+                    currentFilter = 'approved';
+                    localStorage.setItem('adminCompaniesFilter', 'approved');
+                    filterCompanies('approved');
+                    
+                    // Refresh from API in background (non-blocking, preserves current view)
+                    loadCompanies().catch(console.error);
+                    
+                    alert('Kompania u miratua me sukses! Kompania tani shfaqet në platformë.');
+                    return;
+                }
+            } catch (error) {
+                console.warn('Failed to approve on port 3000, trying 3001:', error);
+            }
+            
+            // Try port 3001 if 3000 fails
+            if (!success) {
+                try {
+                    apiBase = 'http://localhost:3001';
+                    const response = await fetch(`${apiBase}/api/admin/companies/${companyId}/status`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ status: 'APPROVED' }),
+                        mode: 'cors'
+                    });
+                    
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('Error response:', errorText);
+                        throw new Error(`HTTP ${response.status}: ${errorText}`);
+                    }
+                    
+                    const data = await response.json();
+                    console.log('Approval response (port 3001):', data);
+                    
+                    if (data.success) {
+                        success = true;
+                        // Update local company status immediately
+                        const companyIndex = allCompanies.findIndex(c => c.id === companyId || c.id === companyId.toString());
+                        if (companyIndex !== -1) {
+                            allCompanies[companyIndex].status = 'approved';
+                        }
+                        
+                        // Update stats immediately
+                        recomputeStatsFromAllCompanies();
+                        
+                        // Persist cache immediately (before API refresh)
+                        try {
+                            localStorage.setItem('adminCompaniesCache', JSON.stringify(allCompanies));
+                            const p = document.getElementById('pendingCount').textContent;
+                            const a = document.getElementById('approvedCount').textContent;
+                            const r = document.getElementById('rejectedCount').textContent;
+                            localStorage.setItem('adminCompaniesStatsCache', JSON.stringify({pending:p, approved:a, rejected:r}));
+                            // Also cache approved companies for homepage
+                            const approvedLite = (allCompanies || [])
+                              .filter(c => (c.status||'').toLowerCase() === 'approved')
+                              .map(c => ({ id: c.id, name: c.name, description: c.description||'', phone: c.phone, cities: c.cities||[], services: c.services||[] }));
+                            localStorage.setItem('approvedCompaniesCache', JSON.stringify(approvedLite));
+                        } catch(_) {}
+
+                        // Switch to approved tab immediately to show the newly approved company
+                        currentFilter = 'approved';
+                        localStorage.setItem('adminCompaniesFilter', 'approved');
+                        filterCompanies('approved');
+                        
+                        // Refresh from API in background (non-blocking, preserves current view)
+                        loadCompanies().catch(console.error);
+                        
+                        alert('Kompania u miratua me sukses! Kompania tani shfaqet në platformë.');
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Failed to approve company on both ports:', error);
+                    
+                    // Fallback: Update in localStorage (by id ose me emër)
+                    let companyIndex = allCompanies.findIndex(c => c.id === companyId || c.id === companyId.toString());
+                    if (companyIndex === -1) {
+                        // provo me emër
+                        const target = filteredCompanies.find(c => c.id === companyId) || filteredCompanies.find(c => (c.id?.toString() === companyId?.toString()));
+                        if (target) {
+                            companyIndex = allCompanies.findIndex(c => c.name === target.name);
+                        }
+                    }
+                    if (companyIndex !== -1) {
+                        allCompanies[companyIndex].status = 'approved';
+                        
+                        // Update localStorage
+                        const registeredCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                        let localCompanyIndex = registeredCompanies.findIndex(c => c.id === companyId || c.id === companyId.toString());
+                        if (localCompanyIndex === -1 && allCompanies[companyIndex]?.name) {
+                            localCompanyIndex = registeredCompanies.findIndex(c => c.name === allCompanies[companyIndex].name);
+                        }
+                        if (localCompanyIndex !== -1) {
+                            registeredCompanies[localCompanyIndex].status = 'approved';
+                            localStorage.setItem('pastroCompanies', JSON.stringify(registeredCompanies));
+                        }
+                        // Persist admin cache too
+                        try {
+                            localStorage.setItem('adminCompaniesCache', JSON.stringify(allCompanies));
+                            recomputeStatsFromAllCompanies();
+                            const p = document.getElementById('pendingCount').textContent;
+                            const a = document.getElementById('approvedCount').textContent;
+                            const r = document.getElementById('rejectedCount').textContent;
+                            localStorage.setItem('adminCompaniesStatsCache', JSON.stringify({pending:p, approved:a, rejected:r}));
+                            const approvedLite = (allCompanies || [])
+                              .filter(c => (c.status||'').toLowerCase() === 'approved')
+                              .map(c => ({ id: c.id, name: c.name, description: c.description||'', phone: c.phone, cities: c.cities||[], services: c.services||[] }));
+                            localStorage.setItem('approvedCompaniesCache', JSON.stringify(approvedLite));
+                        } catch(_) {}
+                        
+                        // Refresh display and switch to approved tab
+                        filterCompanies('approved');
+                        recomputeStatsFromAllCompanies();
+                        alert('Kompania u miratua me sukses! (Ndryshimet u ruajtën lokalë)');
+                    } else {
+                        alert('Gabim në miratimin e kompanisë. Ju lutemi provoni përsëri.');
+                    }
+                }
+            }
+        }
+
+        async function rejectCompany(companyId) {
+            console.log('Rejecting company with ID:', companyId);
+            
+            const reason = prompt('Ju lutemi shkruani arsyen e refuzimit (opsionale):');
+            
+            if (!confirm('Jeni të sigurt që doni të refuzoni këtë kompani? Kompania nuk do të shfaqet në platformë.')) {
+                return;
+            }
+            
+            // Determine API base URL
+            let apiBase = 'http://localhost:3000';
+            let success = false;
+            
+            try {
+                const response = await fetch(`${apiBase}/api/admin/companies/${companyId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        status: 'REJECTED',
+                        reason: reason || undefined
+                    }),
+                    mode: 'cors'
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Rejection response:', data);
+                
+                if (data.success) {
+                    success = true;
+                    // Update local company status immediately
+                    const companyIndex = allCompanies.findIndex(c => c.id === companyId || c.id === companyId.toString());
+                    if (companyIndex !== -1) {
+                        allCompanies[companyIndex].status = 'rejected';
+                    }
+                    
+                    // Persist cache immediately
+                    try {
+                        localStorage.setItem('adminCompaniesCache', JSON.stringify(allCompanies));
+                        recomputeStatsFromAllCompanies();
+                        const p = document.getElementById('pendingCount').textContent;
+                        const a = document.getElementById('approvedCount').textContent;
+                        const r = document.getElementById('rejectedCount').textContent;
+                        localStorage.setItem('adminCompaniesStatsCache', JSON.stringify({pending:p, approved:a, rejected:r}));
+                    } catch(_) {}
+
+                    // Reload companies from API to get fresh data
+                    await loadCompanies();
+                    // Switch to rejected tab to show the newly rejected company
+                    filterCompanies('rejected');
+                    recomputeStatsFromAllCompanies();
+                    alert('Kompania u refuzua me sukses.');
+                    return;
+                }
+            } catch (error) {
+                console.warn('Failed to reject on port 3000, trying 3001:', error);
+            }
+            
+            // Try port 3001 if 3000 fails
+            if (!success) {
+                try {
+                    apiBase = 'http://localhost:3001';
+                    const response = await fetch(`${apiBase}/api/admin/companies/${companyId}/status`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ 
+                            status: 'REJECTED',
+                            reason: reason || undefined
+                        }),
+                        mode: 'cors'
+                    });
+                    
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('Error response:', errorText);
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    console.log('Rejection response (port 3001):', data);
+                    
+                    if (data.success) {
+                        success = true;
+                        // Update local company status immediately
+                        const companyIndex = allCompanies.findIndex(c => c.id === companyId || c.id === companyId.toString());
+                        if (companyIndex !== -1) {
+                            allCompanies[companyIndex].status = 'rejected';
+                        }
+                        
+                        // Persist cache immediately
+                        try {
+                            localStorage.setItem('adminCompaniesCache', JSON.stringify(allCompanies));
+                            recomputeStatsFromAllCompanies();
+                            const p = document.getElementById('pendingCount').textContent;
+                            const a = document.getElementById('approvedCount').textContent;
+                            const r = document.getElementById('rejectedCount').textContent;
+                            localStorage.setItem('adminCompaniesStatsCache', JSON.stringify({pending:p, approved:a, rejected:r}));
+                        } catch(_) {}
+
+                        // Reload companies from API to get fresh data
+                        await loadCompanies();
+                        // Switch to rejected tab to show the newly rejected company
+                        filterCompanies('rejected');
+                        recomputeStatsFromAllCompanies();
+                        alert('Kompania u refuzua me sukses.');
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Failed to reject company on both ports:', error);
+                    
+                    // Fallback: Update in localStorage (by id ose me emër)
+                    let companyIndex = allCompanies.findIndex(c => c.id === companyId || c.id === companyId.toString());
+                    if (companyIndex === -1) {
+                        const target = filteredCompanies.find(c => c.id === companyId) || filteredCompanies.find(c => (c.id?.toString() === companyId?.toString()));
+                        if (target) {
+                            companyIndex = allCompanies.findIndex(c => c.name === target.name);
+                        }
+                    }
+                    if (companyIndex !== -1) {
+                        allCompanies[companyIndex].status = 'rejected';
+                        
+                        // Update localStorage
+                        const registeredCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                        let localCompanyIndex = registeredCompanies.findIndex(c => c.id === companyId || c.id === companyId.toString());
+                        if (localCompanyIndex === -1 && allCompanies[companyIndex]?.name) {
+                            localCompanyIndex = registeredCompanies.findIndex(c => c.name === allCompanies[companyIndex].name);
+                        }
+                        if (localCompanyIndex !== -1) {
+                            registeredCompanies[localCompanyIndex].status = 'rejected';
+                            localStorage.setItem('pastroCompanies', JSON.stringify(registeredCompanies));
+                        }
+                        // Persist admin cache too
+                        try {
+                            localStorage.setItem('adminCompaniesCache', JSON.stringify(allCompanies));
+                            recomputeStatsFromAllCompanies();
+                            const p = document.getElementById('pendingCount').textContent;
+                            const a = document.getElementById('approvedCount').textContent;
+                            const r = document.getElementById('rejectedCount').textContent;
+                            localStorage.setItem('adminCompaniesStatsCache', JSON.stringify({pending:p, approved:a, rejected:r}));
+                            const approvedLite = (allCompanies || [])
+                              .filter(c => (c.status||'').toLowerCase() === 'approved')
+                              .map(c => ({ id: c.id, name: c.name, description: c.description||'', phone: c.phone, cities: c.cities||[], services: c.services||[] }));
+                            localStorage.setItem('approvedCompaniesCache', JSON.stringify(approvedLite));
+                        } catch(_) {}
+                        
+                        // Refresh display and switch to rejected tab
+                        filterCompanies('rejected');
+                        recomputeStatsFromAllCompanies();
+                        alert('Kompania u refuzua me sukses. (Ndryshimet u ruajtën lokalë)');
+                    } else {
+                        alert('Gabim në refuzimin e kompanisë. Ju lutemi provoni përsëri.');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shërbimet - Pastro.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        /* Global box-sizing for responsive design */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+        
+        html {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Underline effect on hover for all navigation links */
+        nav a {
+            position: relative;
+            text-decoration: none;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        /* Also apply to footer links */
+        footer a {
+            position: relative;
+            text-decoration: none;
+        }
+        
+        footer a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        
+        footer a:hover::after {
+            width: 100%;
+        }
+        
+        /* Apply to top navigation links as well */
+        header nav a:not(.bg-blue-600) {
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        header nav a:not(.bg-blue-600)::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        
+        header nav a:not(.bg-blue-600):hover::after {
+            width: 100%;
+        }
+        
+        /* Ensure navigation items stay on one line */
+        header nav {
+            flex-wrap: nowrap;
+        }
+        
+        header nav a {
+            white-space: nowrap;
+            font-size: 0.875rem;
+        }
+        
+        /* Mobile Navigation - Hamburger Menu */
+        .mobile-menu-btn {
+            display: none;
+        }
+        
+        /* Hide hamburger button on desktop */
+        @media (min-width: 768px) {
+            .mobile-menu-btn {
+                display: none !important;
+            }
+        }
+        
+        .mobile-menu {
+            display: none;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            /* Hide ALL desktop navigation, show ONLY mobile menu button */
+            header nav:not(.mobile-menu) {
+                display: none !important;
+            }
+            
+            /* Hide desktop navigation container completely */
+            header .flex.justify-between nav.hidden.md\:flex {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+                overflow: hidden !important;
+            }
+            
+            /* Show mobile menu button */
+            .mobile-menu-btn {
+                display: flex !important;
+                z-index: 60;
+                position: relative;
+            }
+            
+            /* Ensure hamburger menu is always visible and clickable on iOS/Android */
+            #mobileMenuBtn {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                align-items: center;
+                justify-content: center;
+                min-width: 48px;
+                min-height: 48px;
+                z-index: 60;
+                position: relative;
+                flex-shrink: 0;
+                margin-left: auto;
+            }
+            
+            /* Override any Tailwind classes that might hide the button */
+            button.mobile-menu-btn.md\:hidden {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            /* Mobile header - simple approach for iOS and Android */
+            @media (max-width: 768px) {
+                /* Show header on mobile */
+                header {
+                    display: block !important;
+                    visibility: visible !important;
+                    background: white !important;
+                    background-color: white !important;
+                    border-bottom: 1px solid #e5e7eb !important;
+                    padding: 0 !important;
+                    height: auto !important;
+                    opacity: 1 !important;
+                }
+                
+                /* Ensure header container has solid background */
+                header .max-w-7xl {
+                    background: white !important;
+                    background-color: white !important;
+                }
+                
+                /* Ensure header navigation bar has solid background */
+                header .flex.justify-between {
+                    background: white !important;
+                    background-color: white !important;
+                }
+                
+                /* Hide desktop logo */
+                header a[href*="demo-sq-fixed"].hidden.md\:flex {
+                    display: none !important;
+                }
+                
+                /* Hide desktop navigation */
+                header nav.hidden.md\:flex {
+                    display: none !important;
+                }
+                
+                /* Show mobile header container */
+                header .flex.justify-between {
+                    display: flex !important;
+                    justify-content: space-between !important;
+                    align-items: center !important;
+                    padding: 0.75rem 1rem !important;
+                    width: 100% !important;
+                    border-bottom: none !important;
+                }
+                
+                /* Remove border from header container on mobile */
+                header .max-w-7xl {
+                    border-bottom: none !important;
+                }
+                
+                /* Style Kyçu button on mobile */
+                header a[href*="signin-sq"].md\:hidden {
+                    display: flex !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                    color: #374151 !important;
+                    font-size: 0.875rem !important;
+                    font-weight: 500 !important;
+                    text-decoration: none !important;
+                    padding: 0.5rem 0 !important;
+                    flex-shrink: 0 !important;
+                }
+                
+                /* Style hamburger menu button on mobile */
+                #mobileMenuBtn.md\:hidden {
+                    display: flex !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                    background: #f3f4f6 !important; /* gray-100 */
+                    background-color: #f3f4f6 !important; /* gray-100 */
+                    border: 1px solid #d1d5db !important; /* gray-300 */
+                    border-radius: 0.5rem !important;
+                    min-width: 48px !important;
+                    min-height: 48px !important;
+                    padding: 0.625rem !important;
+                    flex-shrink: 0 !important;
+                    color: #374151 !important; /* gray-700 */
+                }
+                
+                /* Ensure right container is properly aligned */
+                header .flex.items-center.gap-2 {
+                    display: flex !important;
+                    margin-left: auto !important;
+                    justify-content: flex-end !important;
+                    align-items: center !important;
+                }
+            }
+            
+            /* Mobile menu overlay */
+            .mobile-menu-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 9998;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .mobile-menu-overlay.open {
+                display: block;
+                opacity: 1;
+            }
+            
+            .mobile-menu {
+                display: block;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 100%;
+                background: white;
+                height: auto;
+                max-height: 100vh;
+                overflow-y: auto;
+                overflow-x: hidden;
+                z-index: 9999 !important;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                box-shadow: -4px 0 6px -1px rgba(0, 0, 0, 0.1);
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            @media (max-width: 768px) {
+                .mobile-menu {
+                    top: 0;
+                    right: 0;
+                    width: 100%;
+                    height: auto;
+                    max-height: 100vh;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                    -webkit-overflow-scrolling: touch;
+                }
+            }
+            
+            .mobile-menu.open {
+                transform: translateX(0);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* Mobile menu header styling */
+            .mobile-menu-header {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                background: white;
+                background-color: white;
+            }
+            
+            /* Ensure menu content can scroll */
+            .mobile-menu > * {
+                flex-shrink: 0;
+            }
+            
+            /* Ensure menu is above overlay */
+            .mobile-menu.open {
+                z-index: 1000;
+            }
+            
+            .mobile-menu a {
+                display: block;
+                padding: 1rem;
+                border-bottom: 1px solid #f3f4f6;
+                text-decoration: none;
+                color: #374151;
+                transition: background-color 0.2s;
+            }
+            
+            .mobile-menu a:hover {
+                background-color: #f9fafb;
+            }
+            
+            /* Ensure hamburger button is always visible and user-friendly on iOS/Android */
+            #mobileMenuBtn {
+                position: relative !important;
+                z-index: 100 !important;
+                background: #f3f4f6 !important; /* gray-100 */
+                background-color: #f3f4f6 !important; /* gray-100 */
+                border: 1px solid #d1d5db !important; /* gray-300 */
+                border-color: #d1d5db !important; /* gray-300 */
+                cursor: pointer !important;
+                border-radius: 0.5rem !important; /* rounded-lg */
+                transition: all 0.2s ease;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+                touch-action: manipulation;
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; /* shadow-sm */
+                color: #374151 !important; /* gray-700 for icon */
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: flex !important;
+            }
+            
+            #mobileMenuBtn:hover {
+                background: #e5e7eb !important; /* gray-200 */
+                background-color: #e5e7eb !important; /* gray-200 */
+                border-color: #9ca3af !important; /* gray-400 */
+                color: #1f2937 !important; /* gray-800 for icon */
+            }
+            
+            #mobileMenuBtn:active {
+                background: #d1d5db !important; /* gray-300 */
+                background-color: #d1d5db !important; /* gray-300 */
+                transform: none !important;
+                color: #111827 !important; /* gray-900 for icon */
+            }
+            
+            /* Ensure SVG icon inside button is visible and matches button text color */
+            #mobileMenuBtn svg {
+                color: #374151 !important; /* gray-700 */
+                stroke: #374151 !important; /* gray-700 */
+                fill: none !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+            
+            #mobileMenuBtn:hover svg {
+                color: #1f2937 !important; /* gray-800 */
+                stroke: #1f2937 !important; /* gray-800 */
+            }
+            
+            #mobileMenuBtn:active svg {
+                color: #111827 !important; /* gray-900 */
+                stroke: #111827 !important; /* gray-900 */
+            }
+            
+            /* Mobile: Ensure Kyçu button is on the left - simple text style */
+            header a[href*="signin-sq"].md\:hidden {
+                order: -1;
+                margin-right: auto;
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                min-height: auto !important;
+                border-radius: 0 !important;
+                font-weight: 500 !important;
+                font-size: 0.875rem !important; /* text-sm */
+                color: #374151 !important; /* gray-700 */
+                text-decoration: none !important;
+            }
+            
+            header a[href*="signin-sq"].md\:hidden:hover {
+                background: transparent !important;
+                border: none !important;
+                color: #111827 !important; /* gray-900 */
+            }
+            
+            /* Ensure logo stays blue */
+            header h1.text-blue-600,
+            header h2.text-blue-600,
+            header svg.text-blue-600 {
+                color: #2563eb !important; /* blue-600 */
+            }
+            
+            h1.text-4xl {
+                font-size: 1.875rem;
+                line-height: 2.25rem;
+            }
+            
+            h3.text-3xl {
+                font-size: 1.5rem;
+                line-height: 2rem;
+            }
+            
+            .grid.grid-cols-1.md\:grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid.grid-cols-1.md\:grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid.grid-cols-1.lg\:grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .max-w-4xl {
+                max-width: 100%;
+            }
+            
+            .p-6 {
+                padding: 1rem;
+            }
+            
+            button, a.bg-blue-600 {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            input, select, textarea {
+                font-size: 16px;
+                min-height: 44px;
+            }
+            
+            footer .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .py-16 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1.text-4xl {
+                font-size: 1.5rem;
+                line-height: 1.75rem;
+            }
+            
+            .text-xl {
+                font-size: 1rem;
+            }
+            
+            header h1 {
+                font-size: 1.25rem;
+            }
+            
+            header .h-8.w-8 {
+                height: 1.5rem;
+                width: 1.5rem;
+            }
+        }
+    </style>
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuOverlay = document.getElementById('mobileMenuOverlay');
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (mobileMenu && menuOverlay) {
+                const isOpen = mobileMenu.classList.contains('open');
+                mobileMenu.classList.toggle('open');
+                menuOverlay.classList.toggle('open');
+                // Update icon
+                if (mobileMenu.classList.contains('open')) {
+                    menuBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>';
+                } else {
+                    menuBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>';
+                }
+                
+            }
+        }
+    </script>
+    </head>
+<body class="gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top Navigation Bar -->
+            <div class="flex justify-between items-center py-3 md:py-4 md:border-b md:border-gray-200 w-full">
+                <!-- Left side: Logo (visible on desktop, hidden on mobile) -->
+                <a href="demo-sq-fixed.html" class="hidden md:flex items-center cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0 min-w-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="building-2" class="lucide lucide-building-2 h-7 w-7 md:h-8 md:w-8 text-blue-600 flex-shrink-0"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
+                    <h1 class="ml-2 text-lg md:text-xl lg:text-2xl font-bold text-blue-600 truncate">Pastro.com</h1>
+                </a>
+                <!-- Mobile: Logo - Left side on mobile -->
+                <div class="md:hidden flex items-center flex-shrink-0">
+                    <a href="demo-sq-fixed.html" class="flex items-center cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-blue-600 flex-shrink-0"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
+                        <h1 class="ml-1.5 text-base font-bold text-blue-600">Pastro.com</h1>
+                    </a>
+                </div>
+                <!-- Right side: Desktop Nav + Mobile Buttons -->
+                <div class="flex items-center gap-2 md:space-x-4 flex-shrink-0 md:flex-initial justify-end ml-auto">
+                    <!-- Desktop Navigation - Hidden on mobile -->
+                    <nav class="hidden md:flex items-center space-x-4 desktop-nav">
+                        <a href="signin-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Kyçu</a>
+                        <a href="register-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Regjistro Kompani</a>
+                    </nav>
+                    <!-- Mobile: Login Button + Hamburger Menu - Right side on mobile -->
+                    <a href="signin-sq.html" class="md:hidden text-gray-700 hover:text-gray-900 transition-colors text-sm font-medium whitespace-nowrap flex-shrink-0 flex items-center">Kyçu</a>
+                    <!-- Mobile Menu Button - Right side on mobile (hamburger icon) -->
+                    <button id="mobileMenuBtn" class="md:hidden mobile-menu-btn flex items-center justify-center p-2.5 text-gray-700 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 border border-gray-300 hover:border-gray-400 transition-all min-w-[48px] min-h-[48px] rounded-lg flex-shrink-0 shadow-sm" onclick="toggleMobileMenu(); event.stopPropagation(); return false;" aria-label="Open menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <path d="M4 5h16"></path>
+                            <path d="M4 12h16"></path>
+                            <path d="M4 19h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Overlay -->
+            <div id="mobileMenuOverlay" class="mobile-menu-overlay" onclick="toggleMobileMenu(); event.stopPropagation(); return false;"></div>
+            
+            <!-- Mobile Menu -->
+            <nav id="mobileMenu" class="mobile-menu">
+                <!-- Mobile Menu Header -->
+                <div class="mobile-menu-header bg-white border-b border-gray-200 px-3 py-2 flex items-center justify-between">
+                    <div class="flex items-center space-x-1.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-blue-600"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
+                        <h2 class="text-base font-bold text-blue-600">Pastro.com</h2>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <a href="signin-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Kyçu</a>
+                        <a href="register-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Regjistro Kompani</a>
+                        <button onclick="toggleMobileMenu(); event.stopPropagation(); return false;" class="p-1.5 hover:bg-gray-100 rounded-md flex items-center justify-center min-w-[36px] min-h-[36px]" aria-label="Close menu">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-700"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Menu Items -->
+                <a href="demo-sq-fixed.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    <span class="text-gray-900 font-medium">Kryefaqja</span>
+                </a>
+                <a href="sherbimet-sq.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                    <span class="text-gray-900 font-medium">Shërbimet</span>
+                </a>
+                <a href="pastrimi-zyres.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M12 6h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M16 6h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path><path d="M8 6h.01"></path><path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path><rect x="4" y="2" width="16" height="20" rx="2"></rect></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi i Zyrës</span>
+                </a>
+                <a href="pastrimi-brendshem.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi i Shtëpisë</span>
+                </a>
+                <a href="pastrimi-thelle.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi i Detajuar</span>
+                </a>
+                <a href="pastrimi-oborreve.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"></path><path d="M12 22v-3"></path></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi i Oborreve</span>
+                </a>
+                <a href="pastrimi-kimik.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path><path d="M6.453 15h11.094"></path><path d="M8.5 2h7"></path></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi Kimik</span>
+                </a>
+                <a href="signin-sq.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <span class="text-gray-900 font-medium">Kyçu</span>
+                </a>
+            </nav>
+            
+            <!-- Main Navigation Bar -->
+            <nav class="hidden md:flex items-center justify-center space-x-4 py-4 overflow-x-auto">
+                <a href="demo-sq-fixed.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" class="lucide lucide-home h-4 w-4 mr-2"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    Kryefaqja
+                </a>
+                <a href="sherbimet-sq.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles h-4 w-4 mr-2"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                    Shërbimet
+                </a>
+                <a href="pastrimi-zyres.html" class="text-blue-600 font-semibold flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="building" class="lucide lucide-building h-4 w-4 mr-2"><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M12 6h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M16 6h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path><path d="M8 6h.01"></path><path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path><rect x="4" y="2" width="16" height="20" rx="2"></rect></svg>
+                    Pastrimi i Zyrës
+                </a>
+                <a href="pastrimi-brendshem.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" class="lucide lucide-home h-4 w-4 mr-2"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    Pastrimi i Shtëpisë
+                </a>
+                <a href="pastrimi-thelle.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles h-4 w-4 mr-2"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                    Pastrimi i Detajuar
+                </a>
+                <a href="pastrimi-oborreve.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="tree-pine" class="lucide lucide-tree-pine h-4 w-4 mr-2"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"></path><path d="M12 22v-3"></path></svg>
+                    Pastrimi i Oborreve
+                </a>
+                <a href="pastrimi-kimik.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="flask-conical" class="lucide lucide-flask-conical h-4 w-4 mr-2"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path><path d="M6.453 15h11.094"></path><path d="M8.5 2h7"></path></svg>
+                    Pastrimi Kimik
+                </a>
+                <a href="pastrimi-veturave.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="car" class="lucide lucide-car h-4 w-4 mr-2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><path d="M9 17h6"></path><circle cx="17" cy="17" r="2"></circle></svg>
+                    Pastrimi i Veturave
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Page Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Shërbimet Tona</h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Ne ofrojmë një gamë të gjerë shërbimesh pastrimi të organizuara sipas nevojave tuaja.
+                Zgjidhni kategorinë që ju intereson për të parë shërbimet e disponueshme.
+            </p>
+        </div>
+
+        <!-- Detailed Services Overview -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Çfarë përfshin çdo kategori shërbimesh</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-700">
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">🏠 Pastrime Shtëpiake / Rezidenciale</h3>
+                    <p class="mb-3">Shërbime të plota për ta mbajtur shtëpinë tuaj të rregullt, të pastër dhe mikpritëse.</p>
+                    <ul class="list-disc ml-5 space-y-1 text-sm">
+                        <li>Pastrim i përgjithshëm (dritare, dysheme, mobilje)</li>
+                        <li>Pastrim i thellë sezonal</li>
+                        <li>Pastrim pas festave apo eventeve</li>
+                        <li>Pastrim pas zhvendosjes (hyrje / dalje)</li>
+                        <li>Organizim hapësirash dhe garderobash</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">🏢 Pastrime Komerciale / Zyrash</h3>
+                    <p class="mb-3">Zgjidhje për hapësira të biznesit me standarde profesionale higjiene.</p>
+                    <ul class="list-disc ml-5 space-y-1 text-sm">
+                        <li>Pastrim i përditshëm ose javor i zyrave</li>
+                        <li>Larje xhamash dhe dritaresh</li>
+                        <li>Dezinfektim i hapësirave të përbashkëta</li>
+                        <li>Pastrim i tapeteve, dyshemeve dhe mobiljeve</li>
+                        <li>Pastrim i ambienteve të pritjes dhe sallave të mbledhjeve</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">🏗️ Pastrime Pas Ndërtimit</h3>
+                    <p class="mb-3">Pastrimi i plotë pas punimeve ndërtimore apo rinovuese.</p>
+                    <ul class="list-disc ml-5 space-y-1 text-sm">
+                        <li>Pastrim i pluhurit, mbetjeve dhe bojës</li>
+                        <li>Larje e dritareve dhe kornizave</li>
+                        <li>Dezinfektim i plotë pas punimeve</li>
+                        <li>Përgatitje e hapësirës për përdorim</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">🚗 Pastrime Speciale</h3>
+                    <p class="mb-3">Kujdes i specializuar për pajisje dhe sipërfaqe të veçanta.</p>
+                    <ul class="list-disc ml-5 space-y-1 text-sm">
+                        <li>Pastrim profesional i divanëve dhe tapicerive</li>
+                        <li>Larje tapetesh dhe qilimash</li>
+                        <li>Pastrim me avull ose ozon</li>
+                        <li>Pastrim dhe aromatizim i makinave (auto detailing)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">🏨 Pastrime për Biznese të Veçanta</h3>
+                    <p class="mb-3">Shërbime të personalizuara sipas industrisë.</p>
+                    <ul class="list-disc ml-5 space-y-1 text-sm">
+                        <li>Pastrim hotelesh dhe apartamenteve me qira</li>
+                        <li>Pastrim klinikash dhe ambienteve mjekësore</li>
+                        <li>Pastrim restorantesh dhe bareve</li>
+                        <li>Pastrim palestrash dhe qendrave sportive</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">🌿 Pastrime Ekologjike</h3>
+                    <p class="mb-3">Pastrime të sigurta për familjen dhe mjedisin.</p>
+                    <ul class="list-disc ml-5 space-y-1 text-sm">
+                        <li>Përdorim i produkteve natyrale dhe “eco-friendly”</li>
+                        <li>Pastrim pa kimikate të forta</li>
+                        <li>Aromatizim me esenca natyrale</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="text-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p class="text-gray-600">Duke ngarkuar shërbimet...</p>
+        </div>
+
+        <!-- Categories and Services -->
+        <div id="categoriesContainer" class="space-y-8 hidden">
+            <!-- Categories will be loaded here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-12 bg-white rounded-xl shadow-lg">
+            <i data-lucide="info" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
+            <h3 class="text-xl font-medium text-gray-900 mb-2">Nuk ka shërbime të disponueshme</h3>
+            <p class="text-gray-600">Shërbimet do të shfaqen së shpejti.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex justify-center items-center">
+                <a href="demo-sq-fixed.html" class="flex items-center cursor-pointer hover:opacity-80 transition-opacity">
+                    <i data-lucide="building-2" class="h-6 w-6 text-blue-600"></i>
+                    <span class="ml-2 text-lg font-semibold text-gray-900">Pastro.com</span>
+                </a>
+            </div>
+            <p class="text-center text-gray-600 mt-4">© 2025 Pastro.com. Të gjitha të drejtat e rezervuara.</p>
+        </div>
+    </footer>
+
+    <script>
+
+        // Mobile Menu Toggle
+
+        // Also define as simple function for compatibility
+
+        // Close mobile menu when clicking on overlay
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuOverlay = document.getElementById('mobileMenuOverlay');
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (mobileMenu && menuOverlay && menuBtn && !mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
+                if (mobileMenu.classList.contains('open')) {
+                    mobileMenu.classList.remove('open');
+                    menuOverlay.classList.remove('open');
+                    menuBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>';
+                }
+            }
+        });
+        
+        // Initialize Lucide icons
+
+        // Initialize Lucide icons
+
+        let allCategories = [];
+
+        // Load categories on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCategories();
+        });
+
+        async function loadCategories() {
+            const loadingState = document.getElementById('loadingState');
+            const categoriesContainer = document.getElementById('categoriesContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            // Determine API base URL
+            let apiBase = 'http://localhost:3000';
+            let success = false;
+
+            try {
+                const response = await fetch(`${apiBase}/api/service-categories`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success && data.categories) {
+                    allCategories = data.categories;
+                    success = true;
+                    displayCategories();
+                    return;
+                }
+            } catch (error) {
+                console.warn('Failed to fetch from port 3000, trying 3001:', error);
+            }
+            
+            // Try port 3001 if 3000 fails
+            if (!success) {
+                try {
+                    apiBase = 'http://localhost:3001';
+                    const response = await fetch(`${apiBase}/api/service-categories`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.success && data.categories) {
+                        allCategories = data.categories;
+                        success = true;
+                        displayCategories();
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch categories from both ports:', error);
+                }
+            }
+
+            // Show empty state if no categories loaded
+            if (allCategories.length === 0) {
+                loadingState.classList.add('hidden');
+                categoriesContainer.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            }
+        }
+
+        function displayCategories() {
+            const loadingState = document.getElementById('loadingState');
+            const categoriesContainer = document.getElementById('categoriesContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            loadingState.classList.add('hidden');
+            
+            if (allCategories.length === 0) {
+                categoriesContainer.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            categoriesContainer.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            categoriesContainer.innerHTML = allCategories.map(category => {
+                const services = category.services || [];
+                const servicesHtml = services.length > 0 
+                    ? services.map(service => `
+                        <div class="service-item p-4 rounded-lg border border-gray-200 bg-white">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-gray-900 mb-1">${service.name}</h4>
+                                    ${service.description ? `<p class="text-sm text-gray-600">${service.description}</p>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')
+                    : '<p class="text-gray-500 text-sm">Nuk ka shërbime të disponueshme në këtë kategori.</p>';
+
+                return `
+                    <div class="category-card bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex items-start mb-4">
+                            <div class="text-4xl mr-4">${category.icon || '🏠'}</div>
+                            <div class="flex-1">
+                                <h2 class="text-2xl font-bold text-gray-900 mb-2">${category.name}</h2>
+                                ${category.description ? `<p class="text-gray-600">${category.description}</p>` : ''}
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 space-y-3">
+                            ${servicesHtml}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+        }
+
+</script>
+</body>
+</html>
+

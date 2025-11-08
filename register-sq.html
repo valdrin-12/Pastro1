@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regjistro Ofrues - Pastro.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #dbeafe 0%, #dcfce7 100%);
+        }
+        .form-section {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .input-group {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+        }
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background: #f9fafb;
+        }
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .step {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin: 0 0.5rem;
+            transition: all 0.3s;
+        }
+        .step.active {
+            background: #2563eb;
+            color: white;
+        }
+        .step.completed {
+            background: #10b981;
+            color: white;
+        }
+        .step.inactive {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+        .step-line {
+            width: 2rem;
+            height: 2px;
+            background: #e5e7eb;
+            margin: auto 0;
+        }
+        .step-line.active {
+            background: #2563eb;
+        }
+        .step-line.completed {
+            background: #10b981;
+        }
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 0.5rem;
+        }
+        .photo-upload-area {
+            border: 2px dashed #f97316;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            background: #fff7ed;
+            min-height: 200px;
+        }
+        .photo-preview {
+            position: relative;
+            display: inline-block;
+            margin: 0.5rem;
+        }
+        .photo-preview img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            border: 2px solid #e5e7eb;
+        }
+        .photo-preview.selected img {
+            border: 3px solid #2563eb;
+        }
+        .photo-remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen py-8">
+    <!-- Header -->
+    <header class="max-w-4xl mx-auto px-4 mb-8">
+        <div class="flex items-center justify-between">
+            <a href="demo-sq-fixed.html" class="flex items-center cursor-pointer hover:opacity-80 transition-opacity">
+                <i data-lucide="building-2" class="h-8 w-8 text-blue-600"></i>
+                <h1 class="ml-2 text-2xl font-bold text-gray-900">Pastro.com</h1>
+            </a>
+            <a href="demo-sq.html" class="text-gray-700 hover:text-blue-600 transition-colors">
+                ← Kthehu në Kryefaqe
+            </a>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-4">
+        <!-- Page Header -->
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Regjistro Ofruesin e Pastrimit</h2>
+            <p class="text-gray-600">Bashkohuni me platformën kryesore të shërbimeve të pastrimit të Kosovës</p>
+        </div>
+
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step active" id="step-1">1</div>
+            <div class="step-line active"></div>
+            <div class="step inactive" id="step-2">2</div>
+            <div class="step-line inactive"></div>
+            <div class="step inactive" id="step-3">3</div>
+            <div class="step-line inactive"></div>
+            <div class="step inactive" id="step-4">4</div>
+            <div class="step-line inactive"></div>
+            <div class="step inactive" id="step-5">5</div>
+            <div class="step-line inactive"></div>
+            <div class="step inactive" id="step-6">6</div>
+            <div class="step-line inactive"></div>
+            <div class="step inactive" id="step-7">7</div>
+        </div>
+
+        <!-- Registration Form -->
+        <form id="registrationForm" class="form-section p-8">
+            <!-- Step 1: Provider Type Selection -->
+            <div id="step1-content" class="step-content">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Zgjidhni Llojin e Ofruesit</h3>
+                <p class="text-gray-600 mb-8">Zgjidhni llojin e ofruesit që përshkruan më mirë biznesin tuaj</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Cleaning Company Option -->
+                    <div class="provider-type-card" data-type="company">
+                        <div class="border-2 border-gray-200 rounded-xl p-6 cursor-pointer hover:border-blue-500 transition-colors">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="building-2" class="h-8 w-8 text-blue-600"></i>
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">Kompani Pastrimi</h4>
+                                <p class="text-sm text-gray-600 mb-4">Për kompani të regjistruara dhe biznese</p>
+                                
+                                <div class="text-left space-y-2 mb-4">
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i data-lucide="check" class="h-4 w-4 text-green-600 mr-2"></i>
+                                        <span>€5 tarifë regjistrimi</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i data-lucide="check" class="h-4 w-4 text-green-600 mr-2"></i>
+                                        <span>Shfaqet në krye të rezultateve</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i data-lucide="check" class="h-4 w-4 text-green-600 mr-2"></i>
+                                        <span>Akses i plotë në dashboard</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i data-lucide="check" class="h-4 w-4 text-green-600 mr-2"></i>
+                                        <span>Statistika dhe analitika</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-blue-50 rounded-lg p-3">
+                                    <p class="text-sm font-medium text-blue-800">Rekomandohet për biznese të mëdha</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Independent Cleaner Option -->
+                    <div class="provider-type-card" data-type="individual">
+                        <div class="border-2 border-gray-200 rounded-xl p-6 cursor-pointer hover:border-blue-500 transition-colors">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="user" class="h-8 w-8 text-green-600"></i>
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">Pastrues i Pavarur</h4>
+                                <p class="text-sm text-gray-600 mb-4">Për individë që ofrojnë shërbime pastrimi</p>
+                                
+                                <div class="text-left space-y-2 mb-4">
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i data-lucide="check" class="h-4 w-4 text-green-600 mr-2"></i>
+                                        <span>Regjistrim falas</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i data-lucide="check" class="h-4 w-4 text-green-600 mr-2"></i>
+                                        <span>Shfaqet me badge "Pastrues Privat"</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i data-lucide="check" class="h-4 w-4 text-green-600 mr-2"></i>
+                                        <span>Opsion verifikimi (opsional)</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i data-lucide="check" class="h-4 w-4 text-green-600 mr-2"></i>
+                                        <span>Dashboard bazik</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-green-50 rounded-lg p-3">
+                                    <p class="text-sm font-medium text-green-800">Ideal për pastrues të pavarur</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="button" onclick="nextStep()" class="btn-primary" id="nextStepBtn" disabled>Tjetër: Informacioni i Llogarisë</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Account Information -->
+            <div id="step2-content" class="step-content hidden">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Informacioni i Llogarisë</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Adresa e Email-it *</label>
+                        <div class="input-group">
+                            <i data-lucide="mail" class="input-icon"></i>
+                            <input type="email" id="email" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="kompani@example.com">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Fjalëkalimi *</label>
+                        <div class="input-group">
+                            <i data-lucide="lock" class="input-icon"></i>
+                            <input type="password" id="password" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Minimumi 6 karaktere">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Konfirmo Fjalëkalimin *</label>
+                    <div class="input-group">
+                        <i data-lucide="lock" class="input-icon"></i>
+                        <input type="password" id="confirmPassword" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Konfirmo fjalëkalimin">
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="button" onclick="nextStep()" class="btn-primary">Tjetër: Detajet e Kompanisë</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Company Information -->
+            <div id="step3-content" class="step-content hidden">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Informacioni i Kompanisë</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Emri i Kompanisë *</label>
+                        <div class="input-group">
+                            <i data-lucide="building-2" class="input-icon"></i>
+                            <input type="text" id="companyName" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Emri i kompanisë suaj">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Numri i Telefonit *</label>
+                        <div class="input-group">
+                            <i data-lucide="phone" class="input-icon"></i>
+                            <input type="tel" id="phone" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="+383 XX XXX XXX">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Përshkrimi i Kompanisë</label>
+                    <textarea id="description" rows="4" class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Tregoni klientëve për kompaninë dhe shërbimet tuaja..."></textarea>
+                </div>
+
+                <div class="flex justify-between">
+                    <button type="button" onclick="prevStep()" class="btn-secondary">Mëparshëm</button>
+                    <button type="button" onclick="nextStep()" class="btn-primary">Tjetër: Qytetet Operative</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Operating Cities -->
+            <div id="step4-content" class="step-content hidden">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Qytetet Operative *</h3>
+                <p class="text-gray-600 mb-6">Zgjidhni të gjitha qytetet ku kompania juaj ofron shërbime</p>
+                
+                <div class="checkbox-group mb-6">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="prishtina" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Prishtina</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="prizren" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Prizren</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="gjakova" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Gjakova</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="peja" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Peja</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="ferizaj" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Ferizaj</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="gjilan" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Gjilan</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="mitrovica" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Mitrovica</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="vushtrri" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Vushtrri</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="podujeva" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Podujeva</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="rahovec" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Rahovec</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="lipjan" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Lipjan</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="malisheva" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Malisheva</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="deçan" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Deçan</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="dragash" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Dragash</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="drenas" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Drenas</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="fushë kosovë" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Fushë Kosovë</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="hani i elezit" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Hani i Elezit</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="istog" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Istog</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="kaçanik" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Kaçanik</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="kamenicë" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Kamenicë</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="klinë" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Klinë</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="kllokot" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Kllokot</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="leposaviq" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Leposaviq</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="mamuša" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Mamuša</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="novobërdë" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Novobërdë</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="obiliq" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Obiliq</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="partesh" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Partesh</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="ranillug" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Ranillug</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="shtime" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Shtime</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="skenderaj" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Skenderaj</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="suharekë" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Suharekë</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="zubin potok" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Zubin Potok</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="zveçan" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">Zveçan</span>
+                    </label>
+                </div>
+
+                <div class="flex justify-between">
+                    <button type="button" onclick="prevStep()" class="btn-secondary">Mëparshëm</button>
+                    <button type="button" onclick="nextStep()" class="btn-primary">Tjetër: Shërbimet & Çmimet</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Services & Pricing -->
+            <div id="step5-content" class="step-content hidden">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Shërbimet & Çmimet *</h3>
+                    <button type="button" onclick="addService()" class="btn-primary text-sm">
+                        <i data-lucide="plus" class="w-4 h-4 inline mr-1"></i>
+                        Shto Shërbim
+                    </button>
+                </div>
+                
+                <div id="services-container" class="space-y-4 mb-6">
+                    <!-- Services will be added dynamically -->
+                </div>
+
+                <div class="flex justify-between">
+                    <button type="button" onclick="prevStep()" class="btn-secondary">Mëparshëm</button>
+                    <button type="button" onclick="nextStep()" class="btn-primary">Tjetër: Pagesa</button>
+                </div>
+            </div>
+
+            <!-- Step 6: Payment -->
+            <div id="step6-content" class="step-content hidden">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Pagesa për Regjistrimin</h3>
+                
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+                    <div class="flex items-center mb-4">
+                        <i data-lucide="info" class="h-6 w-6 text-blue-600 mr-3"></i>
+                        <h4 class="font-semibold text-gray-900">Informacion i Rëndësishëm</h4>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Për të regjistruar kompaninë tuaj në platformë dhe për të qenë të dukshme për klientët, 
+                        duhet të paguani një tarifë regjistrimi prej €4.00.
+                    </p>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Kompania juaj do të jetë e dukshme për të gjithë klientët</li>
+                        <li>• Mund të merrni porosi dhe të lidheni me klientë</li>
+                        <li>• Akses i plotë në panelin e kompanisë</li>
+                        <li>• Statistikat dhe raportet e detajuara</li>
+                    </ul>
+                </div>
+
+                <!-- Payment Form -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+                    <h4 class="font-semibold text-gray-900 mb-4">Detajet e Pagesës</h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Card Number -->
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Numri i Kartës *</label>
+                            <div class="relative">
+                                <i data-lucide="credit-card" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"></i>
+                                <input
+                                    type="text"
+                                    id="cardNumber"
+                                    maxlength="19"
+                                    placeholder="1234 5678 9012 3456"
+                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Expiry and CVV -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Data e Skadimit *</label>
+                            <input
+                                type="text"
+                                id="expiryDate"
+                                maxlength="5"
+                                placeholder="MM/YY"
+                                class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">CVV *</label>
+                            <input
+                                type="text"
+                                id="cvv"
+                                maxlength="4"
+                                placeholder="123"
+                                class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                required
+                            />
+                        </div>
+
+                        <!-- Cardholder Name -->
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Emri i Pronarit të Kartës *</label>
+                            <input
+                                type="text"
+                                id="cardholderName"
+                                placeholder="Emri i plotë"
+                                class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                required
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Summary -->
+                <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                    <h4 class="font-semibold text-gray-900 mb-2">Përmbledhja e Pagesës</h4>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Tarifa e Regjistrimit</span>
+                        <span class="font-semibold text-gray-900">€4.00</span>
+                    </div>
+                    <div class="border-t border-gray-200 mt-2 pt-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-gray-900">Total</span>
+                            <span class="text-xl font-bold text-blue-600">€4.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="flex items-start mb-6">
+                    <input
+                        type="checkbox"
+                        id="terms"
+                        class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        required
+                    />
+                    <label for="terms" class="ml-2 text-sm text-gray-600">
+                        Unë pranoj <a href="#" class="text-blue-600 hover:text-blue-500">kushtet dhe kushtet</a> dhe 
+                        <a href="#" class="text-blue-600 hover:text-blue-500">politikën e privatësisë</a>
+                    </label>
+                </div>
+
+                <div class="flex justify-between">
+                    <button type="button" onclick="prevStep()" class="btn-secondary">Mëparshëm</button>
+                    <button type="submit" class="btn-primary">
+                        <i data-lucide="credit-card" class="h-4 w-4 inline mr-2"></i>
+                        Paguaj €4.00 dhe Regjistrohu
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 7: Location & Photos -->
+            <div id="step7-content" class="step-content hidden">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Vendos Lokacionin dhe Fotot e Biznesit</h3>
+                
+                <!-- Location Section -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-medium text-gray-900 mb-4">Vendos lokacionin e biznesit tuaj</h4>
+                    <div id="map" class="mb-4"></div>
+                    <input type="hidden" id="locationLat" />
+                    <input type="hidden" id="locationLng" />
+                    <p class="text-sm text-gray-600">Klikoni në hartë për të vendosur lokacionin e biznesit tuaj</p>
+                </div>
+
+                <!-- Photo Upload Section -->
+                <div>
+                    <h4 class="text-lg font-medium text-gray-900 mb-4">Shtimi i fotografive të biznesit</h4>
+                    <p class="text-sm text-gray-600 mb-2">
+                        Shtoni fotografitë e biznesit tuaj duke klikuar butonin Ngarko fotografi, ndërsa klikoni butonin Fshije për të larguar fotografinë përkatëse. Fotografitë duhet të jenë më të vogla se 10Mb.
+                    </p>
+                    <div class="flex items-start mb-2 text-sm text-gray-600">
+                        <i data-lucide="info" class="h-4 w-4 mr-2 mt-0.5"></i>
+                        <span>Kliko njërën nga fotografitë për të zgjedhur si fotografi të profilit në faqen e biznesit tuaj.</span>
+                    </div>
+                    
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                        <p class="text-sm text-red-800">
+                            Për të shtuar më shumë se dy fotografi ju duhet të abonoheni në njërën nga pakot me pagesë, pako Klasik apo Premium përmes të cilave mund të promovoni biznesin tuaj në disa forma.
+                        </p>
+                    </div>
+
+                    <div class="photo-upload-area mb-4" id="photo-upload-area">
+                        <div id="photo-previews" class="flex flex-wrap justify-center items-center min-h-[150px]">
+                            <p class="text-gray-500 w-full mb-4">Nuk ka fotografi të ngarkuara</p>
+                        </div>
+                        <input type="file" id="photo-input" accept="image/*" multiple class="hidden" />
+                        <button type="button" onclick="document.getElementById('photo-input').click()" class="btn-primary" style="background: #f97316; padding: 0.75rem 1.5rem;">
+                            <i data-lucide="upload" class="w-4 h-4 inline mr-2"></i>
+                            Ngarko imazhe
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-6">
+                    <button type="button" onclick="prevStep()" class="btn-secondary">Mëparshëm</button>
+                    <button type="submit" class="btn-primary">Përfundo Regjistrimin</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Success Message -->
+        <div id="success-message" class="hidden form-section p-8 text-center">
+            <div class="mb-4">
+                <i data-lucide="clock" class="h-16 w-16 text-yellow-600 mx-auto"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Regjistrimi u Krye me Sukses!</h3>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6 max-w-2xl mx-auto">
+                <div class="flex items-start">
+                    <i data-lucide="alert-circle" class="h-5 w-5 text-yellow-600 mr-2 mt-0.5"></i>
+                    <div class="text-left">
+                        <p class="text-gray-800 font-semibold mb-2">Kompania juaj po kontrollohet</p>
+                        <p class="text-gray-600 text-sm">
+                            Kompania juaj u regjistrua me sukses dhe emri u verifikua. Sidoqoftë, 
+                            kompania juaj do të kontrollohet nga administratori para se të shfaqet në platformë. 
+                            Ju do të merrni një email kur kompania juaj të miratohet.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-gray-600 mb-6">Pas miratimit nga administratori, kompania juaj do të shfaqet në platformë.</p>
+            <div class="flex justify-center space-x-4">
+                <a href="demo-sq-fixed.html" class="btn-primary">Kthehu në Kryefaqe</a>
+                <button onclick="resetForm()" class="btn-secondary">Regjistro Kompani Tjetër</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let serviceCount = 0;
+        let providerType = null; // 'company' or 'individual'
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Provider type selection
+        document.addEventListener('DOMContentLoaded', function() {
+            const providerCards = document.querySelectorAll('.provider-type-card');
+            const nextBtn = document.getElementById('nextStepBtn');
+
+            providerCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove selection from all cards
+                    providerCards.forEach(c => {
+                        c.querySelector('div').classList.remove('border-blue-500', 'bg-blue-50');
+                        c.querySelector('div').classList.add('border-gray-200');
+                    });
+
+                    // Add selection to clicked card
+                    this.querySelector('div').classList.remove('border-gray-200');
+                    this.querySelector('div').classList.add('border-blue-500', 'bg-blue-50');
+
+                    // Set provider type
+                    providerType = this.dataset.type;
+                    
+                    // Enable next button
+                    nextBtn.disabled = false;
+                });
+            });
+        });
+
+        // Lista dinamike e shërbimeve - ngarkohet nga API
+        let availableServices = [];
+        
+        // Ngarko shërbimet nga API
+        async function loadServices() {
+            let apiBase = 'http://localhost:3000';
+            let success = false;
+            
+            try {
+                const response = await fetch(`${apiBase}/api/services`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success && data.services) {
+                    // Merr të gjitha emrat e shërbimeve
+                    availableServices = data.services.map(service => service.name);
+                    success = true;
+                    console.log('Loaded services from API:', availableServices.length);
+                    return;
+                }
+            } catch (error) {
+                console.warn('Failed to fetch services from port 3000, trying 3001:', error);
+            }
+            
+            // Try port 3001 if 3000 fails
+            if (!success) {
+                try {
+                    apiBase = 'http://localhost:3001';
+                    const response = await fetch(`${apiBase}/api/services`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.success && data.services) {
+                        availableServices = data.services.map(service => service.name);
+                        success = true;
+                        console.log('Loaded services from API (port 3001):', availableServices.length);
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch services from both ports:', error);
+                    
+                    // Fallback: lista statike nëse API nuk funksionon
+                    availableServices = [
+                        'Pastrimi i Shtëpisë',
+                        'Pastrimi i Zyrës',
+                        'Pastrimi i Detajuar',
+                        'Pastrimi i Dritareve',
+                        'Pastrimi i Qilimave',
+                        'Pastrimi i Objektit',
+                        'Pastrimi Pas Ndërtimit',
+                        'Hyrje/Dalje',
+                        'Mirëmbajtja e Rregullt',
+                        'Pastrimi Njëherësh',
+                        'Pastrimi Komercial',
+                        'Pastrimi Industrial'
+                    ];
+                    console.log('Using fallback services list');
+                }
+            }
+        }
+        
+        // Ngarko shërbimet kur faqja hapet
+        document.addEventListener('DOMContentLoaded', function() {
+            loadServices();
+        });
+
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < 7) {
+                    // Mark current step as completed
+                    document.getElementById(`step-${currentStep}`).classList.remove('active');
+                    document.getElementById(`step-${currentStep}`).classList.add('completed');
+                    
+                    // Update step line
+                    const stepLine = document.querySelector(`#step-${currentStep} + .step-line`);
+                    if (stepLine) {
+                        stepLine.classList.remove('active');
+                        stepLine.classList.add('completed');
+                    }
+
+                    currentStep++;
+                    
+                    // Show next step
+                    document.getElementById(`step${currentStep}-content`).classList.remove('hidden');
+                    document.getElementById(`step${currentStep-1}-content`).classList.add('hidden');
+                    
+                    // Mark next step as active
+                    document.getElementById(`step-${currentStep}`).classList.remove('inactive');
+                    document.getElementById(`step-${currentStep}`).classList.add('active');
+                    
+                    // Update step line
+                    const nextStepLine = document.querySelector(`#step-${currentStep} + .step-line`);
+                    if (nextStepLine) {
+                        nextStepLine.classList.add('active');
+                    }
+
+                    // Add initial service if on step 5
+                    if (currentStep === 5 && serviceCount === 0) {
+                        addService();
+                    }
+
+                    // Update payment step based on provider type
+                    if (currentStep === 6) {
+                        updatePaymentStep();
+                    }
+
+                    // Initialize map when entering step 7
+                    if (currentStep === 7) {
+                        initMap();
+                    }
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                // Hide current step
+                document.getElementById(`step${currentStep}-content`).classList.add('hidden');
+                
+                // Mark current step as inactive
+                document.getElementById(`step-${currentStep}`).classList.remove('active');
+                document.getElementById(`step-${currentStep}`).classList.add('inactive');
+                
+                // Update step line
+                const stepLine = document.querySelector(`#step-${currentStep} + .step-line`);
+                if (stepLine) {
+                    stepLine.classList.remove('active');
+                }
+
+                currentStep--;
+                
+                // Show previous step
+                document.getElementById(`step${currentStep}-content`).classList.remove('hidden');
+                
+                // Mark previous step as active
+                document.getElementById(`step-${currentStep}`).classList.remove('completed', 'inactive');
+                document.getElementById(`step-${currentStep}`).classList.add('active');
+                
+                // Update step line
+                const prevStepLine = document.querySelector(`#step-${currentStep} + .step-line`);
+                if (prevStepLine) {
+                    prevStepLine.classList.remove('completed');
+                    prevStepLine.classList.add('active');
+                }
+            }
+        }
+
+        function validateCurrentStep() {
+            switch(currentStep) {
+                case 1:
+                    if (!providerType) {
+                        alert('Ju lutemi zgjidhni llojin e ofruesit');
+                        return false;
+                    }
+                    break;
+                    
+                case 2:
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    if (!email || !password || !confirmPassword) {
+                        alert('Ju lutemi plotësoni të gjitha fushat e detyrueshme');
+                        return false;
+                    }
+                    
+                    // Validate email format
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email)) {
+                        alert('Ju lutemi shkruani një email të vlefshëm. P.sh. kompani@example.com');
+                        document.getElementById('email').focus();
+                        return false;
+                    }
+                    
+                    if (password !== confirmPassword) {
+                        alert('Fjalëkalimet nuk përputhen');
+                        return false;
+                    }
+                    
+                    if (password.length < 6) {
+                        alert('Fjalëkalimi duhet të jetë të paktën 6 karaktere');
+                        return false;
+                    }
+                    break;
+                    
+                case 3:
+                    const companyName = document.getElementById('companyName').value;
+                    const phone = document.getElementById('phone').value;
+                    
+                    if (!companyName || !phone) {
+                        alert('Ju lutemi plotësoni të gjitha fushat e detyrueshme');
+                        return false;
+                    }
+                    break;
+                    
+                case 4:
+                    const selectedCities = document.querySelectorAll('input[type="checkbox"]:checked');
+                    if (selectedCities.length === 0) {
+                        alert('Ju lutemi zgjidhni të paktën një qytet operativ');
+                        return false;
+                    }
+                    break;
+                    
+                case 5:
+                    if (serviceCount === 0) {
+                        alert('Ju lutemi shtoni të paktën një shërbim');
+                        return false;
+                    }
+                    
+                    // Validate all services
+                    const serviceSelects = document.querySelectorAll('.service-select');
+                    const priceInputs = document.querySelectorAll('.service-price');
+                    
+                    for (let i = 0; i < serviceSelects.length; i++) {
+                        if (!serviceSelects[i].value || !priceInputs[i].value || parseFloat(priceInputs[i].value) <= 0) {
+                            alert('Ju lutemi plotësoni të gjitha detajet e shërbimit me çmime të vlefshme');
+                            return false;
+                        }
+                    }
+                    break;
+                    
+                case 6:
+                    // Payment validation already handled
+                    break;
+                    
+                case 7:
+                    // Location and photos are optional, but validate location if set
+                    const lat = document.getElementById('locationLat').value;
+                    const lng = document.getElementById('locationLng').value;
+                    // Location is optional, so no validation needed
+                    break;
+            }
+            return true;
+        }
+
+        function updatePaymentStep() {
+            const paymentStep = document.getElementById('step6-content');
+            const paymentInfo = paymentStep.querySelector('.bg-blue-50');
+            const paymentSummary = paymentStep.querySelector('.bg-gray-50');
+            
+            if (providerType === 'individual') {
+                // Free registration for individuals
+                paymentInfo.innerHTML = `
+                    <div class="flex items-center mb-4">
+                        <i data-lucide="info" class="h-6 w-6 text-green-600 mr-3"></i>
+                        <h4 class="font-semibold text-gray-900">Regjistrim Falas</h4>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Si pastrues i pavarur, regjistrimi juaj është falas! Kompania juaj do të shfaqet në platformë 
+                        me badge "Pastrues Privat" dhe do të keni akses në dashboard bazik.
+                    </p>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Regjistrimi juaj është falas</li>
+                        <li>• Do të shfaqeni me badge "Pastrues Privat"</li>
+                        <li>• Mund të merrni porosi dhe të lidheni me klientë</li>
+                        <li>• Akses në dashboard bazik</li>
+                        <li>• Opsion verifikimi (opsional)</li>
+                    </ul>
+                `;
+                
+                paymentSummary.innerHTML = `
+                    <h4 class="font-semibold text-gray-900 mb-2">Përmbledhja e Regjistrimit</h4>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Regjistrimi për Pastrues të Pavarur</span>
+                        <span class="font-semibold text-green-600">FALAS</span>
+                    </div>
+                    <div class="border-t border-gray-200 mt-2 pt-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-gray-900">Total</span>
+                            <span class="text-xl font-bold text-green-600">€0.00</span>
+                        </div>
+                    </div>
+                `;
+                
+                // Hide payment form for individuals
+                paymentStep.querySelector('.bg-white.border.border-gray-200').style.display = 'none';
+                
+                // Update submit button
+                const submitBtn = paymentStep.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<i data-lucide="check" class="h-4 w-4 inline mr-2"></i>Regjistrohu Falas';
+            } else {
+                // Paid registration for companies
+                paymentInfo.innerHTML = `
+                    <div class="flex items-center mb-4">
+                        <i data-lucide="info" class="h-6 w-6 text-blue-600 mr-3"></i>
+                        <h4 class="font-semibold text-gray-900">Informacion i Rëndësishëm</h4>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Për të regjistruar kompaninë tuaj në platformë dhe për të qenë të dukshme për klientët, 
+                        duhet të paguani një tarifë regjistrimi prej €5.00.
+                    </p>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Kompania juaj do të jetë e dukshme për të gjithë klientët</li>
+                        <li>• Do të shfaqeni në krye të rezultateve të kërkimit</li>
+                        <li>• Mund të merrni porosi dhe të lidheni me klientë</li>
+                        <li>• Akses i plotë në panelin e kompanisë</li>
+                        <li>• Statistikat dhe raportet e detajuara</li>
+                    </ul>
+                `;
+                
+                paymentSummary.innerHTML = `
+                    <h4 class="font-semibold text-gray-900 mb-2">Përmbledhja e Pagesës</h4>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Tarifa e Regjistrimit</span>
+                        <span class="font-semibold text-gray-900">€5.00</span>
+                    </div>
+                    <div class="border-t border-gray-200 mt-2 pt-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-gray-900">Total</span>
+                            <span class="text-xl font-bold text-blue-600">€5.00</span>
+                        </div>
+                    </div>
+                `;
+                
+                // Show payment form for companies
+                paymentStep.querySelector('.bg-white.border.border-gray-200').style.display = 'block';
+                
+                // Update submit button
+                const submitBtn = paymentStep.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<i data-lucide="credit-card" class="h-4 w-4 inline mr-2"></i>Paguaj €5.00 dhe Regjistrohu';
+            }
+        }
+
+        function addService() {
+            serviceCount++;
+            const container = document.getElementById('services-container');
+            const serviceDiv = document.createElement('div');
+            serviceDiv.className = 'service-item';
+            
+            // Krijo opsionet për dropdown
+            const serviceOptions = availableServices.length > 0 
+                ? availableServices.map(service => `<option value="${service}">${service}</option>`).join('')
+                : '<option value="">Duke ngarkuar shërbimet...</option>';
+            
+            const serviceId = `service-${serviceCount}`;
+            serviceDiv.innerHTML = `
+                <div class="flex-1 relative">
+                    <!-- Hidden select for compatibility -->
+                    <select class="service-select hidden" data-service-id="${serviceId}">
+                        <option value="">Zgjidh një shërbim</option>
+                        ${serviceOptions}
+                    </select>
+                    
+                    <!-- Custom Dropdown Button -->
+                    <button type="button" onclick="toggleServiceDropdownReg('${serviceId}')" class="service-dropdown-btn w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-left flex items-center justify-between">
+                        <span class="service-dropdown-text-${serviceId} text-gray-700">Zgjidh një shërbim</span>
+                        <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+                    </button>
+                    
+                    <!-- Custom Dropdown Menu -->
+                    <div id="serviceDropdown-${serviceId}" class="hidden absolute z-50 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-80 overflow-hidden">
+                        <!-- Search Input -->
+                        <div class="p-2 border-b border-gray-200 sticky top-0 bg-white">
+                            <div class="relative">
+                                <i data-lucide="search" class="absolute left-2 top-1/2 transform -translate-y-1/2 h-3 w-3 text-gray-400"></i>
+                                <input 
+                                    type="text" 
+                                    id="serviceSearchInput-${serviceId}" 
+                                    placeholder="Kërko..." 
+                                    class="w-full pl-7 pr-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                    onkeydown="handleServiceSearchKeydownReg(event, '${serviceId}')"
+                                >
+                            </div>
+                        </div>
+                        
+                        <!-- Options Container -->
+                        <div id="serviceOptionsContainer-${serviceId}" class="overflow-y-auto max-h-64">
+                            ${availableServices.length > 0 
+                                ? availableServices.map(service => {
+                                    const safeServiceName = service.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+                                    const safeServiceId = service.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
+                                    return `
+                                    <div onclick="selectServiceReg('${serviceId}', '${safeServiceName}')" data-service-name="${safeServiceName}" class="service-option-reg px-3 py-2 hover:bg-blue-50 cursor-pointer border-b border-gray-100 flex items-center">
+                                        <i data-lucide="check" class="h-3 w-3 text-blue-600 mr-2 hidden service-check-reg" id="serviceCheck-${serviceId}-${safeServiceId}"></i>
+                                        <span class="text-gray-900 text-sm">${service}</span>
+                                    </div>
+                                `;
+                                }).join('')
+                                : '<div class="px-3 py-2 text-gray-500 text-sm text-center">Duke ngarkuar...</div>'
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="w-32">
+                    <div class="relative">
+                        <i data-lucide="dollar-sign" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4"></i>
+                        <input type="number" min="0" step="0.01" class="service-price pl-8 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="0.00">
+                    </div>
+                </div>
+                <button type="button" onclick="removeService(this)" class="btn-danger">
+                    <i data-lucide="x" class="h-4 w-4"></i>
+                </button>
+            `;
+            container.appendChild(serviceDiv);
+            
+            // Re-initialize Lucide icons for the new elements
+            lucide.createIcons();
+            
+            // Nëse shërbimet nuk janë ngarkuar ende, rifresko dropdown-in pas ngarkimit
+            if (availableServices.length === 0) {
+                loadServices().then(() => {
+                    // Rifresko dropdown-in pas ngarkimit
+                    const select = serviceDiv.querySelector('.service-select');
+                    const container = serviceDiv.querySelector(`#serviceOptionsContainer-${serviceId}`);
+                    
+                    if (select && availableServices.length > 0) {
+                        select.innerHTML = '<option value="">Zgjidh një shërbim</option>' + 
+                            availableServices.map(service => `<option value="${service}">${service}</option>`).join('');
+                    }
+                    
+                    // Update custom dropdown
+                    if (container) {
+                        container.innerHTML = availableServices.map(service => {
+                            const safeServiceName = service.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+                            const safeServiceId = service.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
+                            return `
+                            <div onclick="selectServiceReg('${serviceId}', '${safeServiceName}')" data-service-name="${safeServiceName}" class="service-option-reg px-3 py-2 hover:bg-blue-50 cursor-pointer border-b border-gray-100 flex items-center">
+                                <i data-lucide="check" class="h-3 w-3 text-blue-600 mr-2 hidden service-check-reg" id="serviceCheck-${serviceId}-${safeServiceId}"></i>
+                                <span class="text-gray-900 text-sm">${service}</span>
+                            </div>
+                        `;
+                        }).join('');
+                        lucide.createIcons();
+                    }
+                });
+            }
+            
+            // Initialize icons
+            lucide.createIcons();
+            
+            // Attach search handler
+            attachServiceSearchHandlers(serviceId);
+        }
+        
+        // Service dropdown functions for registration
+        let openServiceDropdowns = new Set();
+        
+        function toggleServiceDropdownReg(serviceId) {
+            const dropdown = document.getElementById(`serviceDropdown-${serviceId}`);
+            const btn = document.querySelector(`button[onclick*="toggleServiceDropdownReg('${serviceId}')"]`);
+            const icon = btn ? btn.querySelector('i[data-lucide]') : null;
+            
+            if (!dropdown) return;
+            
+            const isOpen = openServiceDropdowns.has(serviceId);
+            
+            // Close all other dropdowns
+            openServiceDropdowns.forEach(id => {
+                if (id !== serviceId) {
+                    const otherDropdown = document.getElementById(`serviceDropdown-${id}`);
+                    const otherBtn = document.querySelector(`button[onclick*="toggleServiceDropdownReg('${id}')"]`);
+                    const otherIcon = otherBtn ? otherBtn.querySelector('i[data-lucide]') : null;
+                    if (otherDropdown) otherDropdown.classList.add('hidden');
+                    if (otherIcon) {
+                        otherIcon.setAttribute('data-lucide', 'chevron-down');
+                        lucide.createIcons();
+                    }
+                }
+            });
+            openServiceDropdowns.clear();
+            
+            if (!isOpen) {
+                dropdown.classList.remove('hidden');
+                openServiceDropdowns.add(serviceId);
+                if (icon) {
+                    icon.setAttribute('data-lucide', 'chevron-up');
+                    lucide.createIcons();
+                }
+                // Focus search input
+                setTimeout(() => {
+                    const searchInput = document.getElementById(`serviceSearchInput-${serviceId}`);
+                    if (searchInput) searchInput.focus();
+                }, 100);
+            } else {
+                dropdown.classList.add('hidden');
+                if (icon) {
+                    icon.setAttribute('data-lucide', 'chevron-down');
+                    lucide.createIcons();
+                }
+            }
+        }
+        
+        function selectServiceReg(serviceId, serviceName) {
+            const select = document.querySelector(`.service-select[data-service-id="${serviceId}"]`);
+            const dropdownText = document.querySelector(`.service-dropdown-text-${serviceId}`);
+            const dropdown = document.getElementById(`serviceDropdown-${serviceId}`);
+            const btn = document.querySelector(`button[onclick*="toggleServiceDropdownReg('${serviceId}')"]`);
+            const icon = btn ? btn.querySelector('i[data-lucide]') : null;
+            
+            // Update hidden select
+            if (select) {
+                select.value = serviceName;
+            }
+            
+            // Update display text
+            if (dropdownText) {
+                dropdownText.textContent = serviceName;
+                dropdownText.classList.remove('text-gray-700');
+                dropdownText.classList.add('text-gray-900', 'font-medium');
+            }
+            
+            // Update checkmarks
+            const container = document.getElementById(`serviceOptionsContainer-${serviceId}`);
+            if (container) {
+                container.querySelectorAll('.service-check-reg').forEach(check => {
+                    check.classList.add('hidden');
+                });
+                const safeServiceId = serviceName.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
+                const checkId = `serviceCheck-${serviceId}-${safeServiceId}`;
+                const check = document.getElementById(checkId);
+                if (check) check.classList.remove('hidden');
+            }
+            
+            // Close dropdown
+            dropdown.classList.add('hidden');
+            openServiceDropdowns.delete(serviceId);
+            if (icon) {
+                icon.setAttribute('data-lucide', 'chevron-down');
+                lucide.createIcons();
+            }
+            
+            // Clear search
+            const searchInput = document.getElementById(`serviceSearchInput-${serviceId}`);
+            if (searchInput) {
+                searchInput.value = '';
+                filterServiceOptionsReg(serviceId, '');
+            }
+            
+            // Dispatch change event
+            if (select) {
+                select.dispatchEvent(new Event('change'));
+            }
+        }
+        
+        function filterServiceOptionsReg(serviceId, searchTerm) {
+            const container = document.getElementById(`serviceOptionsContainer-${serviceId}`);
+            if (!container) return;
+            
+            const term = searchTerm.toLowerCase();
+            const options = container.querySelectorAll('.service-option-reg');
+            let visibleCount = 0;
+            
+            options.forEach(option => {
+                const text = option.textContent.toLowerCase();
+                if (text.includes(term)) {
+                    option.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+            
+            // Show "No results" if no matches
+            let noResults = container.querySelector('.no-service-results-reg');
+            if (visibleCount === 0 && term !== '') {
+                if (!noResults) {
+                    noResults = document.createElement('div');
+                    noResults.className = 'no-service-results-reg px-3 py-4 text-center text-gray-500 text-sm';
+                    noResults.textContent = 'Nuk u gjet asnjë shërbim';
+                    container.appendChild(noResults);
+                }
+                noResults.style.display = 'block';
+            } else if (noResults) {
+                noResults.style.display = 'none';
+            }
+        }
+        
+        function handleServiceSearchKeydownReg(event, serviceId) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const container = document.getElementById(`serviceOptionsContainer-${serviceId}`);
+                if (container) {
+                    const firstVisible = container.querySelector('.service-option-reg[style*="flex"]');
+                    if (firstVisible) {
+                        firstVisible.click();
+                    }
+                }
+            } else if (event.key === 'Escape') {
+                toggleServiceDropdownReg(serviceId);
+            }
+        }
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            openServiceDropdowns.forEach(serviceId => {
+                const dropdown = document.getElementById(`serviceDropdown-${serviceId}`);
+                const btn = document.querySelector(`button[onclick*="toggleServiceDropdownReg('${serviceId}')"]`);
+                
+                if (dropdown && btn) {
+                    if (!dropdown.contains(event.target) && !btn.contains(event.target)) {
+                        toggleServiceDropdownReg(serviceId);
+                    }
+                }
+            });
+        });
+        
+        // Search input handlers for registration - attach dynamically
+        function attachServiceSearchHandlers(serviceId) {
+            const searchInput = document.getElementById(`serviceSearchInput-${serviceId}`);
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    filterServiceOptionsReg(serviceId, e.target.value);
+                });
+            }
+        }
+
+        function removeService(button) {
+            button.parentElement.remove();
+            serviceCount--;
+        }
+
+        function resetForm() {
+            // Reset form
+            document.getElementById('registrationForm').reset();
+            document.getElementById('services-container').innerHTML = '';
+            serviceCount = 0;
+            providerType = null;
+            
+            // Reset provider type selection
+            document.querySelectorAll('.provider-type-card').forEach(card => {
+                card.querySelector('div').classList.remove('border-blue-500', 'bg-blue-50');
+                card.querySelector('div').classList.add('border-gray-200');
+            });
+            document.getElementById('nextStepBtn').disabled = true;
+            
+            // Reset steps
+            currentStep = 1;
+            document.querySelectorAll('.step-content').forEach(content => content.classList.add('hidden'));
+            document.getElementById('step1-content').classList.remove('hidden');
+            
+            // Reset step indicators
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index === 0) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.add('inactive');
+                }
+            });
+            
+            document.querySelectorAll('.step-line').forEach(line => {
+                line.classList.remove('active', 'completed');
+                if (line.previousElementSibling && line.previousElementSibling.classList.contains('active')) {
+                    line.classList.add('active');
+                }
+            });
+            
+            // Hide success message
+            document.getElementById('success-message').classList.add('hidden');
+            document.getElementById('registrationForm').classList.remove('hidden');
+        }
+
+        // Form submission
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (validateCurrentStep()) {
+                if (currentStep === 6) {
+                    // Process payment and move to step 7 (location & photos)
+                    if (providerType === 'individual') {
+                        // Free registration - skip payment, go to step 7
+                        nextStep();
+                    } else {
+                        // Process payment for companies, then go to step 7
+                        processPayment();
+                    }
+                } else if (currentStep === 7) {
+                    // Final step - complete registration
+                    completeRegistration();
+                } else {
+                    // Regular form submission (shouldn't happen with new flow)
+                    alert('Ju lutemi plotësoni të gjitha hapat për të vazhduar.');
+                }
+            }
+        });
+
+        function processPayment() {
+            // Get payment form data
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+            const cardholderName = document.getElementById('cardholderName').value;
+            const termsAccepted = document.getElementById('terms').checked;
+
+            // Validate payment form
+            if (!cardNumber || !expiryDate || !cvv || !cardholderName || !termsAccepted) {
+                alert('Ju lutemi plotësoni të gjitha fushat e pagesës dhe pranoni kushtet.');
+                return;
+            }
+
+            // Show loading state
+            const submitBtn = document.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 inline mr-2 animate-spin"></i>Po përpunohet pagesa...';
+            submitBtn.disabled = true;
+
+            // Simulate payment processing
+            setTimeout(() => {
+                // Process payment (simulated)
+                const paymentSuccess = simulatePaymentProcessing(cardNumber, expiryDate, cvv, cardholderName);
+                
+                if (paymentSuccess) {
+                    // Move to step 7 (location & photos)
+                    nextStep();
+                } else {
+                    alert('Pagesa dështoi. Ju lutemi provoni përsëri.');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            }, 2000);
+        }
+
+        function simulatePaymentProcessing(cardNumber, expiryDate, cvv, cardholderName) {
+            // Remove spaces from card number for validation
+            const cleanCardNumber = cardNumber.replace(/\s/g, '');
+            
+            // Basic validation checks
+            if (cleanCardNumber.length < 16) {
+                alert('Numri i kartës duhet të ketë të paktën 16 shifra.');
+                return false;
+            }
+            
+            if (!/^\d+$/.test(cleanCardNumber)) {
+                alert('Numri i kartës duhet të përmbajë vetëm shifra.');
+                return false;
+            }
+            
+            // Validate expiry date format (MM/YY)
+            if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+                alert('Data e skadimit duhet të jetë në formatin MM/YY (p.sh. 12/25).');
+                return false;
+            }
+            
+            // Check if card is not expired
+            const [month, year] = expiryDate.split('/');
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits
+            const currentMonth = currentDate.getMonth() + 1;
+            
+            if (parseInt(year) < currentYear || (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
+                alert('Karta është skaduar. Ju lutemi përdorni një kartë të vlefshme.');
+                return false;
+            }
+            
+            // Validate CVV
+            if (cvv.length < 3 || cvv.length > 4) {
+                alert('CVV duhet të ketë 3 ose 4 shifra.');
+                return false;
+            }
+            
+            if (!/^\d+$/.test(cvv)) {
+                alert('CVV duhet të përmbajë vetëm shifra.');
+                return false;
+            }
+            
+            // Validate cardholder name
+            if (cardholderName.trim().length < 2) {
+                alert('Emri i pronarit të kartës duhet të ketë të paktën 2 karaktere.');
+                return false;
+            }
+            
+            // Simulate different card types and validation
+            const cardType = getCardType(cleanCardNumber);
+            if (!cardType) {
+                alert('Lloji i kartës nuk është i njohur. Ju lutemi përdorni Visa, Mastercard, ose American Express.');
+                return false;
+            }
+            
+            // Simulate Luhn algorithm check (simplified)
+            if (!isValidLuhn(cleanCardNumber)) {
+                alert('Numri i kartës nuk është i vlefshëm. Ju lutemi kontrolloni numrin dhe provoni përsëri.');
+                return false;
+            }
+            
+            // Simulate some common "declined" scenarios for demo
+            const declinedCards = ['4000000000000002', '4000000000000069', '4000000000000119'];
+            if (declinedCards.includes(cleanCardNumber)) {
+                alert('Pagesa u refuzua nga banka. Ju lutemi kontaktoni bankën tuaj ose provoni një kartë tjetër.');
+                return false;
+            }
+            
+            // If all validations pass, simulate successful payment
+            return true;
+        }
+
+        function getCardType(cardNumber) {
+            // Visa
+            if (/^4/.test(cardNumber)) {
+                return 'Visa';
+            }
+            // Mastercard
+            if (/^5[1-5]/.test(cardNumber)) {
+                return 'Mastercard';
+            }
+            // American Express
+            if (/^3[47]/.test(cardNumber)) {
+                return 'American Express';
+            }
+            // Discover
+            if (/^6(?:011|5)/.test(cardNumber)) {
+                return 'Discover';
+            }
+            return null;
+        }
+
+        function isValidLuhn(cardNumber) {
+            let sum = 0;
+            let isEven = false;
+            
+            // Process digits from right to left
+            for (let i = cardNumber.length - 1; i >= 0; i--) {
+                let digit = parseInt(cardNumber[i]);
+                
+                if (isEven) {
+                    digit *= 2;
+                    if (digit > 9) {
+                        digit -= 9;
+                    }
+                }
+                
+                sum += digit;
+                isEven = !isEven;
+            }
+            
+            return sum % 10 === 0;
+        }
+
+        // Map and photo variables
+        let map = null;
+        let marker = null;
+        let uploadedPhotos = [];
+        let selectedProfilePhotoIndex = null;
+
+        // Initialize Leaflet map
+        function initMap() {
+            if (map) return; // Already initialized
+            
+            // Center on Kosovo
+            map = L.map('map').setView([42.6026, 20.9030], 8);
+            
+            // Add tile layer (using OpenStreetMap)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            // Add click handler to place marker
+            map.on('click', function(e) {
+                const lat = e.latlng.lat;
+                const lng = e.latlng.lng;
+                
+                document.getElementById('locationLat').value = lat;
+                document.getElementById('locationLng').value = lng;
+                
+                // Remove existing marker
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+                
+                // Add new marker
+                marker = L.marker([lat, lng]).addTo(map);
+            });
+        }
+
+        // Handle photo upload
+        document.addEventListener('DOMContentLoaded', function() {
+            const photoInput = document.getElementById('photo-input');
+            if (photoInput) {
+                photoInput.addEventListener('change', function(e) {
+                    const files = Array.from(e.target.files);
+                    
+                    files.forEach(file => {
+                        // Check file size (10MB limit)
+                        if (file.size > 10 * 1024 * 1024) {
+                            alert(`Fotografia ${file.name} është më e madhe se 10MB. Ju lutemi zgjidhni një fotografi më të vogël.`);
+                            return;
+                        }
+                        
+                        // Check if we have space (max 2 photos for free users)
+                        const maxPhotos = providerType === 'company' ? 10 : 2;
+                        if (uploadedPhotos.length >= maxPhotos) {
+                            alert(`Mund të ngarkoni maksimum ${maxPhotos} fotografi. Për më shumë fotografi, ju lutemi abonohuni.`);
+                            return;
+                        }
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            uploadedPhotos.push({
+                                file: file,
+                                dataUrl: e.target.result,
+                                name: file.name
+                            });
+                            renderPhotos();
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                    
+                    // Reset input
+                    photoInput.value = '';
+                });
+            }
+        });
+
+        function renderPhotos() {
+            const container = document.getElementById('photo-previews');
+            if (uploadedPhotos.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 w-full mb-4">Nuk ka fotografi të ngarkuara</p>';
+                return;
+            }
+            
+            container.innerHTML = uploadedPhotos.map((photo, index) => `
+                <div class="photo-preview ${selectedProfilePhotoIndex === index ? 'selected' : ''}" onclick="selectProfilePhoto(${index})">
+                    <img src="${photo.dataUrl}" alt="${photo.name}" />
+                    <button type="button" class="photo-remove-btn" onclick="removePhoto(${index})" title="Fshi fotografinë">
+                        <i data-lucide="x" class="h-3 w-3"></i>
+                    </button>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        }
+
+        function selectProfilePhoto(index) {
+            selectedProfilePhotoIndex = index;
+            renderPhotos();
+        }
+
+        function removePhoto(index) {
+            uploadedPhotos.splice(index, 1);
+            if (selectedProfilePhotoIndex === index) {
+                selectedProfilePhotoIndex = null;
+            } else if (selectedProfilePhotoIndex > index) {
+                selectedProfilePhotoIndex--;
+            }
+            renderPhotos();
+        }
+
+        // Verify company name function
+        async function verifyCompanyName(companyName) {
+            try {
+                // Determine API base URL
+                let apiBase = 'http://localhost:3001';
+                
+                try {
+                    // Try port 3001 first
+                    const response = await fetch(`${apiBase}/api/company/verify`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ companyName: companyName })
+                    });
+                    
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                } catch (error) {
+                    // If port 3001 fails, try 3000
+                    apiBase = 'http://localhost:3000';
+                    const response = await fetch(`${apiBase}/api/company/verify`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ companyName: companyName })
+                    });
+                    
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                }
+                
+                // If API is not available, do basic local check
+                return performLocalVerification(companyName);
+                
+            } catch (error) {
+                console.error('Error verifying company name:', error);
+                // Fallback to local verification
+                return performLocalVerification(companyName);
+            }
+        }
+        
+        // Local verification as fallback
+        function performLocalVerification(companyName) {
+            const bannedWords = [
+                'shit', 'fuck', 'damn', 'hell', 'asshole', 'bastard', 'bitch',
+                'kar', 'pidh', 'byth', 'xha', 'mut', 'pidh', 'kar', 'bythe',
+                'spam', 'scam', 'fraud', 'fake', 'test123', 'abc123',
+                'kurv', 'prostitut', 'lut', 'javash'
+            ];
+            
+            const normalized = companyName.toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9\s]/g, '');
+            
+            for (const bannedWord of bannedWords) {
+                const normalizedBanned = bannedWord.toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '');
+                
+                if (normalized.includes(normalizedBanned) || normalizedBanned.includes(normalized)) {
+                    return {
+                        isValid: false,
+                        reason: 'Emri i kompanisë përmban fjalë të papërshtatshme. Ju lutemi zgjidhni një emër tjetër.'
+                    };
+                }
+            }
+            
+            // Check if name is too short
+            if (companyName.trim().length < 2) {
+                return {
+                    isValid: false,
+                    reason: 'Emri i kompanisë duhet të jetë të paktën 2 karaktere.'
+                };
+            }
+            
+            // Check if name contains only numbers
+            if (/^[0-9\s\-_\.]+$/.test(companyName)) {
+                return {
+                    isValid: false,
+                    reason: 'Emri i kompanisë duhet të përmbajë shkronja.'
+                };
+            }
+            
+            return { isValid: true };
+        }
+
+        async function completeRegistration() {
+            // Verify company name first
+            const companyName = document.getElementById('companyName').value.trim();
+            
+            if (!companyName) {
+                alert('Ju lutemi shkruani emrin e kompanisë.');
+                return;
+            }
+            
+            // Validate email format
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Ju lutemi shkruani një email të vlefshëm. P.sh. kompani@example.com');
+                document.getElementById('email').focus();
+                return;
+            }
+            
+            // Check company name for inappropriate content
+            const verificationResult = await verifyCompanyName(companyName);
+            if (!verificationResult.isValid) {
+                alert(verificationResult.reason || 'Emri i kompanisë nuk është i pranueshëm. Ju lutemi zgjidhni një emër tjetër.');
+                return;
+            }
+            
+            // Grumbullo te dhenat dhe ruaji ne localStorage (logjika e demos)
+            const formData = {
+                id: Date.now(),
+                type: providerType,
+                name: companyName,
+                email: email,
+                password: document.getElementById('password').value,
+                phone: document.getElementById('phone').value,
+                description: document.getElementById('description').value,
+                cities: Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value),
+                services: [],
+                verified: false,
+                status: 'pending', // Status i ri: pending për miratim
+                rating: 0,
+                reviewCount: 0,
+                location: {
+                    lat: document.getElementById('locationLat').value || null,
+                    lng: document.getElementById('locationLng').value || null
+                },
+                photos: uploadedPhotos.map((p, i) => ({
+                    dataUrl: p.dataUrl,
+                    name: p.name,
+                    isProfile: i === selectedProfilePhotoIndex
+                })),
+                // Default working hours
+                workingHours: {
+                    "Hënë": "08:00 - 18:00",
+                    "Martë": "08:00 - 18:00",
+                    "Mërkurë": "08:00 - 18:00",
+                    "Enjte": "08:00 - 18:00",
+                    "Premte": "08:00 - 18:00",
+                    "Shtunë": "09:00 - 15:00",
+                    "Dielë": "E mbyllur"
+                },
+                // Default payment methods
+                paymentMethods: ["Cash", "Card"]
+            };
+
+            const serviceSelects = document.querySelectorAll('.service-select');
+            const priceInputs = document.querySelectorAll('.service-price');
+            for (let i = 0; i < serviceSelects.length; i++) {
+                const serviceValue = serviceSelects[i].value;
+                const priceValue = priceInputs[i].value;
+                if (serviceValue && priceValue && parseFloat(priceValue) > 0) {
+                    formData.services.push({
+                        name: serviceValue,
+                        price: parseFloat(priceValue)
+                    });
+                }
+            }
+
+            // Store password separately for backend submission, but don't save it in localStorage
+            const passwordForBackend = formData.password;
+            delete formData.password; // Remove password from formData before saving to localStorage
+            
+            const existingCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+            existingCompanies.push(formData);
+            localStorage.setItem('pastroCompanies', JSON.stringify(existingCompanies));
+            
+            // Debug: log what was saved (without password)
+            // Removed detailed logging for security - password is never logged
+            console.log('Company registered successfully:', formData.name);
+            
+            // Restore password for backend submission
+            formData.password = passwordForBackend;
+
+            // Sync to backend (with error handling)
+            async function saveToBackend() {
+                let apiBase = 'http://localhost:3000';
+                const minimalPayload = {
+                    email: formData.email,
+                    password: formData.password,
+                    companyName: formData.name,
+                    phone: formData.phone,
+                    description: formData.description || '',
+                    cities: [],
+                    services: []
+                };
+
+                console.log('[saveToBackend] Attempting to save company:', formData.name, 'to backend');
+
+                const post = async (base) => {
+                    try {
+                        console.log(`[saveToBackend] Trying ${base}/api/auth/register`);
+                        const response = await fetch(`${base}/api/auth/register`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(minimalPayload),
+                            keepalive: true,
+                            mode: 'cors'
+                        });
+
+                        console.log(`[saveToBackend] Response status: ${response.status} from ${base}`);
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            console.log(`[saveToBackend] Registration successful on ${base}`, data);
+                            return data;
+                        }
+                        
+                        // Handle error response
+                        let errorText;
+                        try {
+                            errorText = await response.text();
+                            const errorData = JSON.parse(errorText);
+                            console.error(`[saveToBackend] Error from ${base}:`, response.status, errorData);
+                            throw new Error(`HTTP ${response.status}: ${errorData.error || errorData.message || response.statusText}`);
+                        } catch (parseError) {
+                            console.error(`[saveToBackend] Error response (non-JSON) from ${base}:`, response.status, errorText);
+                            throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
+                        }
+                    } catch (error) {
+                        console.error(`[saveToBackend] Network/request error to ${base}:`, error);
+                        throw error;
+                    }
+                };
+
+                try {
+                    await post(apiBase);
+                } catch (error) {
+                    console.warn('[saveToBackend] Failed on port 3000, trying 3001...', error.message);
+                    try {
+                        await post('http://localhost:3001');
+                    } catch (error2) {
+                        console.error('[saveToBackend] Failed to save to backend on both ports:', error2.message || error2);
+                        // Show warning but don't block user flow
+                        console.warn('[saveToBackend] Company saved to localStorage but not synced to database. Please check server connection.');
+                    }
+                }
+            }
+
+            // Call async function
+            saveToBackend().catch(err => console.error('Background save failed:', err));
+
+            // Simulo abonimin
+            if (providerType === 'company') {
+                const subscriptionData = {
+                    id: Date.now(),
+                    companyId: formData.id,
+                    plan: 'premium',
+                    price: 5.00,
+                    status: 'active',
+                    startDate: new Date().toISOString(),
+                    expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                    paymentMethod: 'credit_card',
+                    cardLast4: document.getElementById('cardNumber').value.slice(-4)
+                };
+                localStorage.setItem(`subscription_${formData.id}`, JSON.stringify(subscriptionData));
+            } else {
+                const subscriptionData = {
+                    id: Date.now(),
+                    companyId: formData.id,
+                    plan: 'free',
+                    price: 0.00,
+                    status: 'active',
+                    startDate: new Date().toISOString(),
+                    expiresAt: null,
+                    paymentMethod: 'none'
+                };
+                localStorage.setItem(`subscription_${formData.id}`, JSON.stringify(subscriptionData));
+            }
+
+            setTimeout(() => {
+                document.getElementById('registrationForm').classList.add('hidden');
+                document.getElementById('success-message').classList.remove('hidden');
+            }, 800);
+        }
+
+        // Add some sample data for demo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pre-fill some fields for demo purposes
+            document.getElementById('email').value = 'demo@kompaniapastrimit.com';
+            document.getElementById('companyName').value = 'Kompania Demo Pastrimi';
+            document.getElementById('phone').value = '+383 44 123 456';
+            document.getElementById('description').value = 'Shërbime profesionale pastrimi me 10+ vjet përvojë. Specializohemi në pastrimin rezidencial dhe komercial nëpër Kosovë.';
+            
+            // Add card number formatting
+            document.getElementById('cardNumber').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                e.target.value = formattedValue;
+            });
+
+            // Add expiry date formatting
+            document.getElementById('expiryDate').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value;
+            });
+
+            // Add CVV formatting
+            document.getElementById('cvv').addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            });
+
+            // Add demo card numbers for testing
+            window.demoCards = [
+                { number: '4242 4242 4242 4242', expiry: '12/25', cvv: '123', name: 'Test User' },
+                { number: '5555 5555 5555 4444', expiry: '12/25', cvv: '123', name: 'Test User' },
+                { number: '3782 822463 10005', expiry: '12/25', cvv: '1234', name: 'Test User' }
+            ];
+
+            // Add demo card buttons
+            const paymentForm = document.querySelector('#step5-content');
+            if (paymentForm) {
+                const demoSection = document.createElement('div');
+                demoSection.className = 'bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6';
+                demoSection.innerHTML = `
+                    <h4 class="font-semibold text-gray-900 mb-2">Karta Demo për Testim:</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                        <button type="button" onclick="fillDemoCard(0)" class="text-sm bg-yellow-100 hover:bg-yellow-200 px-3 py-2 rounded border">
+                            Visa: 4242 4242 4242 4242
+                        </button>
+                        <button type="button" onclick="fillDemoCard(1)" class="text-sm bg-yellow-100 hover:bg-yellow-200 px-3 py-2 rounded border">
+                            Mastercard: 5555 5555 5555 4444
+                        </button>
+                        <button type="button" onclick="fillDemoCard(2)" class="text-sm bg-yellow-100 hover:bg-yellow-200 px-3 py-2 rounded border">
+                            Amex: 3782 822463 10005
+                        </button>
+                    </div>
+                `;
+                paymentForm.insertBefore(demoSection, paymentForm.querySelector('.bg-blue-50'));
+            }
+        });
+
+        // Function to fill demo card data
+        function fillDemoCard(index) {
+            const card = window.demoCards[index];
+            if (card) {
+                document.getElementById('cardNumber').value = card.number;
+                document.getElementById('expiryDate').value = card.expiry;
+                document.getElementById('cvv').value = card.cvv;
+                document.getElementById('cardholderName').value = card.name;
+                document.getElementById('terms').checked = true;
+            }
+        }
+    </script>
+</body>
+</html>

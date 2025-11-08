@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pastro.com - Portali i Shërbimeve të Pastrimit për Kosovën</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #dbeafe 0%, #dcfce7 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center">
+                    <i data-lucide="building-2" class="h-8 w-8 text-blue-600"></i>
+                    <h1 class="ml-2 text-2xl font-bold text-gray-900">Pastro.com</h1>
+                </div>
+                <nav class="flex items-center space-x-4">
+                    <a href="signin.html" class="text-gray-700 hover:text-blue-600 transition-colors">Hyr</a>
+                    <a href="register.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Regjistro Kompani</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                Gjeni Shërbime
+                <span class="text-blue-600"> Profesionale të Pastrimit</span>
+                <br />në Kosovë
+            </h2>
+            <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                Lidhuni me kompanitë e besueshme të pastrimit nëpër qytetet e Kosovës. 
+                Nga pastrimi i shtëpisë deri te mirëmbajtja e zyrës, ne ju mbulojmë.
+            </p>
+            
+            <!-- Search Section -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="relative">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"></i>
+                        <input
+                            type="text"
+                            placeholder="Kërko kompani..."
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                    </div>
+                    
+                    <select class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Të Gjitha Qytetet</option>
+                        <option value="prishtina">Prishtina</option>
+                        <option value="prizren">Prizren</option>
+                        <option value="gjakova">Gjakova</option>
+                        <option value="peja">Peja</option>
+                        <option value="ferizaj">Ferizaj</option>
+                        <option value="gjilan">Gjilan</option>
+                    </select>
+                    
+                    <select id="serviceSelect" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Të Gjitha Shërbimet</option>
+                    </select>
+                    
+                    <button class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        Kërko
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="flex flex-col items-center">
+                    <i data-lucide="users" class="h-12 w-12 text-blue-600 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-900">47</h3>
+                    <p class="text-gray-600">Kompani të Regjistruara</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i data-lucide="map-pin" class="h-12 w-12 text-green-600 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-900">31</h3>
+                    <p class="text-gray-600">Qytete të Mbuluara</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i data-lucide="check-circle" class="h-12 w-12 text-purple-600 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-900">12</h3>
+                    <p class="text-gray-600">Llojet e Shërbimeve</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Companies Section -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl font-bold text-gray-900 mb-8 text-center">
+                6 Kompani të Gjetura
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Company Card 1 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i data-lucide="building-2" class="h-6 w-6 text-blue-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-semibold text-gray-900">CleanPro Kosovo</h4>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i data-lucide="map-pin" class="h-4 w-4 mr-1"></i>
+                                Prishtina, Prizren
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-4">Shërbime profesionale pastrimi për shtëpi dhe zyra. Të besuar nga 500+ klientë nëpër Kosovë.</p>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-sm font-medium text-gray-900 mb-2">Shërbimet & Çmimet:</h5>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Shtëpisë</span>
+                                <span class="font-medium text-green-600">€25</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Zyrës</span>
+                                <span class="font-medium text-green-600">€35</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Thellë</span>
+                                <span class="font-medium text-green-600">€80</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <a href="tel:+38344123456" class="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+                            <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                            Telefono
+                        </a>
+                        <button class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
+                            <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
+                            Email
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Company Card 2 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i data-lucide="building-2" class="h-6 w-6 text-green-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-semibold text-gray-900">EcoClean Solutions</h4>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i data-lucide="map-pin" class="h-4 w-4 mr-1"></i>
+                                Gjakova, Peja
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-4">Zgjidhje pastrimi miqësore me mjedisin për klientët e vetëdijshëm mjedisorë. Pastrimi i gjelbër i certifikuar.</p>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-sm font-medium text-gray-900 mb-2">Shërbimet & Çmimet:</h5>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Shtëpisë</span>
+                                <span class="font-medium text-green-600">€30</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Dritareve</span>
+                                <span class="font-medium text-green-600">€20</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Qilimave</span>
+                                <span class="font-medium text-green-600">€45</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <a href="tel:+38344123457" class="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+                            <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                            Telefono
+                        </a>
+                        <button class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
+                            <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
+                            Email
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Company Card 3 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i data-lucide="building-2" class="h-6 w-6 text-purple-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-semibold text-gray-900">Premium Clean</h4>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i data-lucide="map-pin" class="h-4 w-4 mr-1"></i>
+                                Ferizaj, Gjilan
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-4">Shërbime pastrimi luksoze për shtëpi të larta dhe hapësira komerciale. Cilësia premium e garantuar.</p>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-sm font-medium text-gray-900 mb-2">Shërbimet & Çmimet:</h5>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Thellë</span>
+                                <span class="font-medium text-green-600">€120</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Zyrës</span>
+                                <span class="font-medium text-green-600">€50</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Objektit</span>
+                                <span class="font-medium text-green-600">€60</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <a href="tel:+38344123458" class="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+                            <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                            Telefono
+                        </a>
+                        <button class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
+                            <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
+                            Email
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Company Card 4 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                            <i data-lucide="building-2" class="h-6 w-6 text-orange-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-semibold text-gray-900">QuickClean Express</h4>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i data-lucide="map-pin" class="h-4 w-4 mr-1"></i>
+                                Mitrovica, Vushtrri
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-4">Shërbime pastrimi të shpejta dhe të besueshme. Shërbim në të njëjtën ditë i disponueshëm. Zgjidhje pastrimi urgjente.</p>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-sm font-medium text-gray-900 mb-2">Shërbimet & Çmimet:</h5>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Shtëpisë</span>
+                                <span class="font-medium text-green-600">€20</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Dritareve</span>
+                                <span class="font-medium text-green-600">€15</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Urgjencës</span>
+                                <span class="font-medium text-green-600">€40</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <a href="tel:+38344123459" class="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+                            <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                            Telefono
+                        </a>
+                        <button class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
+                            <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
+                            Email
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Company Card 5 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                            <i data-lucide="building-2" class="h-6 w-6 text-teal-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-semibold text-gray-900">Family Clean Co.</h4>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i data-lucide="map-pin" class="h-4 w-4 mr-1"></i>
+                                Podujeva, Rahovec
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-4">Biznes familjar me 15+ vjet përvojë. Shërbim i personalizuar për çdo familje.</p>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-sm font-medium text-gray-900 mb-2">Shërbimet & Çmimet:</h5>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi i Shtëpisë</span>
+                                <span class="font-medium text-green-600">€22</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Mirëmbajtja e Rregullt</span>
+                                <span class="font-medium text-green-600">€18</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Hyrje/Dalje</span>
+                                <span class="font-medium text-green-600">€70</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <a href="tel:+38344123460" class="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+                            <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                            Telefono
+                        </a>
+                        <button class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
+                            <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
+                            Email
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Company Card 6 -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                            <i data-lucide="building-2" class="h-6 w-6 text-indigo-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-semibold text-gray-900">Commercial Clean Pro</h4>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i data-lucide="map-pin" class="h-4 w-4 mr-1"></i>
+                                Lipjan, Malisheva
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-4">Specializuar në pastrimin komercial dhe industrial. Projekte të mëdha dhe kontrata mirëmbajtjeje të rregullt.</p>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-sm font-medium text-gray-900 mb-2">Shërbimet & Çmimet:</h5>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi Komercial</span>
+                                <span class="font-medium text-green-600">€80</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pastrimi Industrial</span>
+                                <span class="font-medium text-green-600">€150</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Pas Ndërtimit</span>
+                                <span class="font-medium text-green-600">€200</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <a href="tel:+38344123461" class="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+                            <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                            Telefono
+                        </a>
+                        <button class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
+                            <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
+                            Email
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i data-lucide="building-2" class="h-8 w-8 text-blue-400"></i>
+                        <h3 class="ml-2 text-xl font-bold">Pastro.com</h3>
+                    </div>
+                    <p class="text-gray-400">
+                        Lidhja e klientëve me shërbimet profesionale të pastrimit nëpër Kosovë.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Lidhje të Shpejta</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Kryefaqja</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Të Gjitha Kompanitë</a></li>
+                        <li><a href="register.html" class="hover:text-white transition-colors">Regjistro Kompani</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Kontakt</h4>
+                    <p class="text-gray-400">
+                        Keni nevojë për ndihmë? Na kontaktoni në support@pastro.com
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Pastro.com. Të gjitha të drejtat e rezervuara.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Sample companies data (simulating database)
+        const defaultCompanies = [
+            {
+                id: 1,
+                name: "CleanPro Kosovo",
+                description: "Shërbime profesionale pastrimi për shtëpi dhe zyra. Të besuar nga 500+ klientë nëpër Kosovë.",
+                phone: "+383 44 123 456",
+                cities: ["Prishtina", "Prizren"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 25 },
+                    { name: "Pastrimi i Zyrës", price: 35 },
+                    { name: "Pastrimi i Thellë", price: 80 }
+                ]
+            },
+            {
+                id: 2,
+                name: "EcoClean Solutions",
+                description: "Zgjidhje pastrimi miqësore me mjedisin për klientët e vetëdijshëm mjedisorë. Pastrimi i gjelbër i certifikuar.",
+                phone: "+383 44 123 457",
+                cities: ["Gjakova", "Peja"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 30 },
+                    { name: "Pastrimi i Dritareve", price: 20 },
+                    { name: "Pastrimi i Qilimave", price: 45 }
+                ]
+            },
+            {
+                id: 3,
+                name: "Premium Clean",
+                description: "Shërbime pastrimi luksoze për shtëpi të larta dhe hapësira komerciale. Cilësia premium e garantuar.",
+                phone: "+383 44 123 458",
+                cities: ["Ferizaj", "Gjilan"],
+                services: [
+                    { name: "Pastrimi i Thellë", price: 120 },
+                    { name: "Pastrimi i Zyrës", price: 50 },
+                    { name: "Pastrimi i Objektit", price: 60 }
+                ]
+            },
+            {
+                id: 4,
+                name: "QuickClean Express",
+                description: "Shërbime pastrimi të shpejta dhe të besueshme. Shërbim në të njëjtën ditë i disponueshëm. Zgjidhje pastrimi urgjente.",
+                phone: "+383 44 123 459",
+                cities: ["Mitrovica", "Vushtrri"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 20 },
+                    { name: "Pastrimi i Dritareve", price: 15 },
+                    { name: "Pastrimi i Urgjencës", price: 40 }
+                ]
+            },
+            {
+                id: 5,
+                name: "Family Clean Co.",
+                description: "Biznes familjar me 15+ vjet përvojë. Shërbim i personalizuar për çdo familje.",
+                phone: "+383 44 123 460",
+                cities: ["Podujeva", "Rahovec"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 22 },
+                    { name: "Mirëmbajtja e Rregullt", price: 18 },
+                    { name: "Hyrje/Dalje", price: 70 }
+                ]
+            },
+            {
+                id: 6,
+                name: "Commercial Clean Pro",
+                description: "Specializuar në pastrimin komercial dhe industrial. Projekte të mëdha dhe kontrata mirëmbajtjeje të rregullt.",
+                phone: "+383 44 123 461",
+                cities: ["Lipjan", "Malisheva"],
+                services: [
+                    { name: "Pastrimi Komercial", price: 80 },
+                    { name: "Pastrimi Industrial", price: 150 },
+                    { name: "Pas Ndërtimit", price: 200 }
+                ]
+            }
+        ];
+
+        let allCompanies = [...defaultCompanies];
+        let filteredCompanies = [...defaultCompanies];
+
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load registered companies from localStorage
+            loadRegisteredCompanies();
+            
+            // Search functionality
+            const searchInput = document.querySelector('input[type="text"]');
+            const citySelect = document.querySelector('select');
+            const serviceSelect = document.getElementById('serviceSelect');
+            const searchButton = document.querySelector('button');
+            
+            // Update search on input change
+            searchInput.addEventListener('input', performSearch);
+            citySelect.addEventListener('change', performSearch);
+            serviceSelect.addEventListener('change', performSearch);
+            
+            searchButton.addEventListener('click', performSearch);
+            
+            function performSearch() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedCity = citySelect.value;
+                const selectedService = serviceSelect.value;
+                
+                filteredCompanies = allCompanies.filter(company => {
+                    const matchesSearch = !searchTerm || 
+                        company.name.toLowerCase().includes(searchTerm) ||
+                        company.description.toLowerCase().includes(searchTerm);
+                    
+                    const matchesCity = !selectedCity || 
+                        company.cities.some(city => city.toLowerCase() === selectedCity);
+                    
+                    const matchesService = !selectedService || 
+                        company.services.some(service => service.name.toLowerCase() === serviceMapping[selectedService] || service.name.toLowerCase() === selectedService);
+                    
+                    return matchesSearch && matchesCity && matchesService;
+                });
+                
+                updateCompanyDisplay();
+            }
+
+            // Load services from API and populate dropdown
+            let serviceMapping = {};
+            (async function loadServices(){
+                let apiBase = 'http://localhost:3000';
+                let services = [];
+                try {
+                    const res = await fetch(`${apiBase}/api/services`);
+                    if (!res.ok) throw new Error();
+                    const data = await res.json();
+                    if (data.success) services = data.services;
+                } catch (e) {
+                    try {
+                        const res = await fetch(`http://localhost:3001/api/services`);
+                        if (!res.ok) throw new Error();
+                        const data = await res.json();
+                        if (data.success) services = data.services;
+                    } catch (_) {
+                        services = [
+                            { id:'house', name:'Pastrimi i Shtëpisë' },
+                            { id:'office', name:'Pastrimi i Zyrës' },
+                            { id:'deep', name:'Pastrimi i Thellë' },
+                            { id:'window', name:'Pastrimi i Dritareve' },
+                            { id:'carpet', name:'Pastrimi i Qilimave' },
+                            { id:'yard', name:'Pastrimi i Objektit' }
+                        ];
+                    }
+                }
+                const options = services.map(s => {
+                    const sid = s.id || s.name.toLowerCase();
+                    serviceMapping[sid] = (s.name || '').toLowerCase();
+                    return `<option value="${sid}">${s.name}</option>`;
+                }).join('');
+                serviceSelect.innerHTML = `<option value="">Të Gjitha Shërbimet</option>` + options;
+            })();
+            
+            function loadRegisteredCompanies() {
+                const registeredCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                allCompanies = [...defaultCompanies, ...registeredCompanies];
+                filteredCompanies = [...allCompanies];
+                updateCompanyDisplay();
+                updateStats();
+            }
+            
+            function updateCompanyDisplay() {
+                const companiesContainer = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.gap-6');
+                const resultsCount = document.querySelector('h3.text-3xl.font-bold.text-gray-900.mb-8.text-center');
+                
+                if (filteredCompanies.length === 0) {
+                    companiesContainer.innerHTML = `
+                        <div class="col-span-full text-center py-12">
+                            <i data-lucide="building-2" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
+                            <h3 class="text-xl font-medium text-gray-900 mb-2">Nuk u gjetën kompani</h3>
+                            <p class="text-gray-600">Provoni të rregulloni kriteret e kërkimit ose shfletoni të gjitha kompanitë.</p>
+                        </div>
+                    `;
+                    resultsCount.textContent = '0 Kompani të Gjetura';
+                } else {
+                    companiesContainer.innerHTML = filteredCompanies.map(company => `
+                        <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                            <div class="flex items-center mb-4">
+                                <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="building-2" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-lg font-semibold text-gray-900">${company.name}</h4>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i data-lucide="map-pin" class="h-4 w-4 mr-1"></i>
+                                        ${company.cities.join(', ')}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gray-600 mb-4 line-clamp-2">${company.description}</p>
+                            
+                            <div class="mb-4">
+                                <h5 class="text-sm font-medium text-gray-900 mb-2">Shërbimet & Çmimet:</h5>
+                                <div class="space-y-1">
+                                    ${company.services.slice(0, 3).map(service => `
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-600">${service.name}</span>
+                                            <span class="font-medium text-green-600">€${service.price}</span>
+                                        </div>
+                                    `).join('')}
+                                    ${company.services.length > 3 ? `
+                                        <p class="text-xs text-gray-500">+${company.services.length - 3} shërbime të tjera</p>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-2">
+                                <a href="tel:${company.phone}" class="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+                                    <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                                    Telefono
+                                </a>
+                                <button class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
+                                    <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
+                                    Email
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                    resultsCount.textContent = `${filteredCompanies.length} Kompani të Gjetura`;
+                }
+                
+                // Re-initialize Lucide icons
+                lucide.createIcons();
+                
+                // Add hover effects to new cards
+                const cards = document.querySelectorAll('.card-hover');
+                cards.forEach(card => {
+                    card.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-4px)';
+                    });
+                    
+                    card.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                    });
+                });
+            }
+            
+            function updateStats() {
+                const statsElements = document.querySelectorAll('.text-3xl.font-bold.text-gray-900');
+                statsElements[0].textContent = allCompanies.length; // Companies count
+                statsElements[1].textContent = '31'; // Cities count
+                statsElements[2].textContent = '12'; // Services count
+            }
+            
+            // Check if user is signed in
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                const nav = document.querySelector('nav.flex.items-center.space-x-4');
+                nav.innerHTML = `
+                    <span class="text-gray-700">Mirë se erdhe, ${user.name}</span>
+                    <a href="demo.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Paneli</a>
+                    <button onclick="signOut()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">Dil</button>
+                `;
+            }
+        });
+        
+        function signOut() {
+            localStorage.removeItem('currentUser');
+            location.reload();
+        }
+    </script>
+</body>
+</html>

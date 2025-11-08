@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pastro.com - Portali i Shërbimeve të Pastrimit për Kosovën</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .service-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            margin: 0 auto 12px;
+        }
+        .service-icon.yellow { background-color: #fef3c7; }
+        .service-icon.green { background-color: #d1fae5; }
+        .service-icon.orange { background-color: #fed7aa; }
+        .service-icon.blue { background-color: #dbeafe; }
+        .service-icon.pink { background-color: #fce7f3; }
+        .service-icon.purple { background-color: #e9d5ff; }
+        .service-icon.light-blue { background-color: #e0f2fe; }
+    </style>
+</head>
+<body class="bg-white min-h-screen">
+    <!-- Purple Top Strip -->
+    <div class="gradient-bg h-1"></div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gradient-to-r from-pink-500 to-orange-500 rounded-lg flex items-center justify-center">
+                            <i data-lucide="sparkles" class="h-5 w-5 text-white"></i>
+                        </div>
+                        <h1 class="ml-2 text-2xl font-bold text-gray-900">pastro</h1>
+                    </div>
+                </div>
+                <nav class="flex items-center space-x-4">
+                    <a href="signin-sq.html" class="bg-white border-2 border-green-500 text-gray-900 px-4 py-2 rounded-lg hover:bg-green-50 transition-colors">Hyr</a>
+                    <a href="register-sq.html" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">Regjistrohu</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-20 text-center">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-5xl md:text-6xl font-bold text-gray-900 mb-8">
+                Të gjitha ndihmat që i duhen shtëpisë suaj.
+            </h2>
+        </div>
+    </section>
+
+    <!-- Service Categories -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                    <!-- Indoor Cleaning -->
+                    <a href="pastrimi-brendshem.html" class="text-center card-hover cursor-pointer block">
+                        <div class="service-icon yellow">
+                            <i data-lucide="home" class="h-6 w-6 text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-sm font-medium text-gray-900">Pastrimi i Brendshëm</h3>
+                    </a>
+
+                    <!-- Outdoor Services -->
+                    <a href="sherbimet-jashtme.html" class="text-center card-hover cursor-pointer block">
+                        <div class="service-icon light-blue">
+                            <i data-lucide="trees" class="h-6 w-6 text-blue-600"></i>
+                        </div>
+                        <h3 class="text-sm font-medium text-gray-900">Shërbimet e Jashtme</h3>
+                    </a>
+
+                    <!-- Office Cleaning -->
+                    <a href="pastrimi-zyres.html" class="text-center card-hover cursor-pointer block">
+                        <div class="service-icon orange">
+                            <i data-lucide="building" class="h-6 w-6 text-orange-600"></i>
+                        </div>
+                        <h3 class="text-sm font-medium text-gray-900">Pastrimi i Zyrës</h3>
+                    </a>
+
+                    <!-- Moving Cleaning -->
+                    <a href="pastrimi-levizjes.html" class="text-center card-hover cursor-pointer block">
+                        <div class="service-icon light-blue">
+                            <i data-lucide="key" class="h-6 w-6 text-blue-600"></i>
+                        </div>
+                        <h3 class="text-sm font-medium text-gray-900">Pastrimi i Lëvizjes</h3>
+                    </a>
+
+                    <!-- Laundry & Ironing -->
+                    <a href="larje-hekurosje.html" class="text-center card-hover cursor-pointer block">
+                        <div class="service-icon yellow">
+                            <i data-lucide="iron" class="h-6 w-6 text-yellow-600"></i>
+                        </div>
+                        <h3 class="text-sm font-medium text-gray-900">Larje & Hekurosje</h3>
+                    </a>
+
+                    <!-- Mom's Helper -->
+                    <a href="ndihmesja-mamases.html" class="text-center card-hover cursor-pointer block">
+                        <div class="service-icon pink">
+                            <i data-lucide="users" class="h-6 w-6 text-pink-600"></i>
+                        </div>
+                        <h3 class="text-sm font-medium text-gray-900">Ndihmësja e Mamasë</h3>
+                    </a>
+
+                    <!-- Elder Care -->
+                    <a href="kujdesi-moshuarit.html" class="text-center card-hover cursor-pointer block">
+                        <div class="service-icon light-blue">
+                            <i data-lucide="user-check" class="h-6 w-6 text-blue-600"></i>
+                        </div>
+                        <h3 class="text-sm font-medium text-gray-900">Kujdesi për të Moshuarit</h3>
+                    </a>
+
+                    <!-- Extra Care -->
+                    <a href="kujdes-shtese.html" class="text-center card-hover cursor-pointer block">
+                        <div class="service-icon orange">
+                            <i data-lucide="heart-plus" class="h-6 w-6 text-orange-600"></i>
+                        </div>
+                        <h3 class="text-sm font-medium text-gray-900">Kujdes Shtesë</h3>
+                    </a>
+
+                    <!-- Express Cleaning -->
+                    <a href="pastrimi-shpejte.html" class="text-center card-hover cursor-pointer block">
+                        <div class="service-icon pink">
+                            <i data-lucide="zap" class="h-6 w-6 text-pink-600"></i>
+                        </div>
+                        <h3 class="text-sm font-medium text-gray-900">Pastrimi i Shpejtë</h3>
+                    </a>
+
+                    <!-- Deep Cleaning -->
+                    <a href="pastrimi-thelle.html" class="text-center card-hover cursor-pointer block">
+                        <div class="service-icon purple">
+                            <i data-lucide="sparkles" class="h-6 w-6 text-purple-600"></i>
+                        </div>
+                        <h3 class="text-sm font-medium text-gray-900">Pastrimi i Thellë</h3>
+                    </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Buttons -->
+    <section class="py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <button onclick="bookService()" class="bg-green-500 text-white px-8 py-4 rounded-lg text-lg font-medium hover:bg-green-600 transition-colors">
+                    Rezervo një Shërbim
+                </button>
+                <button onclick="findFullTimeHelp()" class="bg-white border-2 border-green-500 text-green-500 px-8 py-4 rounded-lg text-lg font-medium hover:bg-green-50 transition-colors">
+                    Gjej Ndihmë me Kohë të Plotë
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section (Hidden by default, shown when booking) -->
+    <section id="searchSection" class="py-16 bg-gray-50 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Gjeni Kompaninë e Pastrimit</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="relative">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"></i>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Kërko kompani..."
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                    </div>
+                    
+                    <select id="citySelect" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Të Gjitha Qytetet</option>
+                        <option value="prishtina">Prishtina</option>
+                        <option value="prizren">Prizren</option>
+                        <option value="gjakova">Gjakova</option>
+                        <option value="peja">Peja</option>
+                        <option value="ferizaj">Ferizaj</option>
+                        <option value="gjilan">Gjilan</option>
+                        <option value="mitrovica">Mitrovica</option>
+                        <option value="vushtrri">Vushtrri</option>
+                        <option value="podujeva">Podujeva</option>
+                        <option value="rahovec">Rahovec</option>
+                        <option value="lipjan">Lipjan</option>
+                        <option value="malisheva">Malisheva</option>
+                        <option value="deçan">Deçan</option>
+                        <option value="dragash">Dragash</option>
+                        <option value="drenas">Drenas</option>
+                        <option value="fushë kosovë">Fushë Kosovë</option>
+                        <option value="hani i elezit">Hani i Elezit</option>
+                        <option value="istog">Istog</option>
+                        <option value="kaçanik">Kaçanik</option>
+                        <option value="kamenicë">Kamenicë</option>
+                        <option value="klinë">Klinë</option>
+                        <option value="kllokot">Kllokot</option>
+                        <option value="leposaviq">Leposaviq</option>
+                        <option value="mamuša">Mamuša</option>
+                        <option value="novobërdë">Novobërdë</option>
+                        <option value="obiliq">Obiliq</option>
+                        <option value="partesh">Partesh</option>
+                        <option value="ranillug">Ranillug</option>
+                        <option value="shtime">Shtime</option>
+                        <option value="skenderaj">Skenderaj</option>
+                        <option value="suharekë">Suharekë</option>
+                        <option value="zubin potok">Zubin Potok</option>
+                        <option value="zveçan">Zveçan</option>
+                    </select>
+                    
+                    <select id="serviceSelect" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Të Gjitha Shërbimet</option>
+                        <option value="house">Pastrimi i Shtëpisë</option>
+                        <option value="office">Pastrimi i Zyrës</option>
+                        <option value="deep">Pastrimi i Thellë</option>
+                        <option value="window">Pastrimi i Dritareve</option>
+                        <option value="carpet">Pastrimi i Qilimave</option>
+                        <option value="yard">Pastrimi i Objektit</option>
+                        <option value="move">Pastrimi i Lëvizjes</option>
+                        <option value="laundry">Larje & Hekurosje</option>
+                        <option value="helper">Ndihmësja e Mamasë</option>
+                        <option value="elder">Kujdesi për të Moshuarit</option>
+                        <option value="extra">Kujdes Shtesë</option>
+                        <option value="express">Pastrimi i Shpejtë</option>
+                    </select>
+                    
+                    <select id="verifiedSelect" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Të Gjithë Ofruesit</option>
+                        <option value="verified">Vetëm të Verifikuar</option>
+                        <option value="companies">Vetëm Kompani</option>
+                        <option value="individuals">Vetëm Pastrues Privat</option>
+                    </select>
+                    
+                    <button id="searchButton" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        Kërko
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Companies Results -->
+    <section id="companiesSection" class="py-16 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl font-bold text-gray-900 mb-8 text-center" id="resultsCount">
+                Po ngarkohen kompanitë...
+            </h3>
+            
+            <div id="companiesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Companies will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="flex flex-col items-center">
+                    <i data-lucide="users" class="h-12 w-12 text-blue-600 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-900" id="companiesCount">47</h3>
+                    <p class="text-gray-600">Kompani të Regjistruara</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i data-lucide="map-pin" class="h-12 w-12 text-green-600 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-900">31</h3>
+                    <p class="text-gray-600">Qytete të Mbuluara</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i data-lucide="check-circle" class="h-12 w-12 text-purple-600 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-900">12</h3>
+                    <p class="text-gray-600">Llojet e Shërbimeve</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-r from-pink-500 to-orange-500 rounded-lg flex items-center justify-center">
+                            <i data-lucide="sparkles" class="h-5 w-5 text-white"></i>
+                        </div>
+                        <h3 class="ml-2 text-xl font-bold">pastro</h3>
+                    </div>
+                    <p class="text-gray-400">
+                        Lidhja e klientëve me shërbimet profesionale të pastrimit nëpër Kosovë.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Lidhje të Shpejta</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Kryefaqja</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Të Gjitha Kompanitë</a></li>
+                        <li><a href="register-sq.html" class="hover:text-white transition-colors">Regjistro Kompani</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Kontakt</h4>
+                    <p class="text-gray-400">
+                        Keni nevojë për ndihmë? Na kontaktoni në support@pastro.com
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Pastro.com. Të gjitha të drejtat e rezervuara.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Worker Call to Action -->
+    <div class="bg-white py-8 text-center">
+        <p class="text-gray-600">
+            A jeni punëtor? 
+            <a href="register-sq.html" class="text-green-500 underline hover:text-green-600 transition-colors">Aplikoni Tani</a>
+        </p>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Sample companies data (simulating database)
+        const defaultCompanies = [
+            {
+                id: 1,
+                name: "CleanPro Kosovo",
+                description: "Shërbime profesionale pastrimi për shtëpi dhe zyra. Të besuar nga 500+ klientë nëpër Kosovë.",
+                phone: "+383 44 123 456",
+                cities: ["Prishtina", "Prizren"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 25 },
+                    { name: "Pastrimi i Zyrës", price: 35 },
+                    { name: "Pastrimi i Thellë", price: 80 }
+                ]
+            },
+            {
+                id: 2,
+                name: "EcoClean Solutions",
+                description: "Zgjidhje pastrimi miqësore me mjedisin për klientët e vetëdijshëm mjedisorë. Pastrimi i gjelbër i certifikuar.",
+                phone: "+383 44 123 457",
+                cities: ["Gjakova", "Peja"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 30 },
+                    { name: "Pastrimi i Dritareve", price: 20 },
+                    { name: "Pastrimi i Qilimave", price: 45 }
+                ]
+            },
+            {
+                id: 3,
+                name: "Premium Clean",
+                description: "Shërbime pastrimi luksoze për shtëpi të larta dhe hapësira komerciale. Cilësia premium e garantuar.",
+                phone: "+383 44 123 458",
+                cities: ["Ferizaj", "Gjilan"],
+                services: [
+                    { name: "Pastrimi i Thellë", price: 120 },
+                    { name: "Pastrimi i Zyrës", price: 50 },
+                    { name: "Pastrimi i Objektit", price: 60 }
+                ]
+            },
+            {
+                id: 4,
+                name: "QuickClean Express",
+                description: "Shërbime pastrimi të shpejta dhe të besueshme. Shërbim në të njëjtën ditë i disponueshëm. Zgjidhje pastrimi urgjente.",
+                phone: "+383 44 123 459",
+                cities: ["Mitrovica", "Vushtrri"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 20 },
+                    { name: "Pastrimi i Dritareve", price: 15 },
+                    { name: "Pastrimi i Urgjencës", price: 40 }
+                ]
+            },
+            {
+                id: 5,
+                name: "Family Clean Co.",
+                description: "Biznes familjar me 15+ vjet përvojë. Shërbim i personalizuar për çdo familje.",
+                phone: "+383 44 123 460",
+                cities: ["Podujeva", "Rahovec"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 22 },
+                    { name: "Mirëmbajtja e Rregullt", price: 18 },
+                    { name: "Hyrje/Dalje", price: 70 }
+                ]
+            },
+            {
+                id: 6,
+                name: "Commercial Clean Pro",
+                description: "Specializuar në pastrimin komercial dhe industrial. Projekte të mëdha dhe kontrata mirëmbajtjeje të rregullt.",
+                phone: "+383 44 123 461",
+                cities: ["Lipjan", "Malisheva"],
+                services: [
+                    { name: "Pastrimi Komercial", price: 80 },
+                    { name: "Pastrimi Industrial", price: 150 },
+                    { name: "Pas Ndërtimit", price: 200 }
+                ]
+            }
+        ];
+
+        let allCompanies = [...defaultCompanies];
+        let filteredCompanies = [...defaultCompanies];
+
+        // Function to get proper Albanian text for results count
+        function getResultsText(count) {
+            if (count === 0) {
+                return '0 Kompani të Gjetura';
+            } else if (count === 1) {
+                return '1 Kompani e Gjetur';
+            } else {
+                return `${count} Kompani të Gjetura`;
+            }
+        }
+
+        // Service mapping for search
+        const serviceMapping = {
+            'house': 'Pastrimi i Shtëpisë',
+            'office': 'Pastrimi i Zyrës',
+            'deep': 'Pastrimi i Thellë',
+            'window': 'Pastrimi i Dritareve',
+            'carpet': 'Pastrimi i Qilimave',
+            'yard': 'Pastrimi i Objektit',
+            'move': 'Pastrimi i Lëvizjes',
+            'laundry': 'Larje & Hekurosje',
+            'helper': 'Ndihmësja e Mamasë',
+            'elder': 'Kujdesi për të Moshuarit',
+            'extra': 'Kujdes Shtesë',
+            'express': 'Pastrimi i Shpejtë'
+        };
+
+        // City mapping for search
+        const cityMapping = {
+            'prishtina': 'Prishtina',
+            'prizren': 'Prizren',
+            'gjakova': 'Gjakova',
+            'peja': 'Peja',
+            'ferizaj': 'Ferizaj',
+            'gjilan': 'Gjilan',
+            'mitrovica': 'Mitrovica',
+            'vushtrri': 'Vushtrri',
+            'podujeva': 'Podujeva',
+            'rahovec': 'Rahovec',
+            'lipjan': 'Lipjan',
+            'malisheva': 'Malisheva',
+            'deçan': 'Deçan',
+            'dragash': 'Dragash',
+            'drenas': 'Drenas',
+            'fushë kosovë': 'Fushë Kosovë',
+            'hani i elezit': 'Hani i Elezit',
+            'istog': 'Istog',
+            'kaçanik': 'Kaçanik',
+            'kamenicë': 'Kamenicë',
+            'klinë': 'Klinë',
+            'kllokot': 'Kllokot',
+            'leposaviq': 'Leposaviq',
+            'mamuša': 'Mamuša',
+            'novobërdë': 'Novobërdë',
+            'obiliq': 'Obiliq',
+            'partesh': 'Partesh',
+            'ranillug': 'Ranillug',
+            'shtime': 'Shtime',
+            'skenderaj': 'Skenderaj',
+            'suharekë': 'Suharekë',
+            'zubin potok': 'Zubin Potok',
+            'zveçan': 'Zveçan'
+        };
+
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load registered companies from localStorage
+            loadRegisteredCompanies();
+            
+            // Get search elements
+            const searchInput = document.getElementById('searchInput');
+            const citySelect = document.getElementById('citySelect');
+            const serviceSelect = document.getElementById('serviceSelect');
+            const verifiedSelect = document.getElementById('verifiedSelect');
+            const searchButton = document.getElementById('searchButton');
+            
+            // Update search on input change
+            if (searchInput) {
+                searchInput.addEventListener('input', performSearch);
+                citySelect.addEventListener('change', performSearch);
+                serviceSelect.addEventListener('change', performSearch);
+                verifiedSelect.addEventListener('change', performSearch);
+                searchButton.addEventListener('click', performSearch);
+            }
+            
+            function performSearch() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedCity = citySelect.value;
+                const selectedService = serviceSelect.value;
+                const selectedVerified = verifiedSelect.value;
+                
+                filteredCompanies = allCompanies.filter(company => {
+                    const matchesSearch = !searchTerm || 
+                        company.name.toLowerCase().includes(searchTerm) ||
+                        company.description.toLowerCase().includes(searchTerm);
+                    
+                    const matchesCity = !selectedCity || 
+                        company.cities.some(city => city.toLowerCase() === cityMapping[selectedCity]?.toLowerCase());
+                    
+                    const matchesService = !selectedService || 
+                        company.services.some(service => service.name === serviceMapping[selectedService]);
+                    
+                    // Handle verified/provider type filter
+                    let matchesVerified = true;
+                    if (selectedVerified) {
+                        const subscription = localStorage.getItem(`subscription_${company.id}`);
+                        const subData = subscription ? JSON.parse(subscription) : null;
+                        const isCompany = subData && subData.plan === 'premium';
+                        const isIndividual = subData && subData.plan === 'free';
+                        const isVerified = company.verified || false;
+                        
+                        if (selectedVerified === 'verified') {
+                            matchesVerified = isVerified;
+                        } else if (selectedVerified === 'companies') {
+                            matchesVerified = isCompany;
+                        } else if (selectedVerified === 'individuals') {
+                            matchesVerified = isIndividual;
+                        }
+                    }
+                    
+                    return matchesSearch && matchesCity && matchesService && matchesVerified;
+                });
+                
+                updateCompanyDisplay();
+            }
+            
+            function loadRegisteredCompanies() {
+                const registeredCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                
+                // Filter only companies with active subscriptions or free plans
+                const visibleCompanies = registeredCompanies.filter(company => {
+                    const subscription = localStorage.getItem(`subscription_${company.id}`);
+                    if (subscription) {
+                        const subData = JSON.parse(subscription);
+                        if (subData.status === 'active') {
+                            // For free plans, no expiration check
+                            if (subData.plan === 'free') {
+                                return true;
+                            }
+                            // For paid plans, check expiration
+                            return new Date(subData.expiresAt) > new Date();
+                        }
+                    }
+                    return false;
+                });
+                
+                // Sort companies: paid companies first, then free individuals
+                const sortedCompanies = visibleCompanies.sort((a, b) => {
+                    const subA = JSON.parse(localStorage.getItem(`subscription_${a.id}`) || '{}');
+                    const subB = JSON.parse(localStorage.getItem(`subscription_${b.id}`) || '{}');
+                    
+                    if (subA.plan === 'premium' && subB.plan === 'free') return -1;
+                    if (subA.plan === 'free' && subB.plan === 'premium') return 1;
+                    return 0;
+                });
+                
+                allCompanies = [...defaultCompanies, ...sortedCompanies];
+                filteredCompanies = [...allCompanies];
+                updateCompanyDisplay();
+                updateStats();
+            }
+            
+            function updateCompanyDisplay() {
+                const companiesContainer = document.getElementById('companiesContainer');
+                const resultsCount = document.getElementById('resultsCount');
+                
+                if (!companiesContainer || !resultsCount) return;
+                
+                if (filteredCompanies.length === 0) {
+                    companiesContainer.innerHTML = `
+                        <div class="col-span-full text-center py-12">
+                            <i data-lucide="building-2" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
+                            <h3 class="text-xl font-medium text-gray-900 mb-2">Nuk u gjetën kompani</h3>
+                            <p class="text-gray-600">Provoni të rregulloni kriteret e kërkimit ose shfletoni të gjitha kompanitë.</p>
+                        </div>
+                    `;
+                    resultsCount.textContent = getResultsText(0);
+                } else {
+                    companiesContainer.innerHTML = filteredCompanies.map(company => {
+                        // Get subscription info to determine provider type
+                        const subscription = localStorage.getItem(`subscription_${company.id}`);
+                        const subData = subscription ? JSON.parse(subscription) : null;
+                        const isCompany = subData && subData.plan === 'premium';
+                        const isIndividual = subData && subData.plan === 'free';
+                        const isVerified = company.verified || false;
+                        
+                        return `
+                        <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                            <div class="flex items-center mb-4">
+                                <div class="h-12 w-12 ${isCompany ? 'bg-blue-100' : 'bg-green-100'} rounded-lg flex items-center justify-center">
+                                    <i data-lucide="${isCompany ? 'building-2' : 'user'}" class="h-6 w-6 ${isCompany ? 'text-blue-600' : 'text-green-600'}"></i>
+                                </div>
+                                <div class="ml-4 flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <h4 class="text-lg font-semibold text-gray-900">${company.name}</h4>
+                                        ${isIndividual ? '<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">Pastrues Privat</span>' : ''}
+                                        ${isVerified ? '<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">✓ Verifikuar</span>' : ''}
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i data-lucide="map-pin" class="h-4 w-4 mr-1"></i>
+                                        ${company.cities.join(', ')}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gray-600 mb-4 line-clamp-2">${company.description}</p>
+                            
+                            <div class="mb-4">
+                                <h5 class="text-sm font-medium text-gray-900 mb-2">Shërbimet & Çmimet:</h5>
+                                <div class="space-y-1">
+                                    ${company.services.slice(0, 3).map(service => `
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-600">${service.name}</span>
+                                            <span class="font-medium text-green-600">€${service.price}</span>
+                                        </div>
+                                    `).join('')}
+                                    ${company.services.length > 3 ? `
+                                        <p class="text-xs text-gray-500">+${company.services.length - 3} shërbime të tjera</p>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-2">
+                                <a href="tel:${company.phone}" class="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+                                    <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                                    Telefono
+                                </a>
+                                <button class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
+                                    <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
+                                    Email
+                                </button>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                    resultsCount.textContent = getResultsText(filteredCompanies.length);
+                }
+                
+                // Re-initialize Lucide icons
+                lucide.createIcons();
+                
+                // Add hover effects to new cards
+                const cards = document.querySelectorAll('.card-hover');
+                cards.forEach(card => {
+                    card.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-4px)';
+                    });
+                    
+                    card.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                    });
+                });
+            }
+            
+            function updateStats() {
+                const companiesCount = document.getElementById('companiesCount');
+                if (companiesCount) {
+                    companiesCount.textContent = allCompanies.length;
+                }
+            }
+            
+            // Check if user is signed in
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                const nav = document.querySelector('nav.flex.items-center.space-x-4');
+                
+                // Check if user is admin
+                if (user.role === 'admin' || user.email === 'admin@pastro.com') {
+                    nav.innerHTML = `
+                        <span class="text-gray-700">Mirë se erdhe, ${user.name}</span>
+                        <a href="admin-approve-sq.html" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                            <i data-lucide="shield-check" class="h-4 w-4 inline mr-2"></i>
+                            Mirato Kompanitë
+                        </a>
+                        <a href="demo-sq-fixed.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Kryefaqja</a>
+                        <button onclick="signOut()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">Dil</button>
+                    `;
+                } else {
+                    // Check if company has active subscription
+                    const subscription = localStorage.getItem(`subscription_${user.id}`);
+                    let subscriptionStatus = 'inactive';
+                    if (subscription) {
+                        const subData = JSON.parse(subscription);
+                        if (subData.status === 'active' && new Date(subData.expiresAt) > new Date()) {
+                            subscriptionStatus = 'active';
+                        }
+                    }
+                    
+                    if (subscriptionStatus === 'active') {
+                        nav.innerHTML = `
+                            <span class="text-gray-700">Mirë se erdhe, ${user.name}</span>
+                            <a href="demo-sq.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Paneli</a>
+                            <button onclick="signOut()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">Dil</button>
+                        `;
+                    } else {
+                        nav.innerHTML = `
+                            <span class="text-gray-700">Mirë se erdhe, ${user.name}</span>
+                            <a href="subscription.html" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Abonohu (€4/muaj)</a>
+                            <button onclick="signOut()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">Dil</button>
+                        `;
+                    }
+                }
+                
+                lucide.createIcons();
+            }
+        });
+        
+        function signOut() {
+            localStorage.removeItem('currentUser');
+            location.reload();
+        }
+
+        function bookService() {
+            document.getElementById('searchSection').classList.remove('hidden');
+            document.getElementById('companiesSection').classList.remove('hidden');
+            document.getElementById('searchSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function findFullTimeHelp() {
+            alert('Funksionaliteti për gjetjen e ndihmës me kohë të plotë do të implementohet së shpejti.');
+        }
+
+        // Initialize Lucide icons when page loads
+        lucide.createIcons();
+    </script>
+</body>
+</html>

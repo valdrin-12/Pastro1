@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Pastrimi i Zyrës - Pastro.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        /* Global box-sizing for responsive design */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+        
+        html {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Underline effect on hover for all navigation links */
+        nav a {
+            position: relative;
+            text-decoration: none;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        /* Also apply to footer links */
+        footer a {
+            position: relative;
+            text-decoration: none;
+        }
+        
+        footer a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        
+        footer a:hover::after {
+            width: 100%;
+        }
+        
+        /* Apply to top navigation links as well */
+        header nav a:not(.bg-blue-600) {
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        header nav a:not(.bg-blue-600)::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        
+        header nav a:not(.bg-blue-600):hover::after {
+            width: 100%;
+        }
+        
+        /* Ensure navigation items stay on one line */
+        header nav {
+            flex-wrap: nowrap;
+        }
+        
+        header nav a {
+            white-space: nowrap;
+            font-size: 0.875rem;
+        }
+        
+        /* Mobile Navigation - Hamburger Menu */
+        .mobile-menu-btn {
+            display: none;
+        }
+        
+        /* Hide hamburger button on desktop */
+        @media (min-width: 768px) {
+            .mobile-menu-btn {
+                display: none !important;
+            }
+        }
+        
+        .mobile-menu {
+            display: none;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            /* Hide ALL desktop navigation, show ONLY mobile menu button */
+            header nav:not(.mobile-menu) {
+                display: none !important;
+            }
+            
+            /* Hide desktop navigation container completely */
+            header .flex.justify-between nav.hidden.md\\:flex {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+                overflow: hidden !important;
+            }
+            
+            /* Show mobile menu button */
+            .mobile-menu-btn {
+                display: flex !important;
+                z-index: 60;
+                position: relative;
+            }
+            
+            /* Ensure hamburger menu is always visible and clickable on iOS/Android */
+            #mobileMenuBtn {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                align-items: center;
+                justify-content: center;
+                min-width: 48px;
+                min-height: 48px;
+                z-index: 60;
+                position: relative;
+                flex-shrink: 0;
+                margin-left: auto;
+            }
+            
+            /* Override any Tailwind classes that might hide the button */
+            button.mobile-menu-btn.md\\:hidden {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            /* Mobile header - simple approach for iOS and Android */
+            @media (max-width: 768px) {
+                /* Show header on mobile */
+                header {
+                    display: block !important;
+                    visibility: visible !important;
+                    background: white !important;
+                    background-color: white !important;
+                    border-bottom: 1px solid #e5e7eb !important;
+                    padding: 0 !important;
+                    height: auto !important;
+                    opacity: 1 !important;
+                }
+                
+                /* Ensure header container has solid background */
+                header .max-w-7xl {
+                    background: white !important;
+                    background-color: white !important;
+                }
+                
+                /* Ensure header navigation bar has solid background */
+                header .flex.justify-between {
+                    background: white !important;
+                    background-color: white !important;
+                }
+                
+                /* Hide desktop logo */
+                header a[href*="demo-sq-fixed"].hidden.md\\:flex {
+                    display: none !important;
+                }
+                
+                /* Hide desktop navigation */
+                header nav.hidden.md\\:flex {
+                    display: none !important;
+                }
+                
+                /* Show mobile header container */
+                header .flex.justify-between {
+                    display: flex !important;
+                    justify-content: space-between !important;
+                    align-items: center !important;
+                    padding: 0.75rem 1rem !important;
+                    width: 100% !important;
+                    border-bottom: none !important;
+                }
+                
+                /* Remove border from header container on mobile */
+                header .max-w-7xl {
+                    border-bottom: none !important;
+                }
+                
+                /* Style Kyçu button on mobile */
+                header a[href*="signin-sq"].md\\:hidden {
+                    display: flex !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                    color: #374151 !important;
+                    font-size: 0.875rem !important;
+                    font-weight: 500 !important;
+                    text-decoration: none !important;
+                    padding: 0.5rem 0 !important;
+                    flex-shrink: 0 !important;
+                }
+                
+                /* Style hamburger menu button on mobile */
+                #mobileMenuBtn.md\\:hidden {
+                    display: flex !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                    background: #f3f4f6 !important; /* gray-100 */
+                    background-color: #f3f4f6 !important; /* gray-100 */
+                    border: 1px solid #d1d5db !important; /* gray-300 */
+                    border-radius: 0.5rem !important;
+                    min-width: 48px !important;
+                    min-height: 48px !important;
+                    padding: 0.625rem !important;
+                    flex-shrink: 0 !important;
+                    color: #374151 !important; /* gray-700 */
+                }
+                
+                /* Ensure right container is properly aligned */
+                header .flex.items-center.gap-2 {
+                    display: flex !important;
+                    margin-left: auto !important;
+                    justify-content: flex-end !important;
+                    align-items: center !important;
+                }
+            }
+            
+            /* Mobile menu overlay */
+            .mobile-menu-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 9998;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .mobile-menu-overlay.open {
+                display: block;
+                opacity: 1;
+            }
+            
+            .mobile-menu {
+                display: block;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 100%;
+                background: white;
+                height: auto;
+                max-height: 100vh;
+                overflow-y: auto;
+                overflow-x: hidden;
+                z-index: 9999 !important;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                box-shadow: -4px 0 6px -1px rgba(0, 0, 0, 0.1);
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            @media (max-width: 768px) {
+                .mobile-menu {
+                    top: 0;
+                    right: 0;
+                    width: 100%;
+                    height: auto;
+                    max-height: 100vh;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                    -webkit-overflow-scrolling: touch;
+                }
+            }
+            
+            .mobile-menu.open {
+                transform: translateX(0);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* Mobile menu header styling */
+            .mobile-menu-header {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                background: white;
+                background-color: white;
+            }
+            
+            /* Ensure menu content can scroll */
+            .mobile-menu > * {
+                flex-shrink: 0;
+            }
+            
+            /* Ensure menu is above overlay */
+            .mobile-menu.open {
+                z-index: 1000;
+            }
+            
+            .mobile-menu a {
+                display: block;
+                padding: 1rem;
+                border-bottom: 1px solid #f3f4f6;
+                text-decoration: none;
+                color: #374151;
+                transition: background-color 0.2s;
+            }
+            
+            .mobile-menu a:hover {
+                background-color: #f9fafb;
+            }
+            
+            /* Ensure hamburger button is always visible and user-friendly on iOS/Android */
+            #mobileMenuBtn {
+                position: relative !important;
+                z-index: 100 !important;
+                background: #f3f4f6 !important; /* gray-100 */
+                background-color: #f3f4f6 !important; /* gray-100 */
+                border: 1px solid #d1d5db !important; /* gray-300 */
+                border-color: #d1d5db !important; /* gray-300 */
+                cursor: pointer !important;
+                border-radius: 0.5rem !important; /* rounded-lg */
+                transition: all 0.2s ease;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+                touch-action: manipulation;
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; /* shadow-sm */
+                color: #374151 !important; /* gray-700 for icon */
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: flex !important;
+            }
+            
+            #mobileMenuBtn:hover {
+                background: #e5e7eb !important; /* gray-200 */
+                background-color: #e5e7eb !important; /* gray-200 */
+                border-color: #9ca3af !important; /* gray-400 */
+                color: #1f2937 !important; /* gray-800 for icon */
+            }
+            
+            #mobileMenuBtn:active {
+                background: #d1d5db !important; /* gray-300 */
+                background-color: #d1d5db !important; /* gray-300 */
+                transform: none !important;
+                color: #111827 !important; /* gray-900 for icon */
+            }
+            
+            /* Ensure SVG icon inside button is visible and matches button text color */
+            #mobileMenuBtn svg {
+                color: #374151 !important; /* gray-700 */
+                stroke: #374151 !important; /* gray-700 */
+                fill: none !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+            
+            #mobileMenuBtn:hover svg {
+                color: #1f2937 !important; /* gray-800 */
+                stroke: #1f2937 !important; /* gray-800 */
+            }
+            
+            #mobileMenuBtn:active svg {
+                color: #111827 !important; /* gray-900 */
+                stroke: #111827 !important; /* gray-900 */
+            }
+            
+            /* Mobile: Ensure Kyçu button is on the left - simple text style */
+            header a[href*="signin-sq"].md\\:hidden {
+                order: -1;
+                margin-right: auto;
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                min-height: auto !important;
+                border-radius: 0 !important;
+                font-weight: 500 !important;
+                font-size: 0.875rem !important; /* text-sm */
+                color: #374151 !important; /* gray-700 */
+                text-decoration: none !important;
+            }
+            
+            header a[href*="signin-sq"].md\\:hidden:hover {
+                background: transparent !important;
+                border: none !important;
+                color: #111827 !important; /* gray-900 */
+            }
+            
+            /* Ensure logo stays blue */
+            header h1.text-blue-600,
+            header h2.text-blue-600,
+            header svg.text-blue-600 {
+                color: #2563eb !important; /* blue-600 */
+            }
+            
+            h1.text-4xl {
+                font-size: 1.875rem;
+                line-height: 2.25rem;
+            }
+            
+            h3.text-3xl {
+                font-size: 1.5rem;
+                line-height: 2rem;
+            }
+            
+            .grid.grid-cols-1.md\\:grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid.grid-cols-1.md\\:grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid.grid-cols-1.lg\\:grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .max-w-4xl {
+                max-width: 100%;
+            }
+            
+            .p-6 {
+                padding: 1rem;
+            }
+            
+            button, a.bg-blue-600 {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            input, select, textarea {
+                font-size: 16px;
+                min-height: 44px;
+            }
+            
+            footer .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .py-16 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1.text-4xl {
+                font-size: 1.5rem;
+                line-height: 1.75rem;
+            }
+            
+            .text-xl {
+                font-size: 1rem;
+            }
+            
+            header h1 {
+                font-size: 1.25rem;
+            }
+            
+            header .h-8.w-8 {
+                height: 1.5rem;
+                width: 1.5rem;
+            }
+        }
+    </style>
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuOverlay = document.getElementById('mobileMenuOverlay');
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (mobileMenu && menuOverlay) {
+                const isOpen = mobileMenu.classList.contains('open');
+                mobileMenu.classList.toggle('open');
+                menuOverlay.classList.toggle('open');
+                // Update icon
+                if (mobileMenu.classList.contains('open')) {
+                    menuBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>';
+                } else {
+                    menuBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>';
+                }
+                
+            }
+        }
+    </script>
+    </head>
+<body class="bg-white min-h-screen">
+    <!-- Purple Top Strip -->
+    <div class="gradient-bg h-1"></div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top Navigation Bar -->
+            <div class="flex justify-between items-center py-3 md:py-4 md:border-b md:border-gray-200 w-full">
+                <!-- Left side: Logo (visible on desktop, hidden on mobile) -->
+                <a href="demo-sq-fixed.html" class="hidden md:flex items-center cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0 min-w-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="building-2" class="lucide lucide-building-2 h-7 w-7 md:h-8 md:w-8 text-blue-600 flex-shrink-0"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
+                    <h1 class="ml-2 text-lg md:text-xl lg:text-2xl font-bold text-blue-600 truncate">Pastro.com</h1>
+                </a>
+                <!-- Mobile: Logo - Left side on mobile -->
+                <div class="md:hidden flex items-center flex-shrink-0">
+                    <a href="demo-sq-fixed.html" class="flex items-center cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-blue-600 flex-shrink-0"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
+                        <h1 class="ml-1.5 text-base font-bold text-blue-600">Pastro.com</h1>
+                    </a>
+                </div>
+                <!-- Right side: Desktop Nav + Mobile Buttons -->
+                <div class="flex items-center gap-2 md:space-x-4 flex-shrink-0 md:flex-initial justify-end ml-auto">
+                    <!-- Desktop Navigation - Hidden on mobile -->
+                    <nav class="hidden md:flex items-center space-x-4 desktop-nav">
+                        <a href="signin-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Kyçu</a>
+                        <a href="register-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Regjistro Kompani</a>
+                    </nav>
+                    <!-- Mobile: Login Button + Hamburger Menu - Right side on mobile -->
+                    <a href="signin-sq.html" class="md:hidden text-gray-700 hover:text-gray-900 transition-colors text-sm font-medium whitespace-nowrap flex-shrink-0 flex items-center">Kyçu</a>
+                    <!-- Mobile Menu Button - Right side on mobile (hamburger icon) -->
+                    <button id="mobileMenuBtn" class="md:hidden mobile-menu-btn flex items-center justify-center p-2.5 text-gray-700 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 border border-gray-300 hover:border-gray-400 transition-all min-w-[48px] min-h-[48px] rounded-lg flex-shrink-0 shadow-sm" onclick="toggleMobileMenu(); event.stopPropagation(); return false;" aria-label="Open menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <path d="M4 5h16"></path>
+                            <path d="M4 12h16"></path>
+                            <path d="M4 19h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Overlay -->
+            <div id="mobileMenuOverlay" class="mobile-menu-overlay" onclick="toggleMobileMenu(); event.stopPropagation(); return false;"></div>
+            
+            <!-- Mobile Menu -->
+            <nav id="mobileMenu" class="mobile-menu">
+                <!-- Mobile Menu Header -->
+                <div class="mobile-menu-header bg-white border-b border-gray-200 px-3 py-2 flex items-center justify-between">
+                    <div class="flex items-center space-x-1.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-blue-600"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
+                        <h2 class="text-base font-bold text-blue-600">Pastro.com</h2>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <a href="signin-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Kyçu</a>
+                        <a href="register-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Regjistro Kompani</a>
+                        <button onclick="toggleMobileMenu(); event.stopPropagation(); return false;" class="p-1.5 hover:bg-gray-100 rounded-md flex items-center justify-center min-w-[36px] min-h-[36px]" aria-label="Close menu">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-700"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Menu Items -->
+                <a href="demo-sq-fixed.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    <span class="text-gray-900 font-medium">Kryefaqja</span>
+                </a>
+                <a href="sherbimet-sq.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                    <span class="text-gray-900 font-medium">Shërbimet</span>
+                </a>
+                <a href="pastrimi-zyres.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M12 6h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M16 6h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path><path d="M8 6h.01"></path><path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path><rect x="4" y="2" width="16" height="20" rx="2"></rect></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi i Zyrës</span>
+                </a>
+                <a href="pastrimi-brendshem.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi i Shtëpisë</span>
+                </a>
+                <a href="pastrimi-thelle.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi i Detajuar</span>
+                </a>
+                <a href="pastrimi-oborreve.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"></path><path d="M12 22v-3"></path></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi i Oborreve</span>
+                </a>
+                <a href="pastrimi-kimik.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path><path d="M6.453 15h11.094"></path><path d="M8.5 2h7"></path></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi Kimik</span>
+                </a>
+                <a href="signin-sq.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <span class="text-gray-900 font-medium">Kyçu</span>
+                </a>
+            </nav>
+            
+            <!-- Main Navigation Bar -->
+            <nav class="hidden md:flex items-center justify-center space-x-4 py-4 overflow-x-auto">
+                <a href="demo-sq-fixed.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" class="lucide lucide-home h-4 w-4 mr-2"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    Kryefaqja
+                </a>
+                <a href="sherbimet-sq.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles h-4 w-4 mr-2"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                    Shërbimet
+                </a>
+                <a href="pastrimi-zyres.html" class="text-blue-600 font-semibold flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="building" class="lucide lucide-building h-4 w-4 mr-2"><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M12 6h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M16 6h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path><path d="M8 6h.01"></path><path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path><rect x="4" y="2" width="16" height="20" rx="2"></rect></svg>
+                    Pastrimi i Zyrës
+                </a>
+                <a href="pastrimi-brendshem.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" class="lucide lucide-home h-4 w-4 mr-2"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    Pastrimi i Shtëpisë
+                </a>
+                <a href="pastrimi-thelle.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles h-4 w-4 mr-2"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                    Pastrimi i Detajuar
+                </a>
+                <a href="pastrimi-oborreve.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="tree-pine" class="lucide lucide-tree-pine h-4 w-4 mr-2"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"></path><path d="M12 22v-3"></path></svg>
+                    Pastrimi i Oborreve
+                </a>
+                <a href="pastrimi-kimik.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="flask-conical" class="lucide lucide-flask-conical h-4 w-4 mr-2"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path><path d="M6.453 15h11.094"></path><path d="M8.5 2h7"></path></svg>
+                    Pastrimi Kimik
+                </a>
+                <a href="pastrimi-veturave.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="car" class="lucide lucide-car h-4 w-4 mr-2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><path d="M9 17h6"></path><circle cx="17" cy="17" r="2"></circle></svg>
+                    Pastrimi i Veturave
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Service Header -->
+    <section class="py-16 bg-gradient-to-r from-orange-50 to-orange-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="w-20 h-20 bg-orange-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="building" class="h-10 w-10 text-orange-600"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Pastrimi i Zyrës</h1>
+            <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                Shërbime profesionale pastrimi për zyra, kompani dhe hapësira komerciale. Pastrimi i besueshëm dhe me cilësi të lartë për biznesin tuaj.
+            </p>
+        </div>
+    </section>
+
+    <!-- Service Photos Gallery -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl font-bold text-gray-900 mb-8 text-center">Si Pastrojmë Zyrat</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Photo 1: Office Desk Cleaning -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Pastrimi i tavolinave të punës" class="h-64 w-full object-cover">
+                    <div class="p-4">
+                        <h4 class="text-lg font-semibold text-gray-900">Pastrimi i Tavolinave të Punës</h4>
+                        <p class="text-gray-600 text-sm mt-2">Pastrimi i plotë i tavolinave, kompjuterëve dhe pajisjeve të zyrës</p>
+                    </div>
+                </div>
+
+                <!-- Photo 2: Floor Cleaning -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Pastrimi i dyshemeve" class="h-64 w-full object-cover">
+                    <div class="p-4">
+                        <h4 class="text-lg font-semibold text-gray-900">Pastrimi i Dyshemeve</h4>
+                        <p class="text-gray-600 text-sm mt-2">Pastrimi i dyshemeve, qilimave dhe sipërfaqeve të zyrës</p>
+                    </div>
+                </div>
+
+                <!-- Photo 3: Meeting Room -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Pastrimi i dhomave të takimeve" class="h-64 w-full object-cover">
+                    <div class="p-4">
+                        <h4 class="text-lg font-semibold text-gray-900">Dhoma të Takimeve</h4>
+                        <p class="text-gray-600 text-sm mt-2">Pastrimi i dhomave të takimeve dhe hapësirave të përbashkëta</p>
+                    </div>
+                </div>
+
+                <!-- Photo 4: Kitchen Area -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1556912172-45b7abe8b7e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Pastrimi i zonës së kuzhinës" class="h-64 w-full object-cover">
+                    <div class="p-4">
+                        <h4 class="text-lg font-semibold text-gray-900">Zona e Kuzhinës</h4>
+                        <p class="text-gray-600 text-sm mt-2">Pastrimi i kuzhinës së zyrës dhe zonave të pushimit</p>
+                    </div>
+                </div>
+
+                <!-- Photo 5: Windows -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Pastrimi i dritareve" class="h-64 w-full object-cover">
+                    <div class="p-4">
+                        <h4 class="text-lg font-semibold text-gray-900">Dritaret</h4>
+                        <p class="text-gray-600 text-sm mt-2">Pastrimi i dritareve dhe pasqyrave për pamje të qartë</p>
+                    </div>
+                </div>
+
+                <!-- Photo 6: Bathroom -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Pastrimi i banjove të zyrës" class="h-64 w-full object-cover">
+                    <div class="p-4">
+                        <h4 class="text-lg font-semibold text-gray-900">Banjo të Zyrës</h4>
+                        <p class="text-gray-600 text-sm mt-2">Pastrimi i banjove dhe zonave sanitare të zyrës</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Gjeni Kompaninë e Pastrimit të Zyrës</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="relative">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"></i>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Kërko kompani..."
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                    </div>
+                    
+                    <!-- Custom City Dropdown -->
+                    <div class="relative">
+                        <!-- Hidden select for compatibility with search function -->
+                        <select id="citySelect" class="hidden">
+                            <option value="">Të Gjitha Qytetet</option>
+                        </select>
+                        
+                        <button id="cityDropdownBtn" onclick="toggleCityDropdown()" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-left flex items-center justify-between">
+                            <span id="cityDropdownText">Të Gjitha Qytetet</span>
+                            <i data-lucide="map-pin" class="h-5 w-5 text-gray-400"></i>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="cityDropdown" class="hidden absolute z-50 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-96 overflow-y-auto">
+                            <!-- Countries View -->
+                            <div id="countriesView">
+                                <div onclick="selectCountry('kosove')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between border-b border-gray-100">
+                                    <span class="text-gray-900">Kosovë</span>
+                                    <i data-lucide="chevron-right" class="h-4 w-4 text-gray-400"></i>
+                                </div>
+                                <div onclick="selectCountry('shqiperi')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between border-b border-gray-100">
+                                    <span class="text-gray-900">Shqipëri</span>
+                                    <i data-lucide="chevron-right" class="h-4 w-4 text-gray-400"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Cities View (Kosovë) -->
+                            <div id="kosoveCitiesView" class="hidden">
+                                <div onclick="goBackToCountries()" class="px-4 py-3 bg-orange-50 border-b border-orange-200 cursor-pointer flex items-center">
+                                    <i data-lucide="chevron-left" class="h-4 w-4 text-orange-600 mr-2"></i>
+                                    <span class="text-orange-600 font-semibold uppercase">KOSOVË</span>
+                                </div>
+                                <div onclick="selectCity('')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Të gjitha qytetet</span>
+                                </div>
+                                <div onclick="selectCity('prishtina')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Prishtinë</span>
+                                </div>
+                                <div onclick="selectCity('prizren')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Prizren</span>
+                                </div>
+                                <div onclick="selectCity('ferizaj')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Ferizaj</span>
+                                </div>
+                                <div onclick="selectCity('peja')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Pejë</span>
+                                </div>
+                                <div onclick="selectCity('gjakova')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Gjakovë</span>
+                                </div>
+                                <div onclick="selectCity('gjilan')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Gjilan</span>
+                                </div>
+                                <div onclick="selectCity('mitrovica')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Mitrovicë</span>
+                                </div>
+                                <div onclick="selectCity('vushtrri')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Vushtrri</span>
+                                </div>
+                                <div onclick="selectCity('podujeva')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Podujevë</span>
+                                </div>
+                                <div onclick="selectCity('rahovec')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Rahovec</span>
+                                </div>
+                                <div onclick="selectCity('lipjan')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Lipjan</span>
+                                </div>
+                                <div onclick="selectCity('malisheva')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Malishevë</span>
+                                </div>
+                                <div onclick="selectCity('suharekë')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Suharekë</span>
+                                </div>
+                                <div onclick="selectCity('skenderaj')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Skenderaj</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Cities View (Shqipëri) -->
+                            <div id="shqiperiCitiesView" class="hidden">
+                                <div onclick="goBackToCountries()" class="px-4 py-3 bg-orange-50 border-b border-orange-200 cursor-pointer flex items-center">
+                                    <i data-lucide="chevron-left" class="h-4 w-4 text-orange-600 mr-2"></i>
+                                    <span class="text-orange-600 font-semibold uppercase">SHQIPËRI</span>
+                                </div>
+                                <div onclick="selectCity('')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Të gjitha qytetet</span>
+                                </div>
+                                <div onclick="selectCity('tirana')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Tiranë</span>
+                                </div>
+                                <div onclick="selectCity('durres')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Durrës</span>
+                                </div>
+                                <div onclick="selectCity('vlora')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Vlorë</span>
+                                </div>
+                                <div onclick="selectCity('shkoder')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Shkodër</span>
+                                </div>
+                                <div onclick="selectCity('elbasan')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Elbasan</span>
+                                </div>
+                                <div onclick="selectCity('korca')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Korçë</span>
+                                </div>
+                                <div onclick="selectCity('fier')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Fier</span>
+                                </div>
+                                <div onclick="selectCity('berat')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Berat</span>
+                                </div>
+                                <div onclick="selectCity('kavaja')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Kavajë</span>
+                                </div>
+                                <div onclick="selectCity('gjirokaster')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Gjirokastër</span>
+                                </div>
+                                <div onclick="selectCity('saranda')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Sarandë</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="searchButton" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        <i data-lucide="search" class="h-4 w-4 inline mr-2"></i>
+                        Kërko
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Companies Results -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl font-bold text-gray-900 mb-8 text-center" id="resultsCount">
+                Po ngarkohen kompanitë...
+            </h3>
+            
+            <div id="companiesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Companies will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Info Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Çfarë përfshin Pastrimi i Zyrës?</h3>
+                    <ul class="space-y-4 text-gray-600">
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="h-5 w-5 text-green-500 mr-3 mt-0.5"></i>
+                            <span>Pastrimi i të gjitha dhoma të zyrës</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="h-5 w-5 text-green-500 mr-3 mt-0.5"></i>
+                            <span>Pastrimi i tavaneve dhe mureve</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="h-5 w-5 text-green-500 mr-3 mt-0.5"></i>
+                            <span>Pastrimi i dyshemeve dhe qilimave</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="h-5 w-5 text-green-500 mr-3 mt-0.5"></i>
+                            <span>Pastrimi i banjove dhe kuzhinave të zyrës</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="h-5 w-5 text-green-500 mr-3 mt-0.5"></i>
+                            <span>Pastrimi i dritareve dhe pasqyrave</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="h-5 w-5 text-green-500 mr-3 mt-0.5"></i>
+                            <span>Pastrimi i mobiljeve të zyrës</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Pse të zgjidhni Pastro.com?</h3>
+                    <ul class="space-y-4 text-gray-600">
+                        <li class="flex items-start">
+                            <i data-lucide="star" class="h-5 w-5 text-yellow-500 mr-3 mt-0.5"></i>
+                            <span>Kompani të specializuara në pastrimin komercial</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="shield-check" class="h-5 w-5 text-blue-500 mr-3 mt-0.5"></i>
+                            <span>Siguri dhe konfidencialiteti i garantuar</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="clock" class="h-5 w-5 text-green-500 mr-3 mt-0.5"></i>
+                            <span>Shërbim jashtë orarit të punës</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="euro" class="h-5 w-5 text-purple-500 mr-3 mt-0.5"></i>
+                            <span>Çmime konkurruese për biznese</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="map-pin" class="h-5 w-5 text-red-500 mr-3 mt-0.5"></i>
+                            <span>Disponueshëm në të gjitha qytetet e Kosovës</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="phone" class="h-5 w-5 text-indigo-500 mr-3 mt-0.5"></i>
+                            <span>Kontakt i drejtpërdrejtë me kompaninë</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <a href="demo-sq-fixed.html" class="flex items-center cursor-pointer hover:opacity-80 transition-opacity">
+                            <i data-lucide="building-2" class="h-8 w-8 text-blue-600"></i>
+                            <h3 class="ml-2 text-xl font-bold text-white">Pastro.com</h3>
+                        </a>
+                    </div>
+                    <p class="text-gray-400">
+                        Lidhja e klientëve me shërbimet profesionale të pastrimit nëpër Kosovë.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Lidhje të Shpejta</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="demo-sweepsouth-style.html" class="hover:text-white transition-colors">Kryefaqja</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Të Gjitha Kompanitë</a></li>
+                        <li><a href="register-sq.html" class="hover:text-white transition-colors">Regjistro Kompani</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Kontakt</h4>
+                    <p class="text-gray-400">
+                        Keni nevojë për ndihmë? Na kontaktoni në support@pastro.com
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Pastro.com. Të gjitha të drejtat e rezervuara.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+        // Mobile Menu Toggle
+
+        // Also define as simple function for compatibility
+
+        // Close mobile menu when clicking on overlay
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuOverlay = document.getElementById('mobileMenuOverlay');
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (mobileMenu && menuOverlay && menuBtn && !mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
+                if (mobileMenu.classList.contains('open')) {
+                    mobileMenu.classList.remove('open');
+                    menuOverlay.classList.remove('open');
+                    menuBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>';
+                }
+            }
+        });
+        
+        // Initialize Lucide icons
+
+        // Sample companies data (simulating database)
+        const defaultCompanies = [
+            {
+                id: 1,
+                name: "CleanPro Kosovo",
+                description: "Shërbime profesionale pastrimi për shtëpi dhe zyra. Të besuar nga 500+ klientë nëpër Kosovë.",
+                phone: "+383 44 123 456",
+                cities: ["Prishtina", "Prizren"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 25 },
+                    { name: "Pastrimi i Zyrës", price: 35 },
+                    { name: "Pastrimi i Thellë", price: 80 }
+                ]
+            },
+            {
+                id: 2,
+                name: "EcoClean Solutions",
+                description: "Zgjidhje pastrimi miqësore me mjedisin për klientët e vetëdijshëm mjedisorë. Pastrimi i gjelbër i certifikuar.",
+                phone: "+383 44 123 457",
+                cities: ["Gjakova", "Peja"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 30 },
+                    { name: "Pastrimi i Dritareve", price: 20 },
+                    { name: "Pastrimi i Qilimave", price: 45 }
+                ]
+            },
+            {
+                id: 3,
+                name: "Premium Clean",
+                description: "Shërbime pastrimi luksoze për shtëpi të larta dhe hapësira komerciale. Cilësia premium e garantuar.",
+                phone: "+383 44 123 458",
+                cities: ["Ferizaj", "Gjilan"],
+                services: [
+                    { name: "Pastrimi i Thellë", price: 120 },
+                    { name: "Pastrimi i Zyrës", price: 50 },
+                    { name: "Pastrimi i Objektit", price: 60 }
+                ]
+            },
+            {
+                id: 4,
+                name: "QuickClean Express",
+                description: "Shërbime pastrimi të shpejta dhe të besueshme. Shërbim në të njëjtën ditë i disponueshëm. Zgjidhje pastrimi urgjente.",
+                phone: "+383 44 123 459",
+                cities: ["Mitrovica", "Vushtrri"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 20 },
+                    { name: "Pastrimi i Dritareve", price: 15 },
+                    { name: "Pastrimi i Urgjencës", price: 40 }
+                ]
+            },
+            {
+                id: 5,
+                name: "Family Clean Co.",
+                description: "Biznes familjar me 15+ vjet përvojë. Shërbim i personalizuar për çdo familje.",
+                phone: "+383 44 123 460",
+                cities: ["Podujeva", "Rahovec"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 22 },
+                    { name: "Mirëmbajtja e Rregullt", price: 18 },
+                    { name: "Hyrje/Dalje", price: 70 }
+                ]
+            },
+            {
+                id: 6,
+                name: "Commercial Clean Pro",
+                description: "Specializuar në pastrimin komercial dhe industrial. Projekte të mëdha dhe kontrata mirëmbajtjeje të rregullt.",
+                phone: "+383 44 123 461",
+                cities: ["Lipjan", "Malisheva"],
+                services: [
+                    { name: "Pastrimi Komercial", price: 80 },
+                    { name: "Pastrimi Industrial", price: 150 },
+                    { name: "Pas Ndërtimit", price: 200 }
+                ]
+            }
+        ];
+
+        let allCompanies = [...defaultCompanies];
+        let filteredCompanies = [...defaultCompanies];
+
+        // Function to get proper Albanian text for results count
+        function getResultsText(count) {
+            if (count === 0) {
+                return '0 Kompani të Gjetura';
+            } else if (count === 1) {
+                return '1 Kompani e Gjetur';
+            } else {
+                return `${count} Kompani të Gjetura`;
+            }
+        }
+
+        // City mapping for search
+        const cityMapping = {
+            'prishtina': 'Prishtinë',
+            'prizren': 'Prizren',
+            'gjakova': 'Gjakovë',
+            'peja': 'Pejë',
+            'ferizaj': 'Ferizaj',
+            'gjilan': 'Gjilan',
+            'mitrovica': 'Mitrovicë',
+            'vushtrri': 'Vushtrri',
+            'podujeva': 'Podujevë',
+            'rahovec': 'Rahovec',
+            'lipjan': 'Lipjan',
+            'malisheva': 'Malishevë',
+            'suharekë': 'Suharekë',
+            'skenderaj': 'Skenderaj',
+            'tirana': 'Tiranë',
+            'durres': 'Durrës',
+            'vlora': 'Vlorë',
+            'shkoder': 'Shkodër',
+            'elbasan': 'Elbasan',
+            'korca': 'Korçë',
+            'fier': 'Fier',
+            'berat': 'Berat',
+            'kavaja': 'Kavajë',
+            'gjirokaster': 'Gjirokastër',
+            'saranda': 'Sarandë'
+        };
+
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load registered companies from localStorage
+            loadRegisteredCompanies();
+            
+            // Get search elements
+            const searchInput = document.getElementById('searchInput');
+            const citySelect = document.getElementById('citySelect');
+            const searchButton = document.getElementById('searchButton');
+            
+            // Update search on input change
+            if (searchInput) {
+                searchInput.addEventListener('input', performSearch);
+                citySelect.addEventListener('change', performSearch);
+                searchButton.addEventListener('click', performSearch);
+            }
+            
+            function performSearch() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedCity = citySelect.value;
+                
+                filteredCompanies = allCompanies.filter(company => {
+                    const matchesSearch = !searchTerm || 
+                        company.name.toLowerCase().includes(searchTerm) ||
+                        company.description.toLowerCase().includes(searchTerm);
+                    
+                    const matchesCity = !selectedCity || 
+                        company.cities.some(city => city.toLowerCase() === cityMapping[selectedCity]?.toLowerCase());
+                    
+                    // Filter for office cleaning services specifically
+                    const hasOfficeCleaning = company.services.some(service => 
+                        service.name.toLowerCase().includes('zyrës') || 
+                        service.name.toLowerCase().includes('komercial')
+                    );
+                    
+                    return matchesSearch && matchesCity && hasOfficeCleaning;
+                });
+                
+                updateCompanyDisplay();
+            }
+            
+            function loadRegisteredCompanies() {
+                const registeredCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                
+                // Filter only companies with active subscriptions
+                const visibleCompanies = registeredCompanies.filter(company => {
+                    const subscription = localStorage.getItem(`subscription_${company.id}`);
+                    if (subscription) {
+                        const subData = JSON.parse(subscription);
+                        return subData.status === 'active' && new Date(subData.expiresAt) > new Date();
+                    }
+                    return false;
+                }).map(company => ({
+                    ...company,
+                    email: company.email || 'info@' + company.name.toLowerCase().replace(/\s+/g, '') + '.com'
+                }));
+                
+                // Add email to default companies if not present
+                const companiesWithEmail = defaultCompanies.map(company => ({
+                    ...company,
+                    email: company.email || 'info@' + company.name.toLowerCase().replace(/\s+/g, '') + '.com'
+                }));
+                
+                allCompanies = [...companiesWithEmail, ...visibleCompanies];
+                filteredCompanies = [...allCompanies];
+                updateCompanyDisplay();
+            }
+            
+                        function updateCompanyDisplay() {
+
+                const companiesContainer = document.getElementById('companiesContainer');
+                const resultsCount = document.getElementById('resultsCount');
+                
+                if (!companiesContainer || !resultsCount) return;
+
+                if (filteredCompanies.length === 0) {
+                    companiesContainer.innerHTML = `
+                        <div class="col-span-full text-center py-12">
+                            <i data-lucide="home" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
+                            <h3 class="text-xl font-medium text-gray-900 mb-2">Nuk u gjetën kompani</h3>
+                            <p class="text-gray-600">Provoni të rregulloni kriteret e kërkimit ose shfletoni të gjitha kompanitë.</p>
+                        </div>
+                    `;
+                    resultsCount.textContent = getResultsText(0);
+                } else {
+
+                    companiesContainer.innerHTML = filteredCompanies.map(company => `
+                        <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                            <div class="flex items-center mb-4">
+                                <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="building-2" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-lg font-semibold text-gray-900">${company.name}</h4>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i data-lucide="map-pin" class="h-4 w-4 mr-1"></i>
+                                        ${company.cities.join(', ')}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gray-600 mb-4 line-clamp-2">${company.description}</p>
+                            
+                            <div class="mb-4">
+                                <h5 class="text-sm font-medium text-gray-900 mb-2">Shërbimet & Çmimet:</h5>
+                                <div class="space-y-1">
+                                    ${company.services.filter(service => 
+                                        service.name.toLowerCase().includes('shtëpisë') || 
+                                        service.name.toLowerCase().includes('brendshëm')
+                                    ).slice(0, 3).map(service => `
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-600">${service.name}</span>
+                                            <span class="font-medium text-green-600">€${service.price}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-2">
+                                <a href="tel:${company.phone}" class="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+                                    <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                                    Telefono
+                                </a>
+                                <button class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
+                                    <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
+                                    Email
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')`).join('');
+                    resultsCount.textContent = getResultsText(filteredCompanies.length);
+                }
+                
+                // Re-initialize Lucide icons
+
+                // Add hover effects to new cards
+                const cards = document.querySelectorAll('.card-hover');
+                cards.forEach(card => {
+                    card.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-4px)';
+                    });
+                    
+                    card.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                    });
+                });
+            }
+            
+                        }
+
+            }
+        
+        // Navigate to company details page
+        function viewCompanyDetails(companyId) {
+            // Store company ID in localStorage to retrieve on detail page
+            localStorage.setItem('viewingCompanyId', companyId.toString());
+            window.location.href = 'company-detail-sq.html';
+        }
+
+        // Email Modal Functions
+        let currentCompanyEmail = '';
+        
+        function openEmailModal(companyName, companyEmail) {
+            currentCompanyEmail = companyEmail;
+            
+            // Get client email from localStorage if available
+            const currentUser = localStorage.getItem('currentUser');
+            let clientEmail = '';
+            if (currentUser) {
+                try {
+                    const user = JSON.parse(currentUser);
+                    clientEmail = user.email || '';
+                } catch (e) {
+                    console.error('Error parsing currentUser:', e);
+                }
+            }
+            
+            // Set modal content
+            document.getElementById('emailModalCompanyName').textContent = companyName;
+            document.getElementById('emailModalTo').textContent = companyEmail || 'kompania';
+            document.getElementById('emailClientEmail').value = clientEmail;
+            
+            // Show modal
+            document.getElementById('emailModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeEmailModal() {
+            document.getElementById('emailModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            document.getElementById('emailForm').reset();
+        }
+        
+        async function handleEmailSubmit(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const clientEmail = document.getElementById('emailClientEmail').value;
+            const message = document.getElementById('emailMessage').value;
+            
+            if (!clientEmail || !message) {
+                alert('Ju lutemi plotësoni të gjitha fushat');
+                return;
+            }
+            
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(clientEmail)) {
+                alert('Ju lutemi shkruani një email të vlefshëm');
+                return;
+            }
+            
+            // Show loading state
+            const submitButton = form.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Duke dërguar...';
+            
+            // Detect API base URL
+            let apiBase = 'http://localhost:3000';
+            
+            // Try to determine the correct port
+            try {
+                const response = await fetch('http://localhost:3000/api/cities', { method: 'GET', mode: 'cors' });
+                if (!response.ok) throw new Error('Port 3000 not available');
+            } catch (e) {
+                apiBase = 'http://localhost:3001';
+            }
+            
+            try {
+                const response = await fetch(`${apiBase}/api/contact`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        to: currentCompanyEmail,
+                        from: clientEmail,
+                        message: message,
+                        companyName: document.getElementById('emailModalCompanyName').textContent
+                    }),
+                    mode: 'cors'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    alert('Mesazhi u dërgua me sukses! Kompania do t\'ju kontaktojë në email-in tuaj.');
+                    closeEmailModal();
+                } else {
+                    alert('Gabim: ' + (data.error || 'Dërgimi i mesazhit dështoi. Ju lutemi provoni përsëri.'));
+                }
+            } catch (error) {
+                console.error('Error sending email:', error);
+                alert('Gabim gjatë dërgimit të mesazhit. Ju lutemi provoni përsëri.');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            }
+        }
+        
+        // City Dropdown Functions
+        let selectedCityValue = '';
+        
+        function toggleCityDropdown() {
+            const dropdown = document.getElementById('cityDropdown');
+            if (dropdown) {
+                dropdown.classList.toggle('hidden');
+                if (!dropdown.classList.contains('hidden')) {
+                    // Show countries view when opening
+                    showCountriesView();
+                    
+                }
+            }
+        }
+        
+        function showCountriesView() {
+            document.getElementById('countriesView').classList.remove('hidden');
+            document.getElementById('kosoveCitiesView').classList.add('hidden');
+            document.getElementById('shqiperiCitiesView').classList.add('hidden');
+        }
+        
+        function selectCountry(country) {
+            if (country === 'kosove') {
+                document.getElementById('countriesView').classList.add('hidden');
+                document.getElementById('kosoveCitiesView').classList.remove('hidden');
+                document.getElementById('shqiperiCitiesView').classList.add('hidden');
+            } else if (country === 'shqiperi') {
+                document.getElementById('countriesView').classList.add('hidden');
+                document.getElementById('kosoveCitiesView').classList.add('hidden');
+                document.getElementById('shqiperiCitiesView').classList.remove('hidden');
+            }
+            
+        }
+        
+        function goBackToCountries() {
+            showCountriesView();
+            
+        }
+        
+        function selectCity(cityValue) {
+            selectedCityValue = cityValue;
+            const cityMapping = {
+                'prishtina': 'Prishtinë',
+                'prizren': 'Prizren',
+                'gjakova': 'Gjakovë',
+                'peja': 'Pejë',
+                'ferizaj': 'Ferizaj',
+                'gjilan': 'Gjilan',
+                'mitrovica': 'Mitrovicë',
+                'vushtrri': 'Vushtrri',
+                'podujeva': 'Podujevë',
+                'rahovec': 'Rahovec',
+                'lipjan': 'Lipjan',
+                'malisheva': 'Malishevë',
+                'suharekë': 'Suharekë',
+                'skenderaj': 'Skenderaj',
+                'tirana': 'Tiranë',
+                'durres': 'Durrës',
+                'vlora': 'Vlorë',
+                'shkoder': 'Shkodër',
+                'elbasan': 'Elbasan',
+                'korca': 'Korçë',
+                'fier': 'Fier',
+                'berat': 'Berat',
+                'kavaja': 'Kavajë',
+                'gjirokaster': 'Gjirokastër',
+                'saranda': 'Sarandë'
+            };
+            
+            const displayText = cityValue ? cityMapping[cityValue] || cityValue : 'Të Gjitha Qytetet';
+            document.getElementById('cityDropdownText').textContent = displayText;
+            
+            // Update the hidden select element for compatibility
+            const citySelect = document.getElementById('citySelect');
+            if (citySelect) {
+                citySelect.value = cityValue;
+                // Trigger change event so search listeners are notified
+                citySelect.dispatchEvent(new Event('change'));
+            }
+            
+            // Close dropdown
+            document.getElementById('cityDropdown').classList.add('hidden');
+        }
+        
+        function selectAllCities() {
+            selectedCityValue = '';
+            document.getElementById('cityDropdownText').textContent = 'Të Gjitha Qytetet';
+            document.getElementById('cityDropdown').classList.add('hidden');
+            
+            const citySelect = document.getElementById('citySelect');
+            if (citySelect) {
+                citySelect.value = '';
+                // Trigger change event so search listeners are notified
+                citySelect.dispatchEvent(new Event('change'));
+            }
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('cityDropdown');
+            const button = document.getElementById('cityDropdownBtn');
+            if (dropdown && button && !dropdown.contains(event.target) && !button.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        // Close modal when clicking outside
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailModal = document.getElementById('emailModal');
+            if (emailModal) {
+                emailModal.addEventListener('click', function(e) {
+                    if (e.target === emailModal) {
+                        closeEmailModal();
+                    }
+                });
+            }
+        });
+
+</script>
+
+    <!-- Email Modal -->
+    <div id="emailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-900">Dërgo Mesazh</h3>
+                    <button onclick="closeEmailModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <i data-lucide="x" class="h-6 w-6"></i>
+                    </button>
+                </div>
+                
+                <form id="emailForm" onsubmit="handleEmailSubmit(event); return false;">
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-600 mb-2">
+                            <strong>Kompania:</strong> <span id="emailModalCompanyName"></span>
+                        </p>
+                        <p class="text-sm text-gray-600">
+                            <strong>Email:</strong> <span id="emailModalTo"></span>
+                        </p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="emailClientEmail" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email-i juaj *
+                        </label>
+                        <input
+                            type="email"
+                            id="emailClientEmail"
+                            required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="email@example.com"
+                        />
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="emailMessage" class="block text-sm font-medium text-gray-700 mb-2">
+                            Mesazhi *
+                        </label>
+                        <textarea
+                            id="emailMessage"
+                            required
+                            rows="6"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Shkruani mesazhin tuaj këtu..."
+                        ></textarea>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button
+                            type="button"
+                            onclick="closeEmailModal()"
+                            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                        >
+                            Anulo
+                        </button>
+                        <button
+                            type="submit"
+                            class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                            Dërgo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

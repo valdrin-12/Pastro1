@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abonimi - Pastro.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #dbeafe 0%, #dcfce7 100%);
+        }
+        .payment-container {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .input-group {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        .pricing-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .pricing-card.featured {
+            border-color: #2563eb;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            transform: scale(1.05);
+        }
+        .pricing-card:hover {
+            border-color: #2563eb;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
+        }
+        .card-number {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+        .payment-success {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border: 2px solid #22c55e;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen py-8">
+    <!-- Header -->
+    <header class="max-w-4xl mx-auto px-4 mb-8">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <i data-lucide="building-2" class="h-8 w-8 text-blue-600"></i>
+                <h1 class="ml-2 text-2xl font-bold text-gray-900">Pastro.com</h1>
+            </div>
+            <a href="demo-sq-fixed.html" class="text-gray-700 hover:text-blue-600 transition-colors">
+                ← Kthehu në Kryefaqe
+            </a>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-4">
+        <!-- Page Header -->
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Abonimi i Kompanisë</h2>
+            <p class="text-gray-600">Për të qenë të dukshme për klientët, kompanitë duhet të paguajnë abonim mujor</p>
+        </div>
+
+        <!-- Pricing Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <!-- Free Plan -->
+            <div class="pricing-card">
+                <div class="mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Plan Falas</h3>
+                    <div class="text-3xl font-bold text-gray-900 mt-2">€0</div>
+                    <div class="text-gray-600">/muaj</div>
+                </div>
+                <ul class="text-left space-y-2 mb-6">
+                    <li class="flex items-center">
+                        <i data-lucide="x" class="h-4 w-4 text-red-500 mr-2"></i>
+                        <span class="text-gray-600">Nuk jeni të dukshme për klientët</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i data-lucide="x" class="h-4 w-4 text-red-500 mr-2"></i>
+                        <span class="text-gray-600">Nuk mund të merrni porosi</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i data-lucide="check" class="h-4 w-4 text-green-500 mr-2"></i>
+                        <span class="text-gray-600">Akses në panelin e kompanisë</span>
+                    </li>
+                </ul>
+                <button class="btn-secondary" disabled>
+                    Plani Aktual
+                </button>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="pricing-card featured">
+                <div class="mb-4">
+                    <div class="bg-blue-600 text-white text-sm font-medium px-3 py-1 rounded-full inline-block mb-2">
+                        Rekomanduar
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900">Plan Premium</h3>
+                    <div class="text-3xl font-bold text-blue-600 mt-2">€4</div>
+                    <div class="text-gray-600">/muaj</div>
+                </div>
+                <ul class="text-left space-y-2 mb-6">
+                    <li class="flex items-center">
+                        <i data-lucide="check" class="h-4 w-4 text-green-500 mr-2"></i>
+                        <span class="text-gray-600">Të dukshme për të gjithë klientët</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i data-lucide="check" class="h-4 w-4 text-green-500 mr-2"></i>
+                        <span class="text-gray-600">Mund të merrni porosi</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i data-lucide="check" class="h-4 w-4 text-green-500 mr-2"></i>
+                        <span class="text-gray-600">Akses i plotë në panelin e kompanisë</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i data-lucide="check" class="h-4 w-4 text-green-500 mr-2"></i>
+                        <span class="text-gray-600">Statistika të detajuara</span>
+                    </li>
+                </ul>
+                <button id="subscribeBtn" class="btn-primary">
+                    Abonohu Tani
+                </button>
+            </div>
+        </div>
+
+        <!-- Payment Form -->
+        <div id="paymentForm" class="payment-container p-8 hidden">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6">Detajet e Pagesës</h3>
+            
+            <form id="paymentFormElement" class="space-y-6">
+                <!-- Card Number -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Numri i Kartës *</label>
+                    <div class="input-group">
+                        <i data-lucide="credit-card" class="input-icon"></i>
+                        <input
+                            type="text"
+                            id="cardNumber"
+                            maxlength="19"
+                            placeholder="1234 5678 9012 3456"
+                            class="card-number w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- Expiry and CVV -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Data e Skadimit *</label>
+                        <input
+                            type="text"
+                            id="expiryDate"
+                            maxlength="5"
+                            placeholder="MM/YY"
+                            class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">CVV *</label>
+                        <input
+                            type="text"
+                            id="cvv"
+                            maxlength="4"
+                            placeholder="123"
+                            class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- Cardholder Name -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Emri i Pronarit të Kartës *</label>
+                    <input
+                        type="text"
+                        id="cardholderName"
+                        placeholder="Emri i plotë"
+                        class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        required
+                    />
+                </div>
+
+                <!-- Billing Address -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Adresa e Faturimit *</label>
+                    <textarea
+                        id="billingAddress"
+                        rows="3"
+                        placeholder="Adresa e plotë"
+                        class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- Payment Summary -->
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-900 mb-2">Përmbledhja e Pagesës</h4>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Abonimi Premium (mujor)</span>
+                        <span class="font-semibold text-gray-900">€4.00</span>
+                    </div>
+                    <div class="border-t border-gray-200 mt-2 pt-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-gray-900">Total</span>
+                            <span class="text-xl font-bold text-blue-600">€4.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="flex items-start">
+                    <input
+                        type="checkbox"
+                        id="terms"
+                        class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        required
+                    />
+                    <label for="terms" class="ml-2 text-sm text-gray-600">
+                        Unë pranoj <a href="#" class="text-blue-600 hover:text-blue-500">kushtet dhe kushtet</a> dhe 
+                        <a href="#" class="text-blue-600 hover:text-blue-500">politikën e privatësisë</a>
+                    </label>
+                </div>
+
+                <!-- Payment Buttons -->
+                <div class="flex space-x-4">
+                    <button type="button" onclick="cancelPayment()" class="btn-secondary flex-1">
+                        Anulo
+                    </button>
+                    <button type="submit" class="btn-primary flex-1">
+                        <i data-lucide="credit-card" class="h-4 w-4 inline mr-2"></i>
+                        Paguaj €4.00
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="payment-container p-8 text-center hidden">
+            <div class="payment-success rounded-lg p-6 mb-6">
+                <i data-lucide="check-circle" class="h-16 w-16 text-green-600 mx-auto mb-4"></i>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Pagesa u Krye me Sukses!</h3>
+                <p class="text-gray-600 mb-4">Kompania juaj tani është e dukshme për klientët në platformë.</p>
+                <div class="bg-white rounded-lg p-4 mb-4">
+                    <h4 class="font-semibold text-gray-900 mb-2">Detajet e Abonimit:</h4>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <p><strong>Plan:</strong> Premium</p>
+                        <p><strong>Çmimi:</strong> €4.00/muaj</p>
+                        <p><strong>Data e Skadimit:</strong> <span id="nextBillingDate"></span></p>
+                        <p><strong>Statusi:</strong> <span class="text-green-600 font-semibold">Aktiv</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center space-x-4">
+                <a href="demo-sq-fixed.html" class="btn-primary">Shiko Kompaninë në Platformë</a>
+                <button onclick="goToDashboard()" class="btn-secondary">Shko në Panel</button>
+            </div>
+        </div>
+
+        <!-- Current Subscription Status -->
+        <div id="currentSubscription" class="payment-container p-8 hidden">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6">Statusi i Abonimit</h3>
+            <div id="subscriptionStatusCard" class="bg-green-50 border border-green-200 rounded-lg p-6">
+                <div class="flex items-center mb-4">
+                    <i data-lucide="check-circle" class="h-8 w-8 text-green-600 mr-3"></i>
+                    <div>
+                        <h4 class="font-semibold text-gray-900" id="subscriptionStatusTitle">Abonimi Aktiv</h4>
+                        <p class="text-sm text-gray-600" id="subscriptionStatusMessage">Kompania juaj është e dukshme për klientët</p>
+                    </div>
+                </div>
+                <div id="cancellationNotice" class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4 hidden">
+                    <div class="flex items-start">
+                        <i data-lucide="alert-triangle" class="h-5 w-5 text-yellow-600 mr-2 mt-0.5"></i>
+                        <div>
+                            <p class="text-sm font-medium text-yellow-900">Abonimi do të ndalojë në <span id="cancellationDate"></span></p>
+                            <p class="text-xs text-yellow-700 mt-1">Pas kësaj date, nuk do t'u terheqen para më tej nga llogaria juaj.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm mb-4">
+                    <div>
+                        <span class="text-gray-600">Plan:</span>
+                        <span class="font-semibold text-gray-900 ml-2">Premium</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Skadimi:</span>
+                        <span class="font-semibold text-gray-900 ml-2" id="subscriptionExpiry"></span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Çmimi:</span>
+                        <span class="font-semibold text-gray-900 ml-2">€4.00/muaj</span>
+                    </div>
+                </div>
+                <div id="autoRenewalNotice" class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-900 mb-4">
+                    <div class="flex items-start">
+                        <i data-lucide="refresh-cw" class="h-4 w-4 mr-2 mt-0.5 text-blue-600"></i>
+                        <div>
+                            <p class="font-semibold mb-1">Rinovim Automatik</p>
+                            <p>Abonimi juaj do të rinovohet automatikisht pas datës së skadimit dhe pagesa do të terheqet automatikisht nga llogaria juaj. Për të ndërprerë abonimin, klikoni "Menaxho Abonimin".</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 flex space-x-4">
+                    <button onclick="manageSubscription()" class="btn-secondary">
+                        Menaxho Abonimin
+                    </button>
+                    <button onclick="viewInPlatform()" class="btn-primary">
+                        Shiko në Platformë
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subscription Management Modal -->
+        <div id="subscriptionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Menaxho Abonimin</h3>
+                    <button onclick="closeSubscriptionModal()" class="text-gray-400 hover:text-gray-600">
+                        <i data-lucide="x" class="h-6 w-6"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">Abonimi Aktual</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <p><strong>Plan:</strong> Premium</p>
+                            <p><strong>Çmimi:</strong> €4.00/muaj</p>
+                            <p><strong>Skadimi:</strong> <span id="modalExpiryDate"></span></p>
+                        </div>
+                    </div>
+
+                    <div id="autoRenewalInfo" class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <div class="flex items-start">
+                            <i data-lucide="info" class="h-5 w-5 text-blue-600 mr-2 mt-0.5"></i>
+                            <div class="text-sm text-blue-900">
+                                <p class="font-semibold mb-1">Rinovim Automatik</p>
+                                <p>Nëse nuk e ndërprisni abonimin, ai do të rinovohet automatikisht pas datës së skadimit. Pagesa do të terheqet automatikisht nga llogaria juaj.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="cancelSubscriptionSection">
+                        <h4 class="font-semibold text-gray-900 mb-3">Ndërprerja e Abonimit</h4>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Nëse ndërprisni abonimin, ai do të vazhdojë të jetë aktiv deri në datën e skadimit. 
+                            Pas kësaj date, <strong>abonimi nuk do të rinovohet automatikisht</strong> dhe nuk do t'u terheqen para më tej nga llogaria juaj.
+                        </p>
+                        <button onclick="cancelSubscription()" class="btn-secondary w-full">
+                            <i data-lucide="x-circle" class="h-4 w-4 inline mr-2"></i>
+                            Ndërpre Abonimin
+                        </button>
+                    </div>
+
+                    <div id="reactivateSubscriptionSection" class="hidden">
+                        <h4 class="font-semibold text-gray-900 mb-3">Riaktivizo Abonimin</h4>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Abonimi juaj është caktuar për ndërprerje. Nëse e riaktivizoni, abonimi do të rinovohet automatikisht pas datës së skadimit dhe pagesa do të terheqet automatikisht nga llogaria juaj.
+                        </p>
+                        <button onclick="reactivateSubscription()" class="btn-primary w-full">
+                            <i data-lucide="check-circle" class="h-4 w-4 inline mr-2"></i>
+                            Riaktivizo Abonimin
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <button onclick="closeSubscriptionModal()" class="btn-secondary">
+                        Mbyll
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Auto-renewal function - checks and renews subscription if needed
+        function checkAndRenewSubscription(subData, userId) {
+            const now = new Date();
+            const expiryDate = new Date(subData.expiresAt);
+            
+            // If subscription has expired
+            if (expiryDate <= now) {
+                // If willCancel is true, subscription stops (no renewal)
+                if (subData.willCancel) {
+                    subData.status = 'cancelled';
+                    subData.cancelledAt = new Date().toISOString();
+                    localStorage.setItem(`subscription_${userId}`, JSON.stringify(subData));
+                    
+                    // Update company visibility
+                    const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                    const companyIndex = companies.findIndex(c => c.id === userId);
+                    if (companyIndex !== -1) {
+                        companies[companyIndex].isVisible = false;
+                        localStorage.setItem('pastroCompanies', JSON.stringify(companies));
+                    }
+                    
+                    return false; // Subscription cancelled
+                } else {
+                    // Auto-renew: extend subscription by 30 days (simulate automatic payment)
+                    const newExpiryDate = new Date(now);
+                    newExpiryDate.setMonth(newExpiryDate.getMonth() + 1); // Add 1 month
+                    
+                    subData.status = 'active';
+                    subData.startDate = now.toISOString();
+                    subData.expiresAt = newExpiryDate.toISOString();
+                    subData.lastRenewedAt = now.toISOString();
+                    delete subData.willCancel; // Ensure it's active
+                    delete subData.cancelAt;
+                    delete subData.cancelledAt;
+                    
+                    // Save renewed subscription
+                    localStorage.setItem(`subscription_${userId}`, JSON.stringify(subData));
+                    
+                    // Update company visibility
+                    const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                    const companyIndex = companies.findIndex(c => c.id === userId);
+                    if (companyIndex !== -1) {
+                        companies[companyIndex].isVisible = true;
+                        companies[companyIndex].subscription = subData;
+                        localStorage.setItem('pastroCompanies', JSON.stringify(companies));
+                    }
+                    
+                    return true; // Subscription renewed
+                }
+            }
+            
+            return null; // Subscription still active, no action needed
+        }
+
+        // Check if company is already subscribed
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                const subscription = localStorage.getItem(`subscription_${user.id}`);
+                
+                if (subscription) {
+                    const subData = JSON.parse(subscription);
+                    
+                    // Check and auto-renew if needed (only if status is active)
+                    if (subData.status === 'active') {
+                        const renewalResult = checkAndRenewSubscription(subData, user.id);
+                        
+                        // Reload subscription data after potential renewal
+                        const updatedSubscription = localStorage.getItem(`subscription_${user.id}`);
+                        if (updatedSubscription) {
+                            const updatedSubData = JSON.parse(updatedSubscription);
+                            
+                            if (updatedSubData.status === 'active' && new Date(updatedSubData.expiresAt) > new Date()) {
+                                showCurrentSubscription(updatedSubData);
+                                // Show notification if subscription was renewed
+                                if (renewalResult === true) {
+                                    const expiryDate = new Date(updatedSubData.expiresAt);
+                                    alert(`Abonimi juaj u rinovua automatikisht! Skadimi i ri: ${expiryDate.toLocaleDateString('sq-AL')}`);
+                                }
+                            } else if (updatedSubData.status === 'cancelled') {
+                                alert('Abonimi juaj ka skaduar dhe nuk u rinovua automatikisht sepse u ndërprerë më parë.');
+                                showPricingPlans();
+                            } else {
+                                showPricingPlans();
+                            }
+                        }
+                    } else if (subData.status === 'active' && new Date(subData.expiresAt) > new Date()) {
+                        showCurrentSubscription(subData);
+                    } else {
+                        showPricingPlans();
+                    }
+                } else {
+                    showPricingPlans();
+                }
+            } else {
+                // Redirect to sign in if not logged in
+                window.location.href = 'signin-sq.html';
+            }
+        });
+
+        function showPricingPlans() {
+            document.getElementById('paymentForm').classList.add('hidden');
+            document.getElementById('successMessage').classList.add('hidden');
+            document.getElementById('currentSubscription').classList.add('hidden');
+        }
+
+        function showCurrentSubscription(subData) {
+            document.getElementById('paymentForm').classList.add('hidden');
+            document.getElementById('successMessage').classList.add('hidden');
+            document.getElementById('currentSubscription').classList.remove('hidden');
+            
+            const expiryDate = new Date(subData.expiresAt);
+            document.getElementById('subscriptionExpiry').textContent = expiryDate.toLocaleDateString('sq-AL');
+            
+            // Show cancellation notice if subscription is set to cancel
+            const cancellationNotice = document.getElementById('cancellationNotice');
+            const statusCard = document.getElementById('subscriptionStatusCard');
+            const statusTitle = document.getElementById('subscriptionStatusTitle');
+            const statusMessage = document.getElementById('subscriptionStatusMessage');
+            
+            const autoRenewalNotice = document.getElementById('autoRenewalNotice');
+            
+            if (subData.willCancel) {
+                cancellationNotice.classList.remove('hidden');
+                autoRenewalNotice.classList.add('hidden'); // Hide auto-renewal notice
+                const cancelDate = new Date(subData.cancelAt || subData.expiresAt);
+                document.getElementById('cancellationDate').textContent = cancelDate.toLocaleDateString('sq-AL');
+                
+                statusCard.classList.remove('bg-green-50', 'border-green-200');
+                statusCard.classList.add('bg-yellow-50', 'border-yellow-200');
+                statusTitle.textContent = 'Abonimi Aktiv (do të ndalohet)';
+                statusMessage.textContent = 'Abonimi juaj do të ndalojë në datën e skadimit. Nuk do t\'u terheqen para më tej.';
+            } else {
+                cancellationNotice.classList.add('hidden');
+                autoRenewalNotice.classList.remove('hidden'); // Show auto-renewal notice
+                statusCard.classList.remove('bg-yellow-50', 'border-yellow-200');
+                statusCard.classList.add('bg-green-50', 'border-green-200');
+                statusTitle.textContent = 'Abonimi Aktiv';
+                statusMessage.textContent = 'Kompania juaj është e dukshme për klientët';
+            }
+        }
+
+        // Subscribe button click
+        document.getElementById('subscribeBtn').addEventListener('click', function() {
+            document.getElementById('paymentForm').classList.remove('hidden');
+            document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2').classList.add('hidden');
+        });
+
+        // Card number formatting
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+
+        // Expiry date formatting
+        document.getElementById('expiryDate').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // CVV formatting
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+
+        // Payment form submission
+        document.getElementById('paymentFormElement').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulate payment processing
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i data-lucide="loader-2" class="h-4 w-4 inline mr-2 animate-spin"></i>Po përpunohet...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                // Process payment
+                processPayment();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+
+        function processPayment() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const subscriptionData = {
+                id: Date.now(),
+                companyId: currentUser.id,
+                plan: 'premium',
+                price: 4.00,
+                status: 'active',
+                startDate: new Date().toISOString(),
+                expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+                paymentMethod: 'credit_card',
+                cardLast4: document.getElementById('cardNumber').value.slice(-4)
+            };
+            
+            // Save subscription
+            localStorage.setItem(`subscription_${currentUser.id}`, JSON.stringify(subscriptionData));
+            
+            // Update company visibility
+            const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+            const companyIndex = companies.findIndex(c => c.id === currentUser.id);
+            if (companyIndex !== -1) {
+                companies[companyIndex].isVisible = true;
+                companies[companyIndex].subscription = subscriptionData;
+                localStorage.setItem('pastroCompanies', JSON.stringify(companies));
+            }
+            
+            // Show success message
+            showSuccessMessage(subscriptionData);
+        }
+
+        function showSuccessMessage(subscriptionData) {
+            document.getElementById('paymentForm').classList.add('hidden');
+            document.getElementById('successMessage').classList.remove('hidden');
+            
+            const nextBillingDate = new Date(subscriptionData.expiresAt);
+            document.getElementById('nextBillingDate').textContent = nextBillingDate.toLocaleDateString('sq-AL');
+        }
+
+        function cancelPayment() {
+            document.getElementById('paymentForm').classList.add('hidden');
+            document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2').classList.remove('hidden');
+        }
+
+        function goToDashboard() {
+            window.location.href = 'demo-sq-fixed.html?user=company';
+        }
+
+        function manageSubscription() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const subscription = localStorage.getItem(`subscription_${currentUser.id}`);
+            
+            if (subscription) {
+                const subData = JSON.parse(subscription);
+                const expiryDate = new Date(subData.expiresAt);
+                document.getElementById('modalExpiryDate').textContent = expiryDate.toLocaleDateString('sq-AL');
+                
+                // Show/hide sections based on cancellation status
+                const cancelSection = document.getElementById('cancelSubscriptionSection');
+                const reactivateSection = document.getElementById('reactivateSubscriptionSection');
+                
+                if (subData.willCancel) {
+                    cancelSection.classList.add('hidden');
+                    reactivateSection.classList.remove('hidden');
+                } else {
+                    cancelSection.classList.remove('hidden');
+                    reactivateSection.classList.add('hidden');
+                }
+                
+                // Show modal
+                document.getElementById('subscriptionModal').classList.remove('hidden');
+                document.getElementById('subscriptionModal').classList.add('flex');
+                lucide.createIcons();
+            }
+        }
+
+        function closeSubscriptionModal() {
+            document.getElementById('subscriptionModal').classList.add('hidden');
+            document.getElementById('subscriptionModal').classList.remove('flex');
+        }
+
+        function cancelSubscription() {
+            if (confirm('Jeni të sigurt që doni të ndërprisni abonimin? Abonimi juaj do të vazhdojë deri në datën e skadimit, por pas kësaj date nuk do t\'u terheqen para më tej.')) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                const subscription = localStorage.getItem(`subscription_${currentUser.id}`);
+                
+                if (subscription) {
+                    const subData = JSON.parse(subscription);
+                    subData.willCancel = true;
+                    subData.cancelAt = subData.expiresAt; // Will cancel at expiry date
+                    subData.cancelledAt = new Date().toISOString(); // Track when user cancelled
+                    
+                    // Save updated subscription
+                    localStorage.setItem(`subscription_${currentUser.id}`, JSON.stringify(subData));
+                    
+                    // Update company visibility flag (will remain true until expiry)
+                    const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                    const companyIndex = companies.findIndex(c => c.id === currentUser.id);
+                    if (companyIndex !== -1) {
+                        companies[companyIndex].subscription = subData;
+                        localStorage.setItem('pastroCompanies', JSON.stringify(companies));
+                    }
+                    
+                    // Refresh the subscription display
+                    showCurrentSubscription(subData);
+                    
+                    // Close modal
+                    closeSubscriptionModal();
+                    
+                    // Show success message
+                    alert('Abonimi juaj është caktuar për ndërprerje. Do të vazhdojë deri në datën e skadimit, por pas kësaj date nuk do t\'u terheqen para më tej.');
+                }
+            }
+        }
+
+        function reactivateSubscription() {
+            if (confirm('Jeni të sigurt që doni të riaktivizoni abonimin? Pagesa do të vazhdojë automatikisht pas datës së skadimit.')) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                const subscription = localStorage.getItem(`subscription_${currentUser.id}`);
+                
+                if (subscription) {
+                    const subData = JSON.parse(subscription);
+                    subData.willCancel = false;
+                    delete subData.cancelAt;
+                    delete subData.cancelledAt;
+                    
+                    // Save updated subscription
+                    localStorage.setItem(`subscription_${currentUser.id}`, JSON.stringify(subData));
+                    
+                    // Update company visibility flag
+                    const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                    const companyIndex = companies.findIndex(c => c.id === currentUser.id);
+                    if (companyIndex !== -1) {
+                        companies[companyIndex].subscription = subData;
+                        localStorage.setItem('pastroCompanies', JSON.stringify(companies));
+                    }
+                    
+                    // Refresh the subscription display
+                    showCurrentSubscription(subData);
+                    
+                    // Close modal
+                    closeSubscriptionModal();
+                    
+                    // Show success message
+                    alert('Abonimi juaj është riaktivizuar me sukses. Pagesa do të vazhdojë automatikisht pas datës së skadimit.');
+                }
+            }
+        }
+
+        function viewInPlatform() {
+            window.location.href = 'demo-sq-fixed.html';
+        }
+    </script>
+</body>
+</html>

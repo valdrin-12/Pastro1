@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Company - Pastro.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #dbeafe 0%, #dcfce7 100%);
+        }
+        .form-section {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .input-group {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+        }
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background: #f9fafb;
+        }
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .step {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin: 0 0.5rem;
+            transition: all 0.3s;
+        }
+        .step.active {
+            background: #2563eb;
+            color: white;
+        }
+        .step.completed {
+            background: #10b981;
+            color: white;
+        }
+        .step.inactive {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+        .step-line {
+            width: 2rem;
+            height: 2px;
+            background: #e5e7eb;
+            margin: auto 0;
+        }
+        .step-line.active {
+            background: #2563eb;
+        }
+        .step-line.completed {
+            background: #10b981;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen py-8">
+    <!-- Header -->
+    <header class="max-w-4xl mx-auto px-4 mb-8">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <i data-lucide="building-2" class="h-8 w-8 text-blue-600"></i>
+                <h1 class="ml-2 text-2xl font-bold text-gray-900">Pastro.com</h1>
+            </div>
+            <a href="demo.html" class="text-gray-700 hover:text-blue-600 transition-colors">
+                ← Back to Home
+            </a>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-4">
+        <!-- Page Header -->
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Register Your Cleaning Company</h2>
+            <p class="text-gray-600">Join Kosovo's leading cleaning services platform</p>
+        </div>
+
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step active" id="step-1">1</div>
+            <div class="step-line active"></div>
+            <div class="step inactive" id="step-2">2</div>
+            <div class="step-line inactive"></div>
+            <div class="step inactive" id="step-3">3</div>
+            <div class="step-line inactive"></div>
+            <div class="step inactive" id="step-4">4</div>
+        </div>
+
+        <!-- Registration Form -->
+        <form id="registrationForm" class="form-section p-8">
+            <!-- Step 1: Account Information -->
+            <div id="step1-content" class="step-content">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Account Information</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                        <div class="input-group">
+                            <i data-lucide="mail" class="input-icon"></i>
+                            <input type="email" id="email" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="company@example.com">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password *</label>
+                        <div class="input-group">
+                            <i data-lucide="lock" class="input-icon"></i>
+                            <input type="password" id="password" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Minimum 6 characters">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password *</label>
+                    <div class="input-group">
+                        <i data-lucide="lock" class="input-icon"></i>
+                        <input type="password" id="confirmPassword" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Confirm your password">
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="button" onclick="nextStep()" class="btn-primary">Next: Company Details</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Company Information -->
+            <div id="step2-content" class="step-content hidden">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Company Information</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Company Name *</label>
+                        <div class="input-group">
+                            <i data-lucide="building-2" class="input-icon"></i>
+                            <input type="text" id="companyName" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Your company name">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                        <div class="input-group">
+                            <i data-lucide="phone" class="input-icon"></i>
+                            <input type="tel" id="phone" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="+383 XX XXX XXX">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Company Description</label>
+                    <textarea id="description" rows="4" class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Tell customers about your company and services..."></textarea>
+                </div>
+
+                <div class="flex justify-between">
+                    <button type="button" onclick="prevStep()" class="btn-secondary">Previous</button>
+                    <button type="button" onclick="nextStep()" class="btn-primary">Next: Operating Cities</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Operating Cities -->
+            <div id="step3-content" class="step-content hidden">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Operating Cities *</h3>
+                <p class="text-gray-600 mb-6">Select all cities where your company provides services</p>
+                
+                <div id="cities-container" class="checkbox-group mb-6"></div>
+
+                <div class="flex justify-between">
+                    <button type="button" onclick="prevStep()" class="btn-secondary">Previous</button>
+                    <button type="button" onclick="nextStep()" class="btn-primary">Next: Services & Pricing</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Services & Pricing -->
+            <div id="step4-content" class="step-content hidden">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Services & Pricing *</h3>
+                    <button type="button" onclick="addService()" class="btn-primary text-sm">
+                        <i data-lucide="plus" class="w-4 h-4 inline mr-1"></i>
+                        Add Service
+                    </button>
+                </div>
+                
+                <div id="services-container" class="space-y-4 mb-6">
+                    <!-- Services will be added dynamically -->
+                </div>
+
+                <div class="flex justify-between">
+                    <button type="button" onclick="prevStep()" class="btn-secondary">Previous</button>
+                    <button type="submit" class="btn-primary">Complete Registration</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Success Message -->
+        <div id="success-message" class="hidden form-section p-8 text-center">
+            <div class="mb-4">
+                <i data-lucide="check-circle" class="h-16 w-16 text-green-600 mx-auto"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Registration Successful!</h3>
+            <p class="text-gray-600 mb-6">Your company has been registered successfully. You can now sign in to access your dashboard.</p>
+            <div class="flex justify-center space-x-4">
+                <a href="demo.html" class="btn-primary">Go to Homepage</a>
+                <button onclick="resetForm()" class="btn-secondary">Register Another Company</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let serviceCount = 0;
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Runtime data from API
+        let apiCities = [];
+        let apiServices = [];
+        let BASE_API = 'http://localhost:3000';
+
+        async function loadLookups() {
+            try {
+                // try port 3000 first
+                let citiesRes = await fetch(`${BASE_API}/api/cities`, { mode: 'cors' });
+                let servicesRes = await fetch(`${BASE_API}/api/services`, { mode: 'cors' });
+                // if either failed, retry on 3001
+                if (!citiesRes.ok || !servicesRes.ok) {
+                    BASE_API = 'http://localhost:3001';
+                    citiesRes = await fetch(`${BASE_API}/api/cities`, { mode: 'cors' });
+                    servicesRes = await fetch(`${BASE_API}/api/services`, { mode: 'cors' });
+                }
+                const citiesData = await citiesRes.json();
+                const servicesData = await servicesRes.json();
+                apiCities = citiesData.cities || [];
+                apiServices = servicesData.services || [];
+
+                // Render cities
+                const container = document.getElementById('cities-container');
+                container.innerHTML = apiCities.map(c => `
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" value="${c.id}" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="text-sm text-gray-700">${c.name}</span>
+                    </label>
+                `).join('');
+            } catch (err) {
+                console.error('Failed to load lookups', err);
+            }
+        }
+
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < 4) {
+                    // Mark current step as completed
+                    document.getElementById(`step-${currentStep}`).classList.remove('active');
+                    document.getElementById(`step-${currentStep}`).classList.add('completed');
+                    
+                    // Update step line
+                    const stepLine = document.querySelector(`#step-${currentStep} + .step-line`);
+                    if (stepLine) {
+                        stepLine.classList.remove('active');
+                        stepLine.classList.add('completed');
+                    }
+
+                    currentStep++;
+                    
+                    // Show next step
+                    document.getElementById(`step${currentStep}-content`).classList.remove('hidden');
+                    document.getElementById(`step${currentStep-1}-content`).classList.add('hidden');
+                    
+                    // Mark next step as active
+                    document.getElementById(`step-${currentStep}`).classList.remove('inactive');
+                    document.getElementById(`step-${currentStep}`).classList.add('active');
+                    
+                    // Update step line
+                    const nextStepLine = document.querySelector(`#step-${currentStep} + .step-line`);
+                    if (nextStepLine) {
+                        nextStepLine.classList.add('active');
+                    }
+
+                    // Add initial service if on step 4
+                    if (currentStep === 4 && serviceCount === 0) {
+                        addService();
+                    }
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                // Hide current step
+                document.getElementById(`step${currentStep}-content`).classList.add('hidden');
+                
+                // Mark current step as inactive
+                document.getElementById(`step-${currentStep}`).classList.remove('active');
+                document.getElementById(`step-${currentStep}`).classList.add('inactive');
+                
+                // Update step line
+                const stepLine = document.querySelector(`#step-${currentStep} + .step-line`);
+                if (stepLine) {
+                    stepLine.classList.remove('active');
+                }
+
+                currentStep--;
+                
+                // Show previous step
+                document.getElementById(`step${currentStep}-content`).classList.remove('hidden');
+                
+                // Mark previous step as active
+                document.getElementById(`step-${currentStep}`).classList.remove('completed', 'inactive');
+                document.getElementById(`step-${currentStep}`).classList.add('active');
+                
+                // Update step line
+                const prevStepLine = document.querySelector(`#step-${currentStep} + .step-line`);
+                if (prevStepLine) {
+                    prevStepLine.classList.remove('completed');
+                    prevStepLine.classList.add('active');
+                }
+            }
+        }
+
+        function validateCurrentStep() {
+            switch(currentStep) {
+                case 1:
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    if (!email || !password || !confirmPassword) {
+                        alert('Please fill in all required fields');
+                        return false;
+                    }
+                    
+                    if (password !== confirmPassword) {
+                        alert('Passwords do not match');
+                        return false;
+                    }
+                    
+                    if (password.length < 6) {
+                        alert('Password must be at least 6 characters long');
+                        return false;
+                    }
+                    break;
+                    
+                case 2:
+                    const companyName = document.getElementById('companyName').value;
+                    const phone = document.getElementById('phone').value;
+                    
+                    if (!companyName || !phone) {
+                        alert('Please fill in all required fields');
+                        return false;
+                    }
+                    break;
+                    
+                case 3:
+                    const selectedCities = document.querySelectorAll('input[type="checkbox"]:checked');
+                    if (selectedCities.length === 0) {
+                        alert('Please select at least one operating city');
+                        return false;
+                    }
+                    break;
+                    
+                case 4:
+                    if (serviceCount === 0) {
+                        alert('Please add at least one service');
+                        return false;
+                    }
+                    
+                    // Validate all services
+                    const serviceSelects = document.querySelectorAll('.service-select');
+                    const priceInputs = document.querySelectorAll('.service-price');
+                    
+                    for (let i = 0; i < serviceSelects.length; i++) {
+                        if (!serviceSelects[i].value || !priceInputs[i].value || parseFloat(priceInputs[i].value) <= 0) {
+                            alert('Please fill in all service details with valid prices');
+                            return false;
+                        }
+                    }
+                    break;
+            }
+            return true;
+        }
+
+        function addService() {
+            serviceCount++;
+            const container = document.getElementById('services-container');
+            const serviceDiv = document.createElement('div');
+            serviceDiv.className = 'service-item';
+            serviceDiv.innerHTML = `
+                <div class="flex-1">
+                    <select class="service-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Select a service</option>
+                        ${() => ''}
+                        ${apiServices.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="w-32">
+                    <div class="relative">
+                        <i data-lucide="dollar-sign" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4"></i>
+                        <input type="number" min="0" step="0.01" class="service-price pl-8 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="0.00">
+                    </div>
+                </div>
+                <button type="button" onclick="removeService(this)" class="btn-danger">
+                    <i data-lucide="x" class="h-4 w-4"></i>
+                </button>
+            `;
+            container.appendChild(serviceDiv);
+            
+            // Re-initialize Lucide icons for the new elements
+            lucide.createIcons();
+        }
+
+        function removeService(button) {
+            button.parentElement.remove();
+            serviceCount--;
+        }
+
+        function resetForm() {
+            // Reset form
+            document.getElementById('registrationForm').reset();
+            document.getElementById('services-container').innerHTML = '';
+            serviceCount = 0;
+            
+            // Reset steps
+            currentStep = 1;
+            document.querySelectorAll('.step-content').forEach(content => content.classList.add('hidden'));
+            document.getElementById('step1-content').classList.remove('hidden');
+            
+            // Reset step indicators
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index === 0) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.add('inactive');
+                }
+            });
+            
+            document.querySelectorAll('.step-line').forEach(line => {
+                line.classList.remove('active', 'completed');
+                if (line.previousElementSibling && line.previousElementSibling.classList.contains('active')) {
+                    line.classList.add('active');
+                }
+            });
+            
+            // Hide success message
+            document.getElementById('success-message').classList.add('hidden');
+            document.getElementById('registrationForm').classList.remove('hidden');
+        }
+
+        // Form submission -> POST to Next.js API to save in Postgres
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (validateCurrentStep()) {
+                const payload = {
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value,
+                    companyName: document.getElementById('companyName').value,
+                    phone: document.getElementById('phone').value,
+                    description: document.getElementById('description').value,
+                    cities: Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value),
+                    services: []
+                };
+
+                const serviceSelects = document.querySelectorAll('.service-select');
+                const priceInputs = document.querySelectorAll('.service-price');
+                for (let i = 0; i < serviceSelects.length; i++) {
+                    if (serviceSelects[i].value && priceInputs[i].value) {
+                        payload.services.push({
+                            serviceId: serviceSelects[i].value,
+                            price: parseFloat(priceInputs[i].value)
+                        });
+                    }
+                }
+
+                fetch(`${BASE_API}/api/auth/register`, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.success) {
+                        document.getElementById('registrationForm').classList.add('hidden');
+                        document.getElementById('success-message').classList.remove('hidden');
+                    } else {
+                        alert((data && data.error) || 'Registration failed');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Network or server error during registration');
+                });
+            }
+        });
+
+        // Add some sample data for demo
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLookups();
+            // Pre-fill some fields for demo purposes
+            document.getElementById('email').value = 'demo@cleaningcompany.com';
+            document.getElementById('companyName').value = 'Demo Cleaning Company';
+            document.getElementById('phone').value = '+383 44 123 456';
+            document.getElementById('description').value = 'Professional cleaning services with 10+ years of experience. We specialize in residential and commercial cleaning across Kosovo.';
+        });
+    </script>
+</body>
+</html>

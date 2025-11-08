@@ -1,0 +1,3642 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Pastro.com - Portali i Shërbimeve të Pastrimit për Kosovën</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        /* Global box-sizing for responsive design */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+        
+        html {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #dbeafe 0%, #dcfce7 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Underline effect on hover for all navigation links */
+        nav a {
+            position: relative;
+            text-decoration: none;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        /* Also apply to footer links */
+        footer a {
+            position: relative;
+            text-decoration: none;
+        }
+        
+        footer a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        
+        footer a:hover::after {
+            width: 100%;
+        }
+        
+        /* Apply to top navigation links as well */
+        header nav a:not(.bg-blue-600) {
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        header nav a:not(.bg-blue-600)::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        
+        header nav a:not(.bg-blue-600):hover::after {
+            width: 100%;
+        }
+        
+        /* Ensure navigation items stay on one line */
+        header nav {
+            flex-wrap: nowrap;
+        }
+        
+        header nav a {
+            white-space: nowrap;
+            font-size: 0.875rem;
+        }
+        
+        /* Mobile Navigation - Hamburger Menu */
+        .mobile-menu-btn {
+            display: none;
+        }
+        
+        /* Hide hamburger button on desktop */
+        @media (min-width: 768px) {
+            .mobile-menu-btn {
+                display: none !important;
+            }
+        }
+        
+        .mobile-menu {
+            display: none;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            /* Hide ALL desktop navigation, show ONLY mobile menu button */
+            header nav:not(.mobile-menu) {
+                display: none !important;
+            }
+            
+            /* Hide desktop navigation container completely */
+            header .flex.justify-between nav.hidden.md\\:flex {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+                overflow: hidden !important;
+            }
+            
+            /* Show mobile menu button */
+            .mobile-menu-btn {
+                display: flex !important;
+                z-index: 60;
+                position: relative;
+            }
+            
+            /* Ensure hamburger menu is always visible and clickable on iOS/Android */
+            #mobileMenuBtn {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                align-items: center;
+                justify-content: center;
+                min-width: 48px;
+                min-height: 48px;
+                z-index: 60;
+                position: relative;
+                flex-shrink: 0;
+                margin-left: auto;
+            }
+            
+            /* Override any Tailwind classes that might hide the button */
+            button.mobile-menu-btn.md\\:hidden {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            /* Mobile header - simple approach for iOS and Android */
+            @media (max-width: 768px) {
+                /* Show header on mobile */
+                header {
+                    display: block !important;
+                    visibility: visible !important;
+                    background: white !important;
+                    background-color: white !important;
+                    border-bottom: 1px solid #e5e7eb !important;
+                    padding: 0 !important;
+                    height: auto !important;
+                    opacity: 1 !important;
+                }
+                
+                /* Ensure header container has solid background */
+                header .max-w-7xl {
+                    background: white !important;
+                    background-color: white !important;
+                }
+                
+                /* Ensure header navigation bar has solid background */
+                header .flex.justify-between {
+                    background: white !important;
+                    background-color: white !important;
+                }
+                
+                /* Hide desktop logo */
+                header a[href*="demo-sq-fixed"].hidden.md\\:flex {
+                    display: none !important;
+                }
+                
+                /* Hide desktop navigation */
+                header nav.hidden.md\\:flex {
+                    display: none !important;
+                }
+                
+                /* Show mobile header container */
+                header .flex.justify-between {
+                    display: flex !important;
+                    justify-content: space-between !important;
+                    align-items: center !important;
+                    padding: 0.75rem 1rem !important;
+                    width: 100% !important;
+                    border-bottom: none !important;
+                }
+                
+                /* Remove border from header container on mobile */
+                header .max-w-7xl {
+                    border-bottom: none !important;
+                }
+                
+                /* Style Kyçu button on mobile */
+                header a[href*="signin-sq"].md\\:hidden {
+                    display: flex !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                    color: #374151 !important;
+                    font-size: 0.875rem !important;
+                    font-weight: 500 !important;
+                    text-decoration: none !important;
+                    padding: 0.5rem 0 !important;
+                    flex-shrink: 0 !important;
+                }
+                
+                /* Style hamburger menu button on mobile */
+                #mobileMenuBtn.md\\:hidden {
+                    display: flex !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                    background: #f3f4f6 !important; /* gray-100 */
+                    background-color: #f3f4f6 !important; /* gray-100 */
+                    border: 1px solid #d1d5db !important; /* gray-300 */
+                    border-radius: 0.5rem !important;
+                    min-width: 48px !important;
+                    min-height: 48px !important;
+                    padding: 0.625rem !important;
+                    flex-shrink: 0 !important;
+                    color: #374151 !important; /* gray-700 */
+                }
+                
+                /* Ensure right container is properly aligned */
+                header .flex.items-center.gap-2 {
+                    display: flex !important;
+                    margin-left: auto !important;
+                    justify-content: flex-end !important;
+                    align-items: center !important;
+                }
+            }
+            
+            /* Mobile menu overlay */
+            .mobile-menu-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 9998;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .mobile-menu-overlay.open {
+                display: block;
+                opacity: 1;
+            }
+            
+            .mobile-menu {
+                display: block;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 100%;
+                background: white;
+                height: auto;
+                max-height: 100vh;
+                overflow-y: auto;
+                overflow-x: hidden;
+                z-index: 9999 !important;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                box-shadow: -4px 0 6px -1px rgba(0, 0, 0, 0.1);
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            @media (max-width: 768px) {
+                .mobile-menu {
+                    top: 0;
+                    right: 0;
+                    width: 100%;
+                    height: auto;
+                    max-height: 100vh;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                    -webkit-overflow-scrolling: touch;
+                }
+            }
+            
+            .mobile-menu.open {
+                transform: translateX(0);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* Mobile menu header styling */
+            .mobile-menu-header {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                background: white;
+                background-color: white;
+            }
+            
+            /* Ensure menu content can scroll */
+            .mobile-menu > * {
+                flex-shrink: 0;
+            }
+            
+            /* Ensure menu is above overlay */
+            .mobile-menu.open {
+                z-index: 1000;
+            }
+            
+            
+            .mobile-menu a {
+                display: block;
+                padding: 1rem;
+                border-bottom: 1px solid #f3f4f6;
+                text-decoration: none;
+                color: #374151;
+                transition: background-color 0.2s;
+            }
+            
+            .mobile-menu a:hover {
+                background-color: #f9fafb;
+            }
+            
+        /* Remove any dashed borders or outlines - Global fix for debugging lines */
+        * {
+            outline: none !important;
+        }
+        
+        *:focus,
+        *:focus-visible,
+        *:active {
+            outline: none !important;
+        }
+        
+        /* Ensure no dashed borders anywhere */
+        * {
+            border-style: solid !important;
+        }
+        
+        /* Remove any grid debugging lines */
+        * {
+            background-image: none !important;
+        }
+        
+        /* Mobile menu specific */
+        .mobile-menu * {
+            outline: none !important;
+            border-style: solid !important;
+        }
+            
+            /* Top navigation adjustments - clean and user-friendly layout */
+            header .flex.justify-between {
+                flex-wrap: nowrap;
+                position: relative;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            /* Logo on left - clean and responsive */
+            header .flex.justify-between > a {
+                flex: 1 1 auto;
+                min-width: 0;
+                max-width: none;
+            }
+            
+            /* Right side container - only hamburger menu on mobile */
+            header .flex.justify-between > div {
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            /* Header improvements for better UX */
+            header {
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            }
+            
+            /* Logo hover effect */
+            header a:hover {
+                opacity: 0.8;
+            }
+            
+            /* Ensure NO register button shows in header on mobile - ULTRA SPECIFIC */
+            /* Hide ALL desktop navigation elements */
+            header .desktop-nav,
+            header .desktop-nav *,
+            header .desktop-register-btn,
+            header nav.desktop-nav,
+            header nav.desktop-nav a,
+            header nav.desktop-nav a.desktop-register-btn,
+            header .flex.justify-between nav,
+            header .flex.justify-between nav *,
+            header nav.hidden.md\\:flex,
+            header nav.hidden.md\\:flex *,
+            header nav[class*="hidden"],
+            header nav[class*="hidden"] *,
+            header .flex.items-center nav,
+            header .flex.items-center nav a,
+            header .flex.items-center nav a.bg-blue-600,
+            header div.flex.items-center nav,
+            header div.flex.items-center nav a.bg-blue-600,
+            /* Additional selectors to catch any register button - but allow mobile buttons */
+            header a[href*="register"]:not(.md\\:hidden),
+            header a[href*="register"].bg-blue-600:not(.md\\:hidden),
+            header .flex.justify-between a[href*="register"]:not(.md\\:hidden),
+            header .flex.items-center a[href*="register"]:not(.md\\:hidden) {
+                display: none !important;
+                visibility: hidden !important;
+                width: 0 !important;
+                height: 0 !important;
+                overflow: hidden !important;
+                opacity: 0 !important;
+                position: absolute !important;
+                left: -9999px !important;
+                pointer-events: none !important;
+            }
+            
+            /* Ensure mobile buttons are visible and properly styled */
+            header .md\\:hidden {
+                display: flex !important;
+                visibility: visible !important;
+                width: auto !important;
+                height: auto !important;
+                overflow: visible !important;
+                opacity: 1 !important;
+                position: relative !important;
+                left: auto !important;
+                pointer-events: auto !important;
+                z-index: 10 !important;
+            }
+            
+            /* Specifically ensure Kyçu and Regjistro Kompani buttons are visible */
+            header a[href*="signin-sq"].md\\:hidden,
+            header a[href*="register-sq"].md\\:hidden {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                position: relative !important;
+                z-index: 10 !important;
+            }
+            
+            /* iOS specific - ensure Regjistro Kompani button is visible on home screen */
+            @supports (-webkit-touch-callout: none) {
+                header a[href*="register-sq"].md\\:hidden {
+                    display: flex !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                    position: relative !important;
+                    z-index: 10 !important;
+                    -webkit-appearance: none !important;
+                    appearance: none !important;
+                }
+            }
+            
+            /* Ensure mobile buttons don't have blue background */
+            header .md\\:hidden.bg-blue-600,
+            header .md\\:hidden.bg-blue-700 {
+                background-color: transparent !important;
+                background: transparent !important;
+            }
+            
+            /* Ensure header layout is clean on mobile */
+            header .flex.justify-between {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            /* Ensure hamburger button is always visible and user-friendly on iOS/Android */
+            #mobileMenuBtn {
+                position: relative !important;
+                z-index: 100 !important;
+                background: #f3f4f6 !important; /* gray-100 */
+                background-color: #f3f4f6 !important; /* gray-100 */
+                border: 1px solid #d1d5db !important; /* gray-300 */
+                border-color: #d1d5db !important; /* gray-300 */
+                cursor: pointer !important;
+                border-radius: 0.5rem !important; /* rounded-lg */
+                transition: all 0.2s ease;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+                touch-action: manipulation;
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; /* shadow-sm */
+                color: #374151 !important; /* gray-700 for icon */
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: flex !important;
+            }
+            
+            #mobileMenuBtn:hover {
+                background: #e5e7eb !important; /* gray-200 */
+                background-color: #e5e7eb !important; /* gray-200 */
+                border-color: #9ca3af !important; /* gray-400 */
+                color: #1f2937 !important; /* gray-800 for icon */
+            }
+            
+            #mobileMenuBtn:active {
+                background: #d1d5db !important; /* gray-300 */
+                background-color: #d1d5db !important; /* gray-300 */
+                transform: none !important;
+                color: #111827 !important; /* gray-900 for icon */
+            }
+            
+            /* Ensure SVG icon inside button is visible and matches button text color */
+            #mobileMenuBtn svg {
+                color: #374151 !important; /* gray-700 */
+                stroke: #374151 !important; /* gray-700 */
+                fill: none !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+            
+            #mobileMenuBtn:hover svg {
+                color: #1f2937 !important; /* gray-800 */
+                stroke: #1f2937 !important; /* gray-800 */
+            }
+            
+            #mobileMenuBtn:active svg {
+                color: #111827 !important; /* gray-900 */
+                stroke: #111827 !important; /* gray-900 */
+            }
+            
+            /* iOS Safari specific fixes */
+            @supports (-webkit-touch-callout: none) {
+                #mobileMenuBtn {
+                    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+                    -webkit-appearance: none;
+                    appearance: none;
+                    display: flex !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                }
+            }
+            
+            /* Make mobile menu register button smaller and left-aligned - no background */
+            .mobile-menu a.text-blue-600 {
+                font-size: 0.875rem;
+                padding: 0.625rem 1rem;
+                margin: 0.5rem 1rem;
+                text-align: left;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                background: transparent;
+            }
+            
+            /* Hero section */
+            .py-20 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            
+            /* Text sizes */
+            h2.text-4xl {
+                font-size: 1.875rem;
+                line-height: 2.25rem;
+            }
+            
+            h3.text-3xl {
+                font-size: 1.5rem;
+                line-height: 2rem;
+            }
+            
+            /* Grid adjustments */
+            .grid.grid-cols-1.md\\:grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid.grid-cols-1.md\\:grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid.grid-cols-1.md\\:grid-cols-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid.grid-cols-1.lg\\:grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid.grid-cols-1.lg\\:grid-cols-12 {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Search section */
+            .max-w-4xl {
+                max-width: 100%;
+            }
+            
+            /* Cards */
+            .p-6 {
+                padding: 1rem;
+            }
+            
+            /* Buttons - make them touch-friendly */
+            button, a.bg-blue-600 {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            /* Input fields */
+            input, select, textarea {
+                font-size: 16px; /* Prevents zoom on iOS */
+                min-height: 44px;
+            }
+            
+            /* Service categories grid */
+            #serviceCategories .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+            
+            /* Footer */
+            footer .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Quick nav buttons */
+            .quick-nav {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            
+            .quick-nav button {
+                width: 48px;
+                height: 48px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* Extra small screens - Mobile optimization */
+            /* Typography - Optimized for mobile */
+            h2.text-4xl {
+                font-size: 1.5rem; /* 24px - within 22-26px range */
+                line-height: 1.75rem;
+            }
+            
+            h2.text-6xl {
+                font-size: 1.625rem; /* 26px - max for mobile */
+                line-height: 2rem;
+            }
+            
+            .text-xl {
+                font-size: 1rem; /* 16px - for subtitles */
+            }
+            
+            p.text-xl {
+                font-size: 0.875rem; /* 14px - for paragraphs */
+            }
+            
+            /* General paragraph text */
+            p {
+                font-size: 0.875rem; /* 14px */
+                line-height: 1.5rem;
+            }
+            
+            /* Subtitles */
+            h3, h4 {
+                font-size: 1rem; /* 16px */
+            }
+            
+            /* Hero section - mobile optimization */
+            section.py-20 {
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+            
+            /* Search form container - full width, proper padding */
+            .bg-white.rounded-2xl {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 1rem !important;
+                margin-left: auto;
+                margin-right: auto;
+                box-sizing: border-box;
+                background: white !important;
+            }
+            
+            /* Search form grid - stack vertically */
+            .grid.grid-cols-1.md\\:grid-cols-4 {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0.75rem !important;
+            }
+            
+            /* All form inputs and buttons - full width */
+            #searchInput,
+            #cityDropdownBtn,
+            #serviceDropdownBtn,
+            #searchButton {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            
+            /* Search button - full width with proper padding for mobile */
+            #searchButton,
+            .search-btn {
+                width: 100% !important;
+                padding: 12px 0px !important; /* Optimized padding for touch */
+                font-size: 16px !important; /* Larger text for easy touch */
+                min-height: 48px !important; /* Touch target size */
+                font-weight: 600 !important;
+            }
+            
+            /* Input fields - proper sizing for touch */
+            input, select, button {
+                font-size: 0.9375rem;
+                min-height: 44px; /* Touch target size */
+            }
+            
+            /* Header - prevent overlap */
+            header {
+                position: sticky;
+                top: 0;
+                z-index: 50;
+            }
+            
+            /* Hero section - adjust spacing */
+            section.py-20 > div {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            /* Remove any max-width constraints on mobile */
+            .max-w-4xl,
+            .max-w-7xl {
+                max-width: 100% !important;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                box-sizing: border-box;
+            }
+            
+            #serviceCategories .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 1.25rem;
+            }
+            
+            header .h-8.w-8 {
+                height: 1.5rem;
+                width: 1.5rem;
+            }
+            
+            /* Ensure dropdowns don't overflow */
+            .relative {
+                position: relative;
+                width: 100%;
+            }
+            
+            /* Dropdown menus - full width, no overflow */
+            #cityDropdown,
+            #serviceDropdown {
+                width: 100% !important;
+                max-width: 100% !important;
+                left: 0 !important;
+                right: 0 !important;
+                box-sizing: border-box !important;
+            }
+            
+            /* Remove any outline and use box-shadow instead */
+            input:focus,
+            button:focus,
+            select:focus {
+                outline: none !important;
+                border: 1px solid #3b82f6 !important;
+                box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+            }
+            
+            /* Ensure dropdowns have white background and proper padding */
+            #cityDropdown,
+            #serviceDropdown {
+                background: white !important;
+                padding: 0 !important;
+            }
+            
+            /* Dropdown search input - white background */
+            #serviceSearchInput {
+                background: white !important;
+            }
+            
+            /* Dropdown search container - white background */
+            #serviceDropdown .p-3 {
+                background: white !important;
+            }
+            
+            /* Service option text - prevent wrapping with ellipsis */
+            .service-option span,
+            #serviceOptionsContainer span {
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                max-width: 100% !important;
+                display: block !important;
+            }
+            
+            /* Dropdown items - ensure single line with ellipsis */
+            .dropdown-item,
+            #cityDropdown span,
+            #serviceDropdown .service-option {
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+            }
+            
+            /* Ensure service options container has proper padding */
+            #serviceOptionsContainer {
+                padding: 0 !important;
+            }
+            
+            /* Service option items - proper padding and no wrapping */
+            .service-option {
+                padding: 0.75rem 1rem !important;
+                min-height: 44px !important;
+            }
+            
+            .service-option span {
+                flex: 1 !important;
+                min-width: 0 !important;
+            }
+        }
+        
+        /* On smaller screens, allow horizontal scroll */
+        @media (max-width: 1024px) {
+            header nav {
+                justify-content: flex-start;
+            }
+        }
+        
+        /* Apply to tab buttons in classifieds section */
+        .tab-btn {
+            position: relative;
+        }
+        
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        
+        .tab-btn:hover::after,
+        .tab-btn.active::after {
+            width: 100%;
+        }
+        
+        /* Tooltip for dropdown items on desktop */
+        @media (min-width: 768px) {
+            .service-option[data-full-text] {
+                position: relative;
+            }
+            
+            .service-option[data-full-text]:hover::after {
+                content: attr(data-full-text);
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #1f2937;
+                color: white;
+                padding: 0.5rem 0.75rem;
+                border-radius: 0.375rem;
+                font-size: 0.875rem;
+                white-space: nowrap;
+                z-index: 1000;
+                margin-bottom: 0.5rem;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                pointer-events: none;
+                opacity: 0;
+                animation: tooltipFadeIn 0.2s ease forwards;
+            }
+            
+            .service-option[data-full-text]:hover::before {
+                content: '';
+                position: absolute;
+                bottom: calc(100% - 0.25rem);
+                left: 50%;
+                transform: translateX(-50%);
+                border: 4px solid transparent;
+                border-top-color: #1f2937;
+                z-index: 1000;
+                pointer-events: none;
+                opacity: 0;
+                animation: tooltipFadeIn 0.2s ease forwards;
+            }
+            
+            @keyframes tooltipFadeIn {
+                to {
+                    opacity: 1;
+                }
+            }
+        }
+        
+        /* Mobile header optimization */
+        @media (max-width: 768px) {
+            /* Ensure logo is visible and properly sized */
+            header .flex.items-center a {
+                flex-shrink: 0;
+                min-width: 0;
+            }
+            
+            header h1 {
+                font-size: 1.125rem !important;
+                max-width: 150px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            /* Remove blue background from header on mobile (iOS/Android) */
+            header {
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+            
+            /* Remove blue colors from header on mobile (iOS/Android) */
+            /* Keep logo blue, but make register button gray on mobile */
+            header a[href*="register-sq"].md\\:hidden.text-blue-600 {
+                color: #374151 !important; /* gray-700 */
+            }
+            
+            header a[href*="register-sq"].md\\:hidden.text-blue-600:hover {
+                color: #111827 !important; /* gray-900 */
+            }
+            
+            /* Ensure logo stays blue */
+            header h1.text-blue-600,
+            header h2.text-blue-600,
+            header svg.text-blue-600 {
+                color: #2563eb !important; /* blue-600 */
+            }
+            
+            /* Mobile buttons styling - outlined style for both buttons */
+            header .md\\:hidden.border-2 {
+                /* Both login and register buttons - outlined style */
+                min-height: 44px;
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            /* Mobile buttons styling - outlined style for both buttons */
+            header .md\\:hidden.border-2 {
+                /* Both login and register buttons - outlined style */
+                min-height: 40px;
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            /* Kyçu button - Log In style (outlined, pill-shaped) */
+            header a[href*="signin-sq"].border {
+                border-width: 1px !important;
+                border-color: #374151 !important; /* gray-700 */
+                background: transparent !important;
+                color: #374151 !important; /* gray-700 */
+                border-radius: 9999px !important; /* rounded-full */
+                font-weight: 500 !important; /* font-medium */
+            }
+            
+            header a[href*="signin-sq"].border:hover {
+                background: #f9fafb !important; /* gray-50 */
+                border-color: #374151 !important;
+            }
+            
+            /* Regjistro Kompani button - Same style as Kyçu (outlined, pill-shaped) */
+            header a[href*="register-sq"].md\\:hidden.border {
+                border-width: 1px !important;
+                border-color: #374151 !important; /* gray-700 */
+                background: transparent !important;
+                color: #374151 !important; /* gray-700 */
+                border-radius: 9999px !important; /* rounded-full */
+                font-weight: 500 !important; /* font-medium */
+            }
+            
+            header a[href*="register-sq"].md\\:hidden.border:hover {
+                background: #f9fafb !important; /* gray-50 */
+                border-color: #374151 !important;
+            }
+            
+            /* iOS specific styling for Regjistro Kompani button */
+            @supports (-webkit-touch-callout: none) {
+                header a[href*="register-sq"].md\\:hidden.border-2 {
+                    display: flex !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                    background: white !important;
+                    border: 2px solid #4b5563 !important;
+                    color: #111827 !important;
+                    -webkit-appearance: none !important;
+                    appearance: none !important;
+                }
+            }
+            
+            /* Mobile header layout - space between elements */
+            header .flex.justify-between {
+                gap: 0.5rem;
+            }
+            
+            /* Mobile: Ensure Kyçu button is on the left - simple text style */
+            header a[href*="signin-sq"].md\\:hidden {
+                order: -1;
+                margin-right: auto;
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                min-height: auto !important;
+                border-radius: 0 !important;
+                font-weight: 500 !important;
+                font-size: 0.875rem !important; /* text-sm */
+                color: #374151 !important; /* gray-700 */
+                text-decoration: none !important;
+            }
+            
+            header a[href*="signin-sq"].md\\:hidden:hover {
+                background: transparent !important;
+                border: none !important;
+                color: #111827 !important; /* gray-900 */
+            }
+            
+            /* Ensure hamburger menu is always visible on mobile */
+            #mobileMenuBtn {
+                flex-shrink: 0;
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                width: auto !important;
+                height: auto !important;
+                position: relative !important;
+                z-index: 100 !important;
+            }
+            
+            /* Override any Tailwind classes that might hide the button */
+            button#mobileMenuBtn.md\\:hidden,
+            button.mobile-menu-btn.md\\:hidden {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            /* Ensure hamburger menu is positioned correctly on the right */
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            
+            
+            /* Right side container - flex layout for proper spacing */
+            header .flex.items-center.space-x-2.flex-1 {
+                justify-content: flex-end;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <a id="page-top"></a>
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Top Navigation Bar -->
+            <div class="flex justify-between items-center py-3 md:py-4 md:border-b md:border-gray-200 w-full">
+                <!-- Left side: Logo (visible on desktop, hidden on mobile) -->
+                <a href="demo-sq-fixed.html" class="hidden md:flex items-center cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0 min-w-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="building-2" class="lucide lucide-building-2 h-7 w-7 md:h-8 md:w-8 text-blue-600 flex-shrink-0"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
+                    <h1 class="ml-2 text-lg md:text-xl lg:text-2xl font-bold text-blue-600 truncate">Pastro.com</h1>
+                </a>
+                <!-- Mobile: Logo - Left side on mobile -->
+                <div class="md:hidden flex items-center flex-shrink-0">
+                    <a href="demo-sq-fixed.html" class="flex items-center cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-blue-600 flex-shrink-0"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
+                        <h1 class="ml-1.5 text-base font-bold text-blue-600">Pastro.com</h1>
+                    </a>
+                </div>
+                <!-- Right side: Desktop Nav + Mobile Buttons -->
+                <div class="flex items-center gap-2 md:space-x-4 flex-shrink-0 md:flex-initial justify-end ml-auto">
+                    <!-- Desktop Navigation - Hidden on mobile -->
+                    <nav class="hidden md:flex items-center space-x-4 desktop-nav">
+                        <a href="signin-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Kyçu</a>
+                        <a href="register-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Regjistro Kompani</a>
+                    </nav>
+                    <!-- Mobile: Login Button + Hamburger Menu - Right side on mobile -->
+                    <a href="signin-sq.html" class="md:hidden text-gray-700 hover:text-gray-900 transition-colors text-sm font-medium whitespace-nowrap flex-shrink-0 flex items-center">Kyçu</a>
+                    <!-- Mobile Menu Button - Right side on mobile (hamburger icon) -->
+                    <button id="mobileMenuBtn" class="md:hidden mobile-menu-btn flex items-center justify-center p-2.5 text-gray-700 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 border border-gray-300 hover:border-gray-400 transition-all min-w-[48px] min-h-[48px] rounded-lg flex-shrink-0 shadow-sm" onclick="toggleMobileMenu(); event.stopPropagation(); return false;" aria-label="Open menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                            <path d="M4 5h16"></path>
+                            <path d="M4 12h16"></path>
+                            <path d="M4 19h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Overlay -->
+            <div id="mobileMenuOverlay" class="mobile-menu-overlay" onclick="toggleMobileMenu(); event.stopPropagation(); return false;"></div>
+            
+            <!-- Mobile Menu -->
+            <nav id="mobileMenu" class="mobile-menu">
+                <!-- Mobile Menu Header -->
+                <div class="mobile-menu-header bg-white border-b border-gray-200 px-3 py-2 flex items-center justify-between">
+                    <div class="flex items-center space-x-1.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-blue-600"><path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></svg>
+                        <h2 class="text-base font-bold text-blue-600">Pastro.com</h2>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <a href="signin-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Kyçu</a>
+                        <a href="register-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Regjistro Kompani</a>
+                        <button onclick="toggleMobileMenu(); event.stopPropagation(); return false;" class="p-1.5 hover:bg-gray-100 rounded-md flex items-center justify-center min-w-[36px] min-h-[36px]" aria-label="Close menu">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-700"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Menu Items -->
+                <a href="demo-sq-fixed.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    <span class="text-gray-900 font-medium">Kryefaqja</span>
+                </a>
+                <a href="sherbimet-sq.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                    <span class="text-gray-900 font-medium">Shërbimet</span>
+                </a>
+                <a href="pastrimi-zyres.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M12 6h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M16 6h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path><path d="M8 6h.01"></path><path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path><rect x="4" y="2" width="16" height="20" rx="2"></rect></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi i Zyrës</span>
+                </a>
+                <a href="pastrimi-brendshem.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi i Shtëpisë</span>
+                </a>
+                <a href="pastrimi-thelle.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi i Detajuar</span>
+                </a>
+                <a href="pastrimi-oborreve.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"></path><path d="M12 22v-3"></path></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi i Oborreve</span>
+                </a>
+                <a href="pastrimi-kimik.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path><path d="M6.453 15h11.094"></path><path d="M8.5 2h7"></path></svg>
+                    <span class="text-gray-900 font-medium">Pastrimi Kimik</span>
+                </a>
+                <a href="signin-sq.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                    <span class="text-gray-900 font-medium">Kyçu</span>
+                </a>
+            </nav>
+            
+            <!-- Main Navigation Bar -->
+            <nav class="hidden md:flex items-center justify-center space-x-4 py-4 overflow-x-auto">
+                <a href="demo-sq-fixed.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" class="lucide lucide-home h-4 w-4 mr-2"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    Kryefaqja
+                </a>
+                <a href="sherbimet-sq.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles h-4 w-4 mr-2"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                    Shërbimet
+                </a>
+                <a href="pastrimi-zyres.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="building" class="lucide lucide-building h-4 w-4 mr-2"><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M12 6h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M16 6h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path><path d="M8 6h.01"></path><path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path><rect x="4" y="2" width="16" height="20" rx="2"></rect></svg>
+                    Pastrimi i Zyrës
+                </a>
+                <a href="pastrimi-brendshem.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" class="lucide lucide-home h-4 w-4 mr-2"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                    Pastrimi i Shtëpisë
+                </a>
+                <a href="pastrimi-thelle.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles h-4 w-4 mr-2"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+                    Pastrimi i Detajuar
+                </a>
+                <a href="pastrimi-oborreve.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="tree-pine" class="lucide lucide-tree-pine h-4 w-4 mr-2"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"></path><path d="M12 22v-3"></path></svg>
+                    Pastrimi i Oborreve
+                </a>
+                <a href="pastrimi-kimik.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="flask-conical" class="lucide lucide-flask-conical h-4 w-4 mr-2"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path><path d="M6.453 15h11.094"></path><path d="M8.5 2h7"></path></svg>
+                    Pastrimi Kimik
+                </a>
+                <a href="pastrimi-veturave.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="car" class="lucide lucide-car h-4 w-4 mr-2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><path d="M9 17h6"></path><circle cx="17" cy="17" r="2"></circle></svg>
+                    Pastrimi i Veturave
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                Gjeni Shërbime
+                <span class="text-blue-600"> Profesionale të Pastrimit</span>
+                <br />në Kosovë
+            </h2>
+            <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                Lidhuni me kompanitë e besueshme të pastrimit nëpër qytetet e Kosovës. 
+                Nga pastrimi i shtëpisë deri te mirëmbajtja e zyrës, ne ju mbulojmë.
+            </p>
+            
+            <!-- Search Section -->
+            <div class="bg-white rounded-2xl shadow-lg p-4 md:p-6 max-w-4xl mx-auto w-full" style="box-sizing: border-box;">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4">
+                    <div class="relative w-full">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"></i>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Kërko kompani..."
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            style="box-sizing: border-box; outline: none !important; -webkit-appearance: none; -moz-appearance: none; appearance: none;"
+                        />
+                    </div>
+                    
+                    <!-- Custom City Dropdown -->
+                    <div class="relative w-full">
+                        <!-- Hidden select for compatibility with search function -->
+                        <select id="citySelect" class="hidden">
+                            <option value="">Të Gjitha Qytetet</option>
+                        </select>
+                        
+                        <button id="cityDropdownBtn" onclick="toggleCityDropdown()" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-left flex items-center justify-between" style="box-sizing: border-box; outline: none !important; -webkit-appearance: none; -moz-appearance: none; appearance: none;">
+                            <span id="cityDropdownText">Të Gjitha Qytetet</span>
+                            <i data-lucide="map-pin" class="h-5 w-5 text-gray-400"></i>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="cityDropdown" class="hidden absolute z-50 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-96 overflow-y-auto" style="box-sizing: border-box; left: 0; right: 0;">
+                            <!-- Countries View -->
+                            <div id="countriesView">
+                                <div onclick="selectCountry('kosove')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between border-b border-gray-100">
+                                    <span class="text-gray-900">Kosovë</span>
+                                    <i data-lucide="chevron-right" class="h-4 w-4 text-gray-400"></i>
+                                </div>
+                                <div onclick="selectCountry('shqiperi')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between border-b border-gray-100">
+                                    <span class="text-gray-900">Shqipëri</span>
+                                    <i data-lucide="chevron-right" class="h-4 w-4 text-gray-400"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Cities View (Kosovë) -->
+                            <div id="kosoveCitiesView" class="hidden">
+                                <div onclick="goBackToCountries()" class="px-4 py-3 bg-orange-50 border-b border-orange-200 cursor-pointer flex items-center">
+                                    <i data-lucide="chevron-left" class="h-4 w-4 text-orange-600 mr-2"></i>
+                                    <span class="text-orange-600 font-semibold uppercase">KOSOVË</span>
+                                </div>
+                                <div onclick="selectCity('')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Të gjitha qytetet</span>
+                                </div>
+                                <div onclick="selectCity('prishtina')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Prishtinë</span>
+                                </div>
+                                <div onclick="selectCity('prizren')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Prizren</span>
+                                </div>
+                                <div onclick="selectCity('ferizaj')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Ferizaj</span>
+                                </div>
+                                <div onclick="selectCity('peja')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Pejë</span>
+                                </div>
+                                <div onclick="selectCity('gjakova')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Gjakovë</span>
+                                </div>
+                                <div onclick="selectCity('gjilan')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Gjilan</span>
+                                </div>
+                                <div onclick="selectCity('mitrovica')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Mitrovicë</span>
+                                </div>
+                                <div onclick="selectCity('vushtrri')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Vushtrri</span>
+                                </div>
+                                <div onclick="selectCity('podujeva')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Podujevë</span>
+                                </div>
+                                <div onclick="selectCity('rahovec')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Rahovec</span>
+                                </div>
+                                <div onclick="selectCity('lipjan')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Lipjan</span>
+                                </div>
+                                <div onclick="selectCity('malisheva')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Malishevë</span>
+                                </div>
+                                <div onclick="selectCity('suharekë')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Suharekë</span>
+                                </div>
+                                <div onclick="selectCity('skenderaj')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Skenderaj</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Cities View (Shqipëri) -->
+                            <div id="shqiperiCitiesView" class="hidden">
+                                <div onclick="goBackToCountries()" class="px-4 py-3 bg-orange-50 border-b border-orange-200 cursor-pointer flex items-center">
+                                    <i data-lucide="chevron-left" class="h-4 w-4 text-orange-600 mr-2"></i>
+                                    <span class="text-orange-600 font-semibold uppercase">SHQIPËRI</span>
+                                </div>
+                                <div onclick="selectCity('')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Të gjitha qytetet</span>
+                                </div>
+                                <div onclick="selectCity('tirana')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Tiranë</span>
+                                </div>
+                                <div onclick="selectCity('durres')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Durrës</span>
+                                </div>
+                                <div onclick="selectCity('vlora')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Vlorë</span>
+                                </div>
+                                <div onclick="selectCity('shkoder')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Shkodër</span>
+                                </div>
+                                <div onclick="selectCity('elbasan')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Elbasan</span>
+                                </div>
+                                <div onclick="selectCity('korca')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Korçë</span>
+                                </div>
+                                <div onclick="selectCity('fier')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Fier</span>
+                                </div>
+                                <div onclick="selectCity('berat')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Berat</span>
+                                </div>
+                                <div onclick="selectCity('kavaja')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Kavajë</span>
+                                </div>
+                                <div onclick="selectCity('gjirokaster')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Gjirokastër</span>
+                                </div>
+                                <div onclick="selectCity('saranda')" class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                                    <span class="text-gray-900">Sarandë</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Custom Service Dropdown -->
+                    <div class="relative w-full">
+                        <!-- Hidden select for compatibility with search function -->
+                        <select id="serviceSelect" class="hidden">
+                            <option value="">Të Gjitha Shërbimet</option>
+                        </select>
+                        
+                        <button id="serviceDropdownBtn" onclick="toggleServiceDropdown()" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-left flex items-center justify-between" style="box-sizing: border-box; outline: none !important; -webkit-appearance: none; -moz-appearance: none; appearance: none;">
+                            <span id="serviceDropdownText">Të Gjitha Shërbimet</span>
+                            <i data-lucide="chevron-down" class="h-5 w-5 text-gray-400"></i>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="serviceDropdown" class="hidden absolute z-50 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-96 overflow-hidden" style="box-sizing: border-box; left: 0; right: 0;">
+                            <!-- Search Input -->
+                            <div class="p-3 border-b border-gray-200 sticky top-0 bg-white">
+                                <div class="relative">
+                                    <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400"></i>
+                                    <input 
+                                        type="text" 
+                                        id="serviceSearchInput" 
+                                        placeholder="Kërko shërbim..." 
+                                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                        style="outline: none !important; -webkit-appearance: none; -moz-appearance: none; appearance: none; box-sizing: border-box;"
+                                        onkeydown="handleServiceSearchKeydown(event)"
+                                    >
+                                </div>
+                            </div>
+                            
+                            <!-- Options Container -->
+                            <div id="serviceOptionsContainer" class="overflow-y-auto max-h-80">
+                                <!-- Options will be loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="searchButton" class="w-full md:w-auto bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium search-btn" style="box-sizing: border-box; outline: none !important; -webkit-appearance: none; -moz-appearance: none; appearance: none;">
+                        Kërko
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Nav (Top/Bottom) -->
+    <div id="quickNav" class="hidden md:flex flex-col space-y-2 fixed right-4 top-1/2 -translate-y-1/2 z-40">
+        <button onclick="scrollToAnchor('page-top')" class="bg-white shadow hover:shadow-md border border-gray-200 text-gray-700 rounded-full p-2 hover:bg-gray-50 transition" title="Shko lart">
+            <i data-lucide="arrow-up" class="h-5 w-5"></i>
+        </button>
+        <button onclick="scrollToAnchor('page-bottom')" class="bg-white shadow hover:shadow-md border border-gray-200 text-gray-700 rounded-full p-2 hover:bg-gray-50 transition" title="Shko poshtë">
+            <i data-lucide="arrow-down" class="h-5 w-5"></i>
+        </button>
+    </div>
+
+    <!-- Service Categories Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Shërbimet Tona</h2>
+            <div id="serviceCategories" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                <!-- Categories will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Edit Category Modal (Admin only) -->
+    <div id="editCategoryModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-gray-900">Edito Kategori</h3>
+                <button onclick="closeEditCategoryModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="h-6 w-6"></i>
+                </button>
+            </div>
+            
+            <form id="editCategoryForm" onsubmit="saveCategoryEdit(event)">
+                <input type="hidden" id="editCategoryId" />
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Emri i Kategorisë</label>
+                    <input type="text" id="editCategoryName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Emri i kategorisë">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Përshkrimi (Opsionale)</label>
+                    <textarea id="editCategoryDescription" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Përshkrimi i kategorisë"></textarea>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button type="submit" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        Ruaj
+                    </button>
+                    <button type="button" onclick="closeEditCategoryModal()" class="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors font-medium">
+                        Anulo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Advertisement Modal (Admin only) -->
+    <div id="editAdvertisementModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-gray-900">Edito Reklamë</h3>
+                <button onclick="closeEditAdvertisementModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="h-6 w-6"></i>
+                </button>
+            </div>
+            
+            <form id="editAdvertisementForm" onsubmit="saveAdvertisementEdit(event)">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Titulli i Reklamës</label>
+                    <input type="text" id="editAdTitle" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Titulli i reklamës">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Përshkrimi</label>
+                    <textarea id="editAdDescription" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Përshkrimi i reklamës"></textarea>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Link (Opsionale)</label>
+                    <input type="url" id="editAdLink" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="https://example.com">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Ngjyra e Background (Opsionale)</label>
+                    <input type="color" id="editAdBgColor" value="#ef4444" class="w-full h-12 border border-gray-300 rounded-lg">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Foto e Background (Opsionale)</label>
+                    <input type="file" id="editAdBgImage" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <div id="editAdBgPreview" class="mt-2 h-32 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 text-sm bg-center bg-cover">Pa imazh</div>
+                    <button type="button" id="removeAdBgImageBtn" class="mt-2 px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm">Hiq imazhin</button>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">HTML i Përshtatur (Opsionale - për HTML të plotë)</label>
+                    <textarea id="editAdHTML" rows="6" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm" placeholder="Ose shkruani HTML të plotë për reklamën"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Nëse plotësoni HTML, do të përdoret në vend të titullit dhe përshkrimit</p>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button type="submit" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        Ruaj Reklamën
+                    </button>
+                    <button type="button" onclick="closeEditAdvertisementModal()" class="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors font-medium">
+                        Anulo
+                    </button>
+                    <button type="button" onclick="deleteAdvertisement()" class="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium">
+                        Fshi Reklamën
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="flex flex-col items-center">
+                    <i data-lucide="users" class="h-12 w-12 text-blue-600 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-900" id="companiesCount">47</h3>
+                    <p class="text-gray-600">Kompani të Regjistruara</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i data-lucide="map-pin" class="h-12 w-12 text-green-600 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-900">31</h3>
+                    <p class="text-gray-600">Qytete të Mbuluara</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i data-lucide="check-circle" class="h-12 w-12 text-purple-600 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-900">12</h3>
+                    <p class="text-gray-600">Llojet e Shërbimeve</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Companies Section -->
+    <section id="companiesSection" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Companies Column -->
+                <div class="lg:col-span-9">
+            <div class="flex items-center justify-center mb-8 gap-3">
+                <h3 class="text-3xl font-bold text-gray-900 text-center" id="resultsCount">Po ngarkohen kompanitë...</h3>
+                <button onclick="(function(){document.getElementById('resultsCount').textContent='Duke rifreskuar...'; loadApprovedCompaniesFromAPI();})();" class="ml-3 px-3 py-1 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center">
+                    <i data-lucide="refresh-cw" class="h-4 w-4 mr-1"></i> Rifresko
+                </button>
+            </div>
+                    
+                    <div id="companiesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                        <!-- Companies will be loaded dynamically -->
+                    </div>
+                    
+                    <!-- Shpalljet Section (Under Companies) -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Shpallje</h3>
+                        
+                        <!-- Tabs -->
+                        <div class="flex space-x-2 mb-4 border-b border-gray-200">
+                            <button onclick="showClassifiedsTab('vetura')" id="tabVetura" class="tab-btn active px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600">
+                                VETURA
+                            </button>
+                            <button onclick="showClassifiedsTab('patundshmeri')" id="tabPatundshmeri" class="tab-btn px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600">
+                                PATUNDSHMËRI
+                            </button>
+                            <button onclick="showClassifiedsTab('pune')" id="tabPune" class="tab-btn px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600">
+                                PUNË
+                            </button>
+                            <button onclick="showClassifiedsTab('celular')" id="tabCelular" class="tab-btn px-4 py-2 text-sm font-medium text-gray-600 hover:text-blue-600">
+                                CELULAR
+                            </button>
+                        </div>
+                        
+                        <!-- Post Shpallje Button -->
+                        <button class="w-full bg-orange-500 text-white px-4 py-3 rounded-lg hover:bg-orange-600 transition-colors font-medium mb-4">
+                            + POSTO SHPALLJE
+                        </button>
+                        
+                        <!-- Classifieds Content -->
+                        <div id="classifiedsContent">
+                            <!-- Vetura (Cars) -->
+                            <div id="veturaContent" class="classified-tab-content">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                                        <div class="w-full h-32 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
+                                            <i data-lucide="car" class="h-12 w-12 text-gray-400"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-900 mb-1 text-sm">Mercedes GLE350 4Matic 2021</h4>
+                                        <p class="text-xs text-gray-600 mb-2">130,000-139,999 KM</p>
+                                    </div>
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                                        <div class="w-full h-32 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
+                                            <i data-lucide="car" class="h-12 w-12 text-gray-400"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-900 mb-1 text-sm">Tata Indica 1.4 Dizell 2014</h4>
+                                        <p class="text-xs text-gray-600 mb-2">120,000-129,999 KM</p>
+                                        <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">URGJENT</span>
+                                    </div>
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                                        <div class="w-full h-32 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
+                                            <i data-lucide="car" class="h-12 w-12 text-gray-400"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-900 mb-1 text-sm">Opel Corsa 1.5 Turbo Diesel</h4>
+                                        <p class="text-xs text-gray-600 mb-2">250,000-299,999 KM</p>
+                                    </div>
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                                        <div class="w-full h-32 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
+                                            <i data-lucide="car" class="h-12 w-12 text-gray-400"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-900 mb-1 text-sm">Audi A6 35 TDI 2.0 MatriX 2015</h4>
+                                        <p class="text-xs text-gray-600 mb-2">180,000-189,999 KM</p>
+                                    </div>
+                                </div>
+                                <button class="w-full mt-4 bg-orange-100 text-orange-600 px-4 py-2 rounded-lg hover:bg-orange-200 transition-colors text-sm font-medium">
+                                    Shiko të gjitha veturat >
+                                </button>
+                            </div>
+                            
+                            <!-- Patundshmëri (Real Estate) -->
+                            <div id="patundshmeriContent" class="classified-tab-content hidden">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                                        <div class="w-full h-32 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
+                                            <i data-lucide="home" class="h-12 w-12 text-gray-400"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-900 mb-1 text-sm">Shtëpi në Prishtinë</h4>
+                                        <p class="text-xs text-gray-600 mb-2">150,000 €</p>
+                                    </div>
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                                        <div class="w-full h-32 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
+                                            <i data-lucide="home" class="h-12 w-12 text-gray-400"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-900 mb-1 text-sm">Apartament në Prizren</h4>
+                                        <p class="text-xs text-gray-600 mb-2">80,000 €</p>
+                                    </div>
+                                </div>
+                                <button class="w-full mt-4 bg-orange-100 text-orange-600 px-4 py-2 rounded-lg hover:bg-orange-200 transition-colors text-sm font-medium">
+                                    Shiko të gjitha patundshmëritë >
+                                </button>
+                            </div>
+                            
+                            <!-- Punë (Jobs) -->
+                            <div id="puneContent" class="classified-tab-content hidden">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                                        <div class="w-full h-32 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
+                                            <i data-lucide="briefcase" class="h-12 w-12 text-gray-400"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-900 mb-1 text-sm">Ofrues Pastrimi</h4>
+                                        <p class="text-xs text-gray-600 mb-2">Prishtinë</p>
+                                    </div>
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                                        <div class="w-full h-32 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
+                                            <i data-lucide="briefcase" class="h-12 w-12 text-gray-400"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-900 mb-1 text-sm">Ndihmësje Shtëpiake</h4>
+                                        <p class="text-xs text-gray-600 mb-2">Prizren</p>
+                                    </div>
+                                </div>
+                                <button class="w-full mt-4 bg-orange-100 text-orange-600 px-4 py-2 rounded-lg hover:bg-orange-200 transition-colors text-sm font-medium">
+                                    Shiko të gjitha punët >
+                                </button>
+                            </div>
+                            
+                            <!-- Celular (Mobile Phones) -->
+                            <div id="celularContent" class="classified-tab-content hidden">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                                        <div class="w-full h-32 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
+                                            <i data-lucide="smartphone" class="h-12 w-12 text-gray-400"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-900 mb-1 text-sm">iPhone 15 Pro Max</h4>
+                                        <p class="text-xs text-gray-600 mb-2">1,200 €</p>
+                                    </div>
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                                        <div class="w-full h-32 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
+                                            <i data-lucide="smartphone" class="h-12 w-12 text-gray-400"></i>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-900 mb-1 text-sm">Samsung Galaxy S24</h4>
+                                        <p class="text-xs text-gray-600 mb-2">950 €</p>
+                                    </div>
+                                </div>
+                                <button class="w-full mt-4 bg-orange-100 text-orange-600 px-4 py-2 rounded-lg hover:bg-orange-200 transition-colors text-sm font-medium">
+                                    Shiko të gjitha celularët >
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Weather Section (Compact, after Shpallje) -->
+                    <div class="bg-white rounded-xl shadow-lg p-4 mt-6 overflow-hidden" style="border-top: 4px solid #f97316;">
+                        <!-- Weather Header -->
+                        <div class="flex justify-between items-center mb-2 pb-2 border-b border-gray-200">
+                            <span class="text-orange-600 font-semibold text-sm">Moti</span>
+                            <span id="currentDate" class="text-gray-600 text-xs"></span>
+                        </div>
+                        
+                        <!-- Current Weather -->
+                        <div class="flex items-center justify-between mb-3 pb-3 border-b border-gray-200">
+                            <div class="flex items-center space-x-3">
+                                <i data-lucide="cloud-rain" class="h-8 w-8 text-gray-600"></i>
+                                <div>
+                                    <p class="text-2xl font-bold text-gray-900" id="currentTemp">12°C</p>
+                                    <p class="text-gray-600 text-xs">Prishtinë</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 3-Day Forecast -->
+                        <div class="grid grid-cols-3 gap-2">
+                            <!-- Day 1 -->
+                            <div class="text-center">
+                                <p class="text-gray-600 text-xs mb-1" id="forecastDay1">SHT</p>
+                                <i data-lucide="sun" class="h-5 w-5 text-yellow-500 mx-auto mb-1"></i>
+                                <p class="text-gray-700 text-xs" id="forecastTemp1">22°C 12°C</p>
+                            </div>
+                            
+                            <!-- Day 2 -->
+                            <div class="text-center">
+                                <p class="text-gray-600 text-xs mb-1" id="forecastDay2">DIE</p>
+                                <i data-lucide="sun" class="h-5 w-5 text-yellow-500 mx-auto mb-1"></i>
+                                <p class="text-gray-700 text-xs" id="forecastTemp2">26°C 11°C</p>
+                            </div>
+                            
+                            <!-- Day 3 -->
+                            <div class="text-center">
+                                <p class="text-gray-600 text-xs mb-1" id="forecastDay3">HËN</p>
+                                <i data-lucide="sun" class="h-5 w-5 text-yellow-500 mx-auto mb-1"></i>
+                                <p class="text-gray-700 text-xs" id="forecastTemp3">28°C 16°C</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column: Advertisement (Admin controlled) -->
+                <div class="lg:col-span-3">
+                    <div class="bg-white rounded-xl shadow-lg p-6 sticky top-4">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-gray-900">Reklamë</h3>
+                            <button id="editAdButton" onclick="openEditAdvertisementModal()" class="hidden bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                                <i data-lucide="edit" class="h-4 w-4 inline mr-1"></i>
+                                Edito
+                            </button>
+                        </div>
+                        <div id="adminAdvertisement" class="bg-red-500 text-white rounded-lg p-6 min-h-[400px] flex items-center justify-center">
+                            <div class="text-center">
+                                <i data-lucide="megaphone" class="h-16 w-16 mx-auto mb-4 opacity-50"></i>
+                                <p class="text-lg font-semibold mb-2">Hapësirë Reklamimi</p>
+                                <p class="text-sm opacity-75">Reklama do të vendoset nga admini</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i data-lucide="building-2" class="h-8 w-8 text-blue-600"></i>
+                        <h3 class="ml-2 text-xl font-bold">Pastro.com</h3>
+                    </div>
+                    <p class="text-gray-400">
+                        Lidhja e klientëve me shërbimet profesionale të pastrimit nëpër Kosovë.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Lidhje të Shpejta</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Kryefaqja</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Të Gjitha Kompanitë</a></li>
+                        <li><a href="register-sq.html" class="hover:text-white transition-colors">Regjistro Kompani</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Kontakt</h4>
+                    <p class="text-gray-400">
+                        Keni nevojë për ndihmë? Na kontaktoni në support@pastro.com
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Pastro.com. Të gjitha të drejtat e rezervuara.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Email Modal -->
+    <div id="emailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-900" id="modalCompanyName">Dergo mesazh</h3>
+                <button onclick="closeEmailModal()" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="h-6 w-6"></i>
+                </button>
+            </div>
+            
+            <form id="emailForm" class="space-y-4" onsubmit="handleEmailSubmit(event); return false;">
+                <!-- Email/Name Field -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Emri ose Emaili juaj:</label>
+                    <input
+                        type="email"
+                        id="customerEmail"
+                        placeholder="emri@email.com"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        required
+                    />
+                </div>
+
+                <!-- Message Field -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Mesazhi</label>
+                    <textarea
+                        id="customerMessage"
+                        rows="6"
+                        placeholder="Shkruani mesazhin tuaj këtu..."
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y"
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- Info Text -->
+                <p class="text-xs text-gray-600">
+                    Ky e-mail do ti dërgohet direkt biznesit <span id="modalCompanyNameInfo" class="font-semibold"></span>
+                </p>
+
+                <!-- Submit Button -->
+                <div class="flex justify-end pt-2">
+                    <button type="submit" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium">
+                        DËRGO
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Classifieds Tab Management
+        function showClassifiedsTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.classified-tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-blue-600', 'border-b-2', 'border-blue-600');
+                btn.classList.add('text-gray-600');
+            });
+            
+            // Show selected tab content
+            const selectedContent = document.getElementById(tabName + 'Content');
+            if (selectedContent) {
+                selectedContent.classList.remove('hidden');
+            }
+            
+            // Add active class to selected tab
+            const selectedTab = document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
+            if (selectedTab) {
+                selectedTab.classList.add('active', 'text-blue-600', 'border-b-2', 'border-blue-600');
+                selectedTab.classList.remove('text-gray-600');
+            }
+            
+            // Reinitialize icons
+            lucide.createIcons();
+        }
+        
+        // Load admin advertisement from localStorage (can be set by admin)
+        function loadAdminAdvertisement() {
+            const adminAd = localStorage.getItem('adminAdvertisement');
+            const adContainer = document.getElementById('adminAdvertisement');
+            const editButton = document.getElementById('editAdButton');
+            
+            // Check if user is admin
+            const currentUser = localStorage.getItem('currentUser');
+            const isAdmin = currentUser && (JSON.parse(currentUser).role === 'admin' || JSON.parse(currentUser).email === 'admin@pastro.com');
+            
+            // Show/hide edit button for admin
+            if (editButton) {
+                if (isAdmin) {
+                    editButton.classList.remove('hidden');
+                } else {
+                    editButton.classList.add('hidden');
+                }
+            }
+            
+            if (adminAd) {
+                try {
+                    const adData = JSON.parse(adminAd);
+                    if (adContainer && adData.html) {
+                        // Use custom HTML if provided
+                        adContainer.innerHTML = adData.html;
+                        // Background styling
+                        adContainer.style.backgroundColor = adData.bgColor || '';
+                        if (adData.bgImageDataUrl) {
+                            adContainer.style.backgroundImage = `url(${adData.bgImageDataUrl})`;
+                            adContainer.style.backgroundSize = 'cover';
+                            adContainer.style.backgroundPosition = 'center';
+                        } else {
+                            adContainer.style.backgroundImage = '';
+                        }
+                        lucide.createIcons();
+                        return;
+                    } else if (adContainer && adData.title) {
+                        // Use title/description if HTML not provided
+                        let html = `<div class="text-center">`;
+                        if (adData.title) {
+                            html += `<h4 class="text-2xl font-bold mb-3">${adData.title}</h4>`;
+                        }
+                        if (adData.description) {
+                            html += `<p class="text-lg mb-4">${adData.description}</p>`;
+                        }
+                        if (adData.link) {
+                            html += `<a href="${adData.link}" target="_blank" class="bg-white text-red-600 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors font-medium inline-block">Mëso më shumë</a>`;
+                        }
+                        html += `</div>`;
+                        adContainer.innerHTML = html;
+                        // Background styling
+                        adContainer.style.backgroundColor = adData.bgColor || '';
+                        if (adData.bgImageDataUrl) {
+                            adContainer.style.backgroundImage = `url(${adData.bgImageDataUrl})`;
+                            adContainer.style.backgroundSize = 'cover';
+                            adContainer.style.backgroundPosition = 'center';
+                        } else {
+                            adContainer.style.backgroundImage = '';
+                        }
+                        lucide.createIcons();
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Error loading admin advertisement:', error);
+                }
+            }
+            
+            // Default advertisement if none set
+            if (adContainer) {
+                adContainer.innerHTML = `
+                    <div class="text-center">
+                        <i data-lucide="megaphone" class="h-16 w-16 mx-auto mb-4 opacity-50"></i>
+                        <p class="text-lg font-semibold mb-2">Hapësirë Reklamimi</p>
+                        <p class="text-sm opacity-75">Reklama do të vendoset nga admini</p>
+                    </div>
+                `;
+                adContainer.style.backgroundColor = '#ef4444';
+                adContainer.style.backgroundImage = '';
+                lucide.createIcons();
+            }
+        }
+        
+        // Open edit advertisement modal
+        let adBgImageDataUrl = null;
+
+        function openEditAdvertisementModal() {
+            const adminAd = localStorage.getItem('adminAdvertisement');
+            let adData = {};
+            
+            if (adminAd) {
+                try {
+                    adData = JSON.parse(adminAd);
+                } catch (error) {
+                    console.error('Error parsing advertisement data:', error);
+                }
+            }
+            
+            document.getElementById('editAdTitle').value = adData.title || '';
+            document.getElementById('editAdDescription').value = adData.description || '';
+            document.getElementById('editAdLink').value = adData.link || '';
+            document.getElementById('editAdBgColor').value = adData.bgColor || '#ef4444';
+            document.getElementById('editAdHTML').value = adData.html || '';
+            
+            // Setup background image preview
+            const preview = document.getElementById('editAdBgPreview');
+            adBgImageDataUrl = adData.bgImageDataUrl || null;
+            if (adBgImageDataUrl) {
+                preview.style.backgroundImage = `url(${adBgImageDataUrl})`;
+                preview.textContent = '';
+            } else {
+                preview.style.backgroundImage = '';
+                preview.textContent = 'Pa imazh';
+            }
+            
+            document.getElementById('editAdvertisementModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+        
+        // Close edit advertisement modal
+        function closeEditAdvertisementModal() {
+            document.getElementById('editAdvertisementModal').classList.add('hidden');
+        }
+        
+        // Save advertisement edit
+        function saveAdvertisementEdit(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('editAdTitle').value.trim();
+            const description = document.getElementById('editAdDescription').value.trim();
+            const link = document.getElementById('editAdLink').value.trim();
+            const bgColor = document.getElementById('editAdBgColor').value;
+            const html = document.getElementById('editAdHTML').value.trim();
+            
+            let adData = {};
+            
+            if (html) {
+                // Use custom HTML
+                adData = {
+                    html: html,
+                    bgColor: bgColor,
+                    bgImageDataUrl: adBgImageDataUrl || null
+                };
+            } else {
+                // Use title/description
+                adData = {
+                    title: title,
+                    description: description,
+                    link: link,
+                    bgColor: bgColor,
+                    bgImageDataUrl: adBgImageDataUrl || null
+                };
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('adminAdvertisement', JSON.stringify(adData));
+            
+            // Reload advertisement
+            loadAdminAdvertisement();
+            
+            // Close modal
+            closeEditAdvertisementModal();
+            
+            alert('Reklama u ruajt me sukses!');
+        }
+        
+        // Delete advertisement
+        function deleteAdvertisement() {
+            if (!confirm('Jeni të sigurt që doni të fshini reklamën?')) {
+                return;
+            }
+            
+            localStorage.removeItem('adminAdvertisement');
+            loadAdminAdvertisement();
+            closeEditAdvertisementModal();
+            alert('Reklama u fshi me sukses!');
+        }
+        
+        // Handle background image selection
+        document.addEventListener('change', function(e){
+            if (e.target && e.target.id === 'editAdBgImage') {
+                const file = e.target.files && e.target.files[0];
+                const preview = document.getElementById('editAdBgPreview');
+                if (!file) {
+                    adBgImageDataUrl = null;
+                    if (preview) { preview.style.backgroundImage=''; preview.textContent='Pa imazh'; }
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(ev){
+                    adBgImageDataUrl = ev.target?.result || null;
+                    if (preview && adBgImageDataUrl) {
+                        preview.style.backgroundImage = `url(${adBgImageDataUrl})`;
+                        preview.textContent = '';
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Remove background image
+        function removeAdBgImage(){
+            adBgImageDataUrl = null;
+            const preview = document.getElementById('editAdBgPreview');
+            if (preview) { preview.style.backgroundImage=''; preview.textContent='Pa imazh'; }
+            const input = document.getElementById('editAdBgImage');
+            if (input) input.value = '';
+        }
+        document.addEventListener('click', function(e){ if (e.target && e.target.id === 'removeAdBgImageBtn') removeAdBgImage(); });
+
+        // Load advertisement on page load
+        loadAdminAdvertisement();
+        
+        // Service Categories Data
+        const defaultCategories = [
+            { id: 'brendshem', name: 'Pastrimi i Brendshëm', icon: 'home', color: 'yellow', link: 'pastrimi-brendshem.html', description: '' },
+            { id: 'jashtme', name: 'Shërbimet e Jashtme', icon: 'trees', color: 'blue', link: 'sherbimet-jashtme.html', description: '' },
+            { id: 'zyres', name: 'Pastrimi i Zyrës', icon: 'building', color: 'orange', link: 'pastrimi-zyres.html', description: '' },
+            { id: 'levizjes', name: 'Pastrimi i Lëvizjes', icon: 'key', color: 'blue', link: 'pastrimi-levizjes.html', description: '' },
+            { id: 'larje', name: 'Larje & Hekurosje', icon: 'shirt', color: 'yellow', link: 'larje-hekurosje.html', description: '' },
+            { id: 'mamases', name: 'Ndihmësja e Mamasë', icon: 'users', color: 'pink', link: 'ndihmesja-mamases.html', description: '' },
+            { id: 'moshuarit', name: 'Kujdesi për të Moshuarit', icon: 'heart-handshake', color: 'blue', link: 'kujdesi-moshuarit.html', description: '' },
+            { id: 'shtese', name: 'Kujdes Shtesë', icon: 'heart-plus', color: 'orange', link: 'kujdes-shtese.html', description: '' },
+            { id: 'shpejte', name: 'Pastrimi i Shpejtë', icon: 'zap', color: 'pink', link: 'pastrimi-shpejte.html', description: '' },
+            { id: 'thelle', name: 'Pastrimi i Detajuar', icon: 'sparkles', color: 'purple', link: 'pastrimi-thelle.html', description: '' },
+            { id: 'oborreve', name: 'Pastrimi i Oborreve', icon: 'tree-pine', color: 'green', link: 'pastrimi-oborreve.html', description: '' },
+            { id: 'kimik', name: 'Pastrimi Kimik', icon: 'flask-conical', color: 'cyan', link: 'pastrimi-kimik.html', description: '' },
+            { id: 'veturave', name: 'Pastrimi i Veturave', icon: 'car', color: 'indigo', link: 'pastrimi-veturave.html', description: '' }
+        ];
+        
+        // Load and display service categories
+        function loadServiceCategories() {
+            const categoriesContainer = document.getElementById('serviceCategories');
+            if (!categoriesContainer) return;
+            
+            // Load edited categories from localStorage or use defaults
+            const editedCategories = JSON.parse(localStorage.getItem('serviceCategories') || '{}');
+            const categories = defaultCategories.map(cat => {
+                if (editedCategories[cat.id]) {
+                    return { ...cat, ...editedCategories[cat.id] };
+                }
+                return cat;
+            });
+            
+            // Check if user is admin
+            const currentUser = localStorage.getItem('currentUser');
+            const isAdmin = currentUser && (JSON.parse(currentUser).role === 'admin' || JSON.parse(currentUser).email === 'admin@pastro.com');
+            
+            categoriesContainer.innerHTML = categories.map(category => {
+                const colorClasses = {
+                    yellow: 'bg-yellow-100 text-yellow-600',
+                    blue: 'bg-blue-100 text-blue-600',
+                    orange: 'bg-orange-100 text-orange-600',
+                    pink: 'bg-pink-100 text-pink-600',
+                    purple: 'bg-purple-100 text-purple-600'
+                };
+                
+                const colorClass = colorClasses[category.color] || 'bg-gray-100 text-gray-600';
+                
+                if (isAdmin) {
+                    // Admin can click to edit
+                    return `
+                        <div onclick="openEditCategoryModal('${category.id}')" class="text-center card-hover cursor-pointer block">
+                            <div class="service-icon ${category.color} ${colorClass.split(' ')[0]} rounded-xl p-4 mb-3">
+                                <i data-lucide="${category.icon}" class="h-8 w-8 ${colorClass.split(' ')[1]} mx-auto"></i>
+                            </div>
+                            <h3 class="text-sm font-medium text-gray-900">${category.name}</h3>
+                            ${isAdmin ? '<p class="text-xs text-gray-500 mt-1">(Kliko për të edituar)</p>' : ''}
+                        </div>
+                    `;
+                } else {
+                    // Regular user - normal link
+                    return `
+                        <a href="${category.link}" class="text-center card-hover cursor-pointer block">
+                            <div class="service-icon ${category.color} ${colorClass.split(' ')[0]} rounded-xl p-4 mb-3">
+                                <i data-lucide="${category.icon}" class="h-8 w-8 ${colorClass.split(' ')[1]} mx-auto"></i>
+                            </div>
+                            <h3 class="text-sm font-medium text-gray-900">${category.name}</h3>
+                        </a>
+                    `;
+                }
+            }).join('');
+            
+            lucide.createIcons();
+        }
+        
+        // Open edit category modal
+        function openEditCategoryModal(categoryId) {
+            const editedCategories = JSON.parse(localStorage.getItem('serviceCategories') || '{}');
+            const allCategories = defaultCategories.map(cat => {
+                if (editedCategories[cat.id]) {
+                    return { ...cat, ...editedCategories[cat.id] };
+                }
+                return cat;
+            });
+            
+            const category = allCategories.find(cat => cat.id === categoryId);
+            if (!category) return;
+            
+            document.getElementById('editCategoryId').value = categoryId;
+            document.getElementById('editCategoryName').value = category.name;
+            document.getElementById('editCategoryDescription').value = category.description || '';
+            document.getElementById('editCategoryModal').classList.remove('hidden');
+            
+            lucide.createIcons();
+        }
+        
+        // Close edit category modal
+        function closeEditCategoryModal() {
+            document.getElementById('editCategoryModal').classList.add('hidden');
+        }
+        
+        // Save category edit
+        function saveCategoryEdit(event) {
+            event.preventDefault();
+            
+            const categoryId = document.getElementById('editCategoryId').value;
+            const name = document.getElementById('editCategoryName').value.trim();
+            const description = document.getElementById('editCategoryDescription').value.trim();
+            
+            if (!name) {
+                alert('Emri i kategorisë është i detyrueshëm');
+                return;
+            }
+            
+            // Load existing edited categories
+            const editedCategories = JSON.parse(localStorage.getItem('serviceCategories') || '{}');
+            
+            // Update category
+            editedCategories[categoryId] = {
+                name: name,
+                description: description
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('serviceCategories', JSON.stringify(editedCategories));
+            
+            // Reload categories
+            loadServiceCategories();
+            
+            // Close modal
+            closeEditCategoryModal();
+            
+            alert('Kategoria u ruajt me sukses!');
+        }
+        
+        // Load categories on page load
+        loadServiceCategories();
+        
+        // Sample companies data (simulating database)
+        const defaultCompanies = [
+            {
+                id: 1,
+                name: "CleanPro Kosovo",
+                email: "info@cleanprokosovo.com",
+                description: "Shërbime profesionale pastrimi për shtëpi dhe zyra. Të besuar nga 500+ klientë nëpër Kosovë.",
+                phone: "+383 44 123 456",
+                cities: ["Prishtina", "Prizren"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 25 },
+                    { name: "Pastrimi i Zyrës", price: 35 },
+                    { name: "Pastrimi i Detajuar", price: 80 }
+                ]
+            },
+            {
+                id: 2,
+                name: "EcoClean Solutions",
+                email: "contact@ecocleansolutions.com",
+                description: "Zgjidhje pastrimi miqësore me mjedisin për klientët e vetëdijshëm mjedisorë. Pastrimi i gjelbër i certifikuar.",
+                phone: "+383 44 123 457",
+                cities: ["Gjakova", "Peja"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 30 },
+                    { name: "Pastrimi i Dritareve", price: 20 },
+                    { name: "Pastrimi i Qilimave", price: 45 }
+                ]
+            },
+            {
+                id: 3,
+                name: "Premium Clean",
+                email: "info@premiumclean.com",
+                description: "Shërbime pastrimi luksoze për shtëpi të larta dhe hapësira komerciale. Cilësia premium e garantuar.",
+                phone: "+383 44 123 458",
+                cities: ["Ferizaj", "Gjilan"],
+                services: [
+                    { name: "Pastrimi i Detajuar", price: 120 },
+                    { name: "Pastrimi i Zyrës", price: 50 },
+                    { name: "Pastrimi i Objektit", price: 60 }
+                ]
+            },
+            {
+                id: 4,
+                name: "QuickClean Express",
+                email: "info@quickcleanexpress.com",
+                description: "Shërbime pastrimi të shpejta dhe të besueshme. Shërbim në të njëjtën ditë i disponueshëm. Zgjidhje pastrimi urgjente.",
+                phone: "+383 44 123 459",
+                cities: ["Mitrovica", "Vushtrri"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 20 },
+                    { name: "Pastrimi i Dritareve", price: 15 },
+                    { name: "Pastrimi i Urgjencës", price: 40 }
+                ]
+            },
+            {
+                id: 5,
+                name: "Family Clean Co.",
+                email: "info@familycleanco.com",
+                description: "Biznes familjar me 15+ vjet përvojë. Shërbim i personalizuar për çdo familje.",
+                phone: "+383 44 123 460",
+                cities: ["Podujeva", "Rahovec"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 22 },
+                    { name: "Mirëmbajtja e Rregullt", price: 18 },
+                    { name: "Hyrje/Dalje", price: 70 }
+                ]
+            },
+            {
+                id: 6,
+                name: "Commercial Clean Pro",
+                email: "info@commercialcleanpro.com",
+                description: "Specializuar në pastrimin komercial dhe industrial. Projekte të mëdha dhe kontrata mirëmbajtjeje të rregullt.",
+                phone: "+383 44 123 461",
+                cities: ["Lipjan", "Malisheva"],
+                services: [
+                    { name: "Pastrimi Komercial", price: 80 },
+                    { name: "Pastrimi Industrial", price: 150 },
+                    { name: "Pas Ndërtimit", price: 200 }
+                ]
+            },
+            {
+                id: 7,
+                name: "Shine Bright Cleaning",
+                email: "info@shinebright.com",
+                description: "Pastrimi profesional me produkt natyrale. Shërbim i shkëlqyer me garanci cilësie për çdo klient.",
+                phone: "+383 44 123 462",
+                cities: ["Prishtina", "Gjilan", "Ferizaj"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 28 },
+                    { name: "Pastrimi i Dritareve", price: 18 },
+                    { name: "Pastrimi Ekologjik", price: 35 }
+                ]
+            },
+            {
+                id: 8,
+                name: "Sparkle Services",
+                email: "contact@sparkleservices.com",
+                description: "Ekip i përvojshëm me përvojë 10+ vjet. Pastrimi i detajuar për shtëpi dhe zyra.",
+                phone: "+383 44 123 463",
+                cities: ["Prizren", "Gjakova"],
+                services: [
+                    { name: "Pastrimi i Zyrës", price: 40 },
+                    { name: "Pastrimi i Detajuar", price: 90 },
+                    { name: "Pastrimi i Qilimave", price: 50 }
+                ]
+            },
+            {
+                id: 9,
+                name: "Fresh Start Cleaning",
+                email: "info@freshstart.com",
+                description: "Pastrimi i plotë për shtëpi të reja dhe pas zhvendosjes. Shërbim i shpejtë dhe efektiv.",
+                phone: "+383 44 123 464",
+                cities: ["Peja", "Istog", "Klinë"],
+                services: [
+                    { name: "Pastrimi Pas Zhvendosjes", price: 100 },
+                    { name: "Pastrimi i Shtëpisë", price: 24 },
+                    { name: "Pastrimi i Dritareve", price: 16 }
+                ]
+            },
+            {
+                id: 10,
+                name: "ProClean Kosovo",
+                email: "contact@procleankosovo.com",
+                description: "Kompani profesionale me teknologji moderne. Pastrimi i sigurt dhe i shpejtë për çdo nevojë.",
+                phone: "+383 44 123 465",
+                cities: ["Mitrovica", "Vushtrri", "Skenderaj"],
+                services: [
+                    { name: "Pastrimi i Zyrës", price: 45 },
+                    { name: "Pastrimi Komercial", price: 85 },
+                    { name: "Pastrimi i Detajuar", price: 110 }
+                ]
+            },
+            {
+                id: 11,
+                name: "Green Clean Kosovo",
+                email: "info@greencleankosovo.com",
+                description: "Pastrimi ekologjik me produkt 100% natyrale. Kujdes për shëndetin tuaj dhe mjedisin.",
+                phone: "+383 44 123 466",
+                cities: ["Prishtina", "Lipjan", "Podujeva"],
+                services: [
+                    { name: "Pastrimi Ekologjik", price: 32 },
+                    { name: "Pastrimi i Shtëpisë", price: 26 },
+                    { name: "Aromatizim Natyral", price: 15 }
+                ]
+            },
+            {
+                id: 12,
+                name: "Elite Cleaning Services",
+                email: "info@elitecleaning.com",
+                description: "Shërbime pastrimi premium për klientët më kërkesor. Cilësia më e lartë e garantuar.",
+                phone: "+383 44 123 467",
+                cities: ["Prishtina", "Prizren"],
+                services: [
+                    { name: "Pastrimi Premium", price: 150 },
+                    { name: "Pastrimi i Detajuar", price: 130 },
+                    { name: "Pastrimi i Zyrës", price: 60 }
+                ]
+            },
+            {
+                id: 13,
+                name: "Fast & Clean",
+                email: "contact@fastandclean.com",
+                description: "Pastrimi i shpejtë dhe efektiv. Shërbim në të njëjtën ditë për urgjenca të pastrimit.",
+                phone: "+383 44 123 468",
+                cities: ["Ferizaj", "Gjilan", "Kamenica"],
+                services: [
+                    { name: "Pastrimi i Shpejtë", price: 25 },
+                    { name: "Pastrimi i Urgjencës", price: 45 },
+                    { name: "Pastrimi i Shtëpisë", price: 22 }
+                ]
+            },
+            {
+                id: 14,
+                name: "Mega Clean Kosovo",
+                email: "info@megacleankosovo.com",
+                description: "Kompani e madhe me kapacitet të lartë. Projekte të mëdha dhe kontrata afatgjatë.",
+                phone: "+383 44 123 469",
+                cities: ["Prishtina", "Gjilan", "Ferizaj", "Prizren"],
+                services: [
+                    { name: "Pastrimi Komercial", price: 90 },
+                    { name: "Pastrimi Industrial", price: 160 },
+                    { name: "Mirëmbajtje e Rregullt", price: 70 }
+                ]
+            },
+            {
+                id: 15,
+                name: "Home Sweet Clean",
+                email: "contact@homesweetclean.com",
+                description: "Pastrimi i shtëpisë me dashuri dhe kujdes. Shërbim personalizuar për çdo familje.",
+                phone: "+383 44 123 470",
+                cities: ["Rahovec", "Malisheva", "Suhareka"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 23 },
+                    { name: "Mirëmbajtja e Rregullt", price: 20 },
+                    { name: "Pastrimi i Dritareve", price: 17 }
+                ]
+            }
+        ];
+
+        let allCompanies = [...defaultCompanies];
+        let filteredCompanies = [...defaultCompanies];
+
+        // Function to get proper Albanian text for results count
+        function getResultsText(count) {
+            if (count === 0) {
+                return '0 Kompani të Gjetura';
+            } else if (count === 1) {
+                return '1 Kompani e Gjetur';
+            } else {
+                return `${count} Kompani të Gjetura`;
+            }
+        }
+
+        // Service mapping for search (will be populated dynamically)
+        let serviceMapping = {};
+        let allServices = [];
+        
+        // Load services from API
+        async function loadServices() {
+            let apiBase = 'http://localhost:3000';
+            let success = false;
+            
+            try {
+                const response = await fetch(`${apiBase}/api/services`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success && data.services) {
+                    allServices = data.services;
+                    populateServiceDropdown();
+                    success = true;
+                    console.log('Loaded services from API:', allServices.length);
+                    return;
+                }
+            } catch (error) {
+                console.warn('Failed to fetch services from port 3000, trying 3001:', error);
+            }
+            
+            // Try port 3001 if 3000 fails
+            if (!success) {
+                try {
+                    apiBase = 'http://localhost:3001';
+                    const response = await fetch(`${apiBase}/api/services`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.success && data.services) {
+                        allServices = data.services;
+                        populateServiceDropdown();
+                        success = true;
+                        console.log('Loaded services from API (port 3001):', allServices.length);
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch services from both ports:', error);
+                    // Fallback: use default services
+                    allServices = [
+                        { id: 'house', name: 'Pastrimi i Shtëpisë' },
+                        { id: 'office', name: 'Pastrimi i Zyrës' },
+                        { id: 'deep', name: 'Pastrimi i Detajuar' },
+                        { id: 'window', name: 'Pastrimi i Dritareve' },
+                        { id: 'carpet', name: 'Pastrimi i Qilimave' },
+                        { id: 'yard', name: 'Pastrimi i Objektit' }
+                    ];
+                    populateServiceDropdown();
+                }
+            }
+        }
+        
+        // Populate service dropdown (both hidden select and custom dropdown)
+        function populateServiceDropdown() {
+            const serviceSelect = document.getElementById('serviceSelect');
+            const serviceOptionsContainer = document.getElementById('serviceOptionsContainer');
+            
+            if (!serviceSelect) return;
+            
+            // Keep the "Të Gjitha Shërbimet" option for hidden select
+            const defaultOption = '<option value="">Të Gjitha Shërbimet</option>';
+            
+            // Add all services to hidden select
+            const serviceOptions = allServices.map(service => {
+                const serviceId = service.id || service.name.toLowerCase().replace(/\s+/g, '-');
+                serviceMapping[serviceId] = service.name;
+                return `<option value="${serviceId}">${service.name}</option>`;
+            }).join('');
+            
+            serviceSelect.innerHTML = defaultOption + serviceOptions;
+            
+            // Populate custom dropdown
+            if (serviceOptionsContainer) {
+                // Add "All Services" option
+                let html = `
+                    <div onclick="selectService('')" class="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-gray-100 flex items-center">
+                        <i data-lucide="check" class="h-4 w-4 text-blue-600 mr-2 hidden flex-shrink-0" id="serviceCheckAll"></i>
+                        <span class="text-gray-900 font-medium flex-1 min-w-0" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Të Gjitha Shërbimet</span>
+                    </div>
+                `;
+                
+                // Add all services
+                allServices.forEach(service => {
+                    const serviceId = service.id || service.name.toLowerCase().replace(/\s+/g, '-');
+                    // Escape quotes in service name for HTML attribute
+                    const escapedName = service.name.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+                    html += `
+                        <div onclick="selectService('${serviceId}')" data-service-id="${serviceId}" data-full-text="${escapedName}" class="service-option px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-gray-100 flex items-center">
+                            <i data-lucide="check" class="h-4 w-4 text-blue-600 mr-2 hidden service-check flex-shrink-0" id="serviceCheck${serviceId}"></i>
+                            <span class="text-gray-900 flex-1 min-w-0" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${service.name}</span>
+                        </div>
+                    `;
+                });
+                
+                serviceOptionsContainer.innerHTML = html;
+                lucide.createIcons();
+            }
+        }
+        
+        // Service dropdown functions
+        let serviceDropdownOpen = false;
+        let filteredServiceOptions = [];
+        
+        function toggleServiceDropdown() {
+            const dropdown = document.getElementById('serviceDropdown');
+            const btn = document.getElementById('serviceDropdownBtn');
+            const icon = btn?.querySelector('i[data-lucide="chevron-down"]');
+            
+            if (!dropdown) return;
+            
+            serviceDropdownOpen = !serviceDropdownOpen;
+            
+            if (serviceDropdownOpen) {
+                dropdown.classList.remove('hidden');
+                if (icon) {
+                    icon.setAttribute('data-lucide', 'chevron-up');
+                    lucide.createIcons();
+                }
+                // Focus search input
+                setTimeout(() => {
+                    const searchInput = document.getElementById('serviceSearchInput');
+                    if (searchInput) searchInput.focus();
+                }, 100);
+            } else {
+                dropdown.classList.add('hidden');
+                if (icon) {
+                    icon.setAttribute('data-lucide', 'chevron-down');
+                    lucide.createIcons();
+                }
+            }
+        }
+        
+        function selectService(serviceId) {
+            const serviceSelect = document.getElementById('serviceSelect');
+            const serviceDropdownText = document.getElementById('serviceDropdownText');
+            const dropdown = document.getElementById('serviceDropdown');
+            const btn = document.getElementById('serviceDropdownBtn');
+            const icon = btn?.querySelector('i[data-lucide]');
+            
+            // Update hidden select
+            if (serviceSelect) {
+                serviceSelect.value = serviceId;
+            }
+            
+            // Update display text
+            if (serviceDropdownText) {
+                if (serviceId === '') {
+                    serviceDropdownText.textContent = 'Të Gjitha Shërbimet';
+                } else {
+                    const serviceName = serviceMapping[serviceId] || serviceId;
+                    serviceDropdownText.textContent = serviceName;
+                }
+            }
+            
+            // Update checkmarks
+            document.querySelectorAll('.service-check, #serviceCheckAll').forEach(check => {
+                check.classList.add('hidden');
+            });
+            
+            if (serviceId === '') {
+                const checkAll = document.getElementById('serviceCheckAll');
+                if (checkAll) checkAll.classList.remove('hidden');
+            } else {
+                const check = document.getElementById(`serviceCheck${serviceId}`);
+                if (check) check.classList.remove('hidden');
+            }
+            
+            // Close dropdown
+            serviceDropdownOpen = false;
+            if (dropdown) dropdown.classList.add('hidden');
+            if (icon) {
+                icon.setAttribute('data-lucide', 'chevron-down');
+                lucide.createIcons();
+            }
+            
+            // Clear search
+            const searchInput = document.getElementById('serviceSearchInput');
+            if (searchInput) {
+                searchInput.value = '';
+                filterServiceOptions('');
+            }
+            
+            // Trigger search
+            if (typeof performSearch === 'function') {
+                performSearch();
+            }
+            
+            // Dispatch change event on hidden select
+            if (serviceSelect) {
+                serviceSelect.dispatchEvent(new Event('change'));
+            }
+        }
+        
+        function filterServiceOptions(searchTerm) {
+            const container = document.getElementById('serviceOptionsContainer');
+            if (!container) return;
+            
+            const term = searchTerm.toLowerCase();
+            
+            // Show/hide options based on search
+            const options = container.querySelectorAll('.service-option');
+            let visibleCount = 0;
+            
+            // Always show "All Services"
+            const allOption = container.querySelector('div[onclick="selectService(\'\')"]');
+            if (allOption) {
+                allOption.style.display = term === '' ? 'flex' : 'none';
+                if (term === '') visibleCount++;
+            }
+            
+            options.forEach(option => {
+                const text = option.textContent.toLowerCase();
+                const serviceId = option.getAttribute('data-service-id');
+                const serviceName = serviceMapping[serviceId] || '';
+                
+                if (text.includes(term) || serviceName.toLowerCase().includes(term)) {
+                    option.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+            
+            // Show "No results" if no matches
+            let noResults = container.querySelector('.no-service-results');
+            if (visibleCount === 0 && term !== '') {
+                if (!noResults) {
+                    noResults = document.createElement('div');
+                    noResults.className = 'no-service-results px-4 py-8 text-center text-gray-500';
+                    noResults.textContent = 'Nuk u gjet asnjë shërbim';
+                    container.appendChild(noResults);
+                }
+                noResults.style.display = 'block';
+            } else if (noResults) {
+                noResults.style.display = 'none';
+            }
+        }
+        
+        function handleServiceSearchKeydown(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                // Select first visible option
+                const container = document.getElementById('serviceOptionsContainer');
+                if (container) {
+                    const firstVisible = container.querySelector('.service-option[style*="flex"], div[onclick="selectService(\'\')"][style*="flex"]');
+                    if (firstVisible) {
+                        firstVisible.click();
+                    }
+                }
+            } else if (event.key === 'Escape') {
+                toggleServiceDropdown();
+            }
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('serviceDropdown');
+            const btn = document.getElementById('serviceDropdownBtn');
+            
+            if (dropdown && btn && serviceDropdownOpen) {
+                if (!dropdown.contains(event.target) && !btn.contains(event.target)) {
+                    toggleServiceDropdown();
+                }
+            }
+        });
+        
+        // Search input handler - attach after DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('serviceSearchInput');
+                if (searchInput) {
+                    searchInput.addEventListener('input', function(e) {
+                        filterServiceOptions(e.target.value);
+                    });
+                }
+            });
+        } else {
+            // DOM already loaded
+            const searchInput = document.getElementById('serviceSearchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    filterServiceOptions(e.target.value);
+                });
+            }
+        }
+
+        // City mapping for search
+        const cityMapping = {
+            'prishtina': 'Prishtina',
+            'prizren': 'Prizren',
+            'gjakova': 'Gjakova',
+            'peja': 'Peja',
+            'ferizaj': 'Ferizaj',
+            'gjilan': 'Gjilan',
+            'mitrovica': 'Mitrovica',
+            'vushtrri': 'Vushtrri',
+            'podujeva': 'Podujeva',
+            'rahovec': 'Rahovec',
+            'lipjan': 'Lipjan',
+            'malisheva': 'Malisheva',
+            'deçan': 'Deçan',
+            'dragash': 'Dragash',
+            'drenas': 'Drenas',
+            'fushë kosovë': 'Fushë Kosovë',
+            'hani i elezit': 'Hani i Elezit',
+            'istog': 'Istog',
+            'kaçanik': 'Kaçanik',
+            'kamenicë': 'Kamenicë',
+            'klinë': 'Klinë',
+            'kllokot': 'Kllokot',
+            'leposaviq': 'Leposaviq',
+            'mamuša': 'Mamuša',
+            'novobërdë': 'Novobërdë',
+            'obiliq': 'Obiliq',
+            'partesh': 'Partesh',
+            'ranillug': 'Ranillug',
+            'shtime': 'Shtime',
+            'skenderaj': 'Skenderaj',
+            'suharekë': 'Suharekë',
+            'zubin potok': 'Zubin Potok',
+            'zveçan': 'Zveçan',
+            // Albanian cities
+            'tirana': 'Tiranë',
+            'durres': 'Durrës',
+            'vlora': 'Vlorë',
+            'shkoder': 'Shkodër',
+            'elbasan': 'Elbasan',
+            'korca': 'Korçë',
+            'fier': 'Fier',
+            'berat': 'Berat',
+            'kavaja': 'Kavajë',
+            'gjirokaster': 'Gjirokastër',
+            'saranda': 'Sarandë'
+        };
+
+        // Initialize weather widget with real data
+        async function initializeWeatherWidget() {
+            // Set current date (updates dynamically every time)
+            const now = new Date();
+            const days = ['E Diel', 'E Hënë', 'E Martë', 'E Mërkurë', 'E Enjte', 'E Premte', 'E Shtunë'];
+            const months = ['Janar', 'Shkurt', 'Mars', 'Prill', 'Maj', 'Qershor', 'Korrik', 'Gusht', 'Shtator', 'Tetor', 'Nëntor', 'Dhjetor'];
+            
+            const dayName = days[now.getDay()];
+            const day = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            
+            const dateElement = document.getElementById('currentDate');
+            if (dateElement) {
+                dateElement.textContent = `${dayName.toUpperCase()}, ${day} ${month.toUpperCase()} ${year}`;
+            }
+            
+            // Fetch weather data from API (with cache prevention for fresh data)
+            let apiBase = 'http://localhost:3000';
+            let weatherData = null;
+            
+            try {
+                const response = await fetch(`${apiBase}/api/weather?city=Pristina&t=${Date.now()}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    cache: 'no-store'
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                if (data.success) {
+                    weatherData = data;
+                }
+            } catch (error) {
+                console.warn('Failed to fetch weather from port 3000, trying 3001:', error);
+                try {
+                    apiBase = 'http://localhost:3001';
+                    const response = await fetch(`${apiBase}/api/weather?city=Pristina&t=${Date.now()}`, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                        },
+                        cache: 'no-store'
+                    });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    if (data.success) {
+                        weatherData = data;
+                    }
+                } catch (error2) {
+                    console.warn('Failed to fetch weather from both ports, using defaults:', error2);
+                }
+            }
+            
+            // Update current weather with real data
+            if (weatherData && weatherData.current) {
+                const currentTemp = document.getElementById('currentTemp');
+                if (currentTemp) {
+                    currentTemp.textContent = `${weatherData.current.temp}°C`;
+                }
+                
+                // Update weather icon - find icon in weather section
+                const weatherSection = document.querySelector('#currentTemp')?.closest('.bg-white');
+                if (weatherSection) {
+                    const currentIcon = weatherSection.querySelector('i[data-lucide]');
+                    if (currentIcon && weatherData.current.icon) {
+                        currentIcon.setAttribute('data-lucide', weatherData.current.icon);
+                    }
+                }
+            }
+            
+            // Update forecast with real data (next 3 days)
+            if (weatherData && weatherData.forecast && weatherData.forecast.length >= 3) {
+                for (let i = 0; i < 3; i++) {
+                    const forecast = weatherData.forecast[i];
+                    const dayElement = document.getElementById(`forecastDay${i + 1}`);
+                    const tempElement = document.getElementById(`forecastTemp${i + 1}`);
+                    const forecastContainer = dayElement?.parentElement;
+                    const iconElement = forecastContainer?.querySelector('i[data-lucide]');
+                    
+                    if (dayElement && forecast.day) {
+                        dayElement.textContent = forecast.day;
+                    }
+                    if (tempElement && forecast.temp) {
+                        tempElement.textContent = `${forecast.temp.max}°C ${forecast.temp.min}°C`;
+                    }
+                    if (iconElement && forecast.icon) {
+                        iconElement.setAttribute('data-lucide', forecast.icon);
+                    }
+                }
+            } else {
+                // Fallback: Calculate next 3 days dynamically
+                const forecastDays = ['DIE', 'HËN', 'MAR', 'MËR', 'ENJ', 'PRE', 'SHT'];
+                for (let i = 1; i <= 3; i++) {
+                    const forecastDate = new Date(now);
+                    forecastDate.setDate(now.getDate() + i);
+                    const dayIndex = forecastDate.getDay();
+                    const dayElement = document.getElementById(`forecastDay${i}`);
+                    if (dayElement) {
+                        dayElement.textContent = forecastDays[dayIndex];
+                    }
+                }
+            }
+            
+            // Reinitialize Lucide icons for weather section
+            lucide.createIcons();
+        }
+        
+        // Auto-refresh weather data every hour (3600000 ms = 1 hour)
+        // This ensures weather data is always up-to-date
+        setInterval(() => {
+            initializeWeatherWidget();
+        }, 3600000);
+        
+        // Also refresh when page becomes visible (user returns to tab)
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                initializeWeatherWidget();
+            }
+        });
+        
+        // Refresh on window focus (user switches back to window)
+        window.addEventListener('focus', () => {
+            initializeWeatherWidget();
+        });
+
+        // City Dropdown Functions
+        let selectedCityValue = '';
+        
+        function toggleCityDropdown() {
+            const dropdown = document.getElementById('cityDropdown');
+            if (dropdown) {
+                dropdown.classList.toggle('hidden');
+                if (!dropdown.classList.contains('hidden')) {
+                    // Show countries view when opening
+                    showCountriesView();
+                    lucide.createIcons();
+                }
+            }
+        }
+        
+        function showCountriesView() {
+            document.getElementById('countriesView').classList.remove('hidden');
+            document.getElementById('kosoveCitiesView').classList.add('hidden');
+            document.getElementById('shqiperiCitiesView').classList.add('hidden');
+        }
+        
+        function selectCountry(country) {
+            if (country === 'kosove') {
+                document.getElementById('countriesView').classList.add('hidden');
+                document.getElementById('kosoveCitiesView').classList.remove('hidden');
+                document.getElementById('shqiperiCitiesView').classList.add('hidden');
+            } else if (country === 'shqiperi') {
+                document.getElementById('countriesView').classList.add('hidden');
+                document.getElementById('kosoveCitiesView').classList.add('hidden');
+                document.getElementById('shqiperiCitiesView').classList.remove('hidden');
+            }
+            lucide.createIcons();
+        }
+        
+        function goBackToCountries() {
+            showCountriesView();
+            lucide.createIcons();
+        }
+        
+        function selectCity(cityValue) {
+            selectedCityValue = cityValue;
+            const cityMapping = {
+                'prishtina': 'Prishtinë',
+                'prizren': 'Prizren',
+                'gjakova': 'Gjakovë',
+                'peja': 'Pejë',
+                'ferizaj': 'Ferizaj',
+                'gjilan': 'Gjilan',
+                'mitrovica': 'Mitrovicë',
+                'vushtrri': 'Vushtrri',
+                'podujeva': 'Podujevë',
+                'rahovec': 'Rahovec',
+                'lipjan': 'Lipjan',
+                'malisheva': 'Malishevë',
+                'suharekë': 'Suharekë',
+                'skenderaj': 'Skenderaj',
+                'tirana': 'Tiranë',
+                'durres': 'Durrës',
+                'vlora': 'Vlorë',
+                'shkoder': 'Shkodër',
+                'elbasan': 'Elbasan',
+                'korca': 'Korçë',
+                'fier': 'Fier',
+                'berat': 'Berat',
+                'kavaja': 'Kavajë',
+                'gjirokaster': 'Gjirokastër',
+                'saranda': 'Sarandë'
+            };
+            
+            const displayText = cityValue ? cityMapping[cityValue] || cityValue : 'Të Gjitha Qytetet';
+            document.getElementById('cityDropdownText').textContent = displayText;
+            
+            // Update the hidden select element for compatibility
+            const citySelect = document.getElementById('citySelect');
+            if (citySelect) {
+                citySelect.value = cityValue;
+                // Trigger change event so search listeners are notified
+                citySelect.dispatchEvent(new Event('change'));
+            }
+            
+            // Close dropdown
+            document.getElementById('cityDropdown').classList.add('hidden');
+            
+            // Trigger search if needed (will be handled by change event listener)
+        }
+        
+        function selectAllCities() {
+            selectedCityValue = '';
+            document.getElementById('cityDropdownText').textContent = 'Të Gjitha Qytetet';
+            document.getElementById('cityDropdown').classList.add('hidden');
+            
+            const citySelect = document.getElementById('citySelect');
+            if (citySelect) {
+                citySelect.value = '';
+                // Trigger change event so search listeners are notified
+                citySelect.dispatchEvent(new Event('change'));
+            }
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('cityDropdown');
+            const button = document.getElementById('cityDropdownBtn');
+            if (dropdown && button && !dropdown.contains(event.target) && !button.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize weather widget
+            initializeWeatherWidget();
+            
+            // Load services from API
+            loadServices();
+
+            // 1) Show cached approved companies immediately + default companies (works for anonymous users)
+            try {
+                const cached = JSON.parse(localStorage.getItem('approvedCompaniesCache') || '[]');
+                if (Array.isArray(cached) && cached.length > 0) {
+                    // Merge cached companies with default companies (avoid duplicates by ID)
+                    const merged = mergeCompanies(cached, defaultCompanies);
+                    allCompanies = merged;
+                    filteredCompanies = [...allCompanies];
+                    updateCompanyDisplay();
+                    updateStats();
+                } else {
+                    // If no cache, show default companies immediately
+                    allCompanies = [...defaultCompanies];
+                    filteredCompanies = [...defaultCompanies];
+                    updateCompanyDisplay();
+                    updateStats();
+                }
+            } catch(_) {
+                // Fallback: show default companies
+                allCompanies = [...defaultCompanies];
+                filteredCompanies = [...defaultCompanies];
+                updateCompanyDisplay();
+                updateStats();
+            }
+
+            // 2) Load approved companies from API (DB) and refresh cache
+            loadApprovedCompaniesFromAPI();
+            
+            // Re-load list when the window regains focus or periodically
+            window.addEventListener('focus', () => {
+                loadApprovedCompaniesFromAPI();
+            });
+            setInterval(() => {
+                loadApprovedCompaniesFromAPI();
+            }, 30000);
+            
+            // Support hash-triggered reload (e.g. after approve)
+            if (location.hash === '#reloadCompanies') {
+                loadApprovedCompaniesFromAPI();
+                history.replaceState(null, '', location.pathname);
+            }
+            
+            // Get search elements
+            const searchInput = document.getElementById('searchInput');
+            const citySelect = document.getElementById('citySelect');
+            const serviceSelect = document.getElementById('serviceSelect');
+            const searchButton = document.getElementById('searchButton');
+            
+            function performSearch() {
+                if (!searchInput || !citySelect || !serviceSelect) {
+                    console.error('Search elements not found');
+                    return;
+                }
+                
+                const searchTerm = searchInput.value.toLowerCase();
+                // Get city value from hidden select (updated by custom dropdown)
+                const selectedCity = citySelect.value || '';
+                const selectedService = serviceSelect.value || '';
+                
+                console.log('Search params:', { searchTerm, selectedCity, selectedService });
+                
+                filteredCompanies = allCompanies.filter(company => {
+                    // Only show approved companies (or companies without status - demo companies)
+                    const status = (company.status || '').toLowerCase();
+                    if (status && status !== 'approved') {
+                        return false; // Hide pending/rejected companies
+                    }
+                    
+                    const matchesSearch = !searchTerm || 
+                        company.name.toLowerCase().includes(searchTerm) ||
+                        (company.description && company.description.toLowerCase().includes(searchTerm));
+                    
+                    const matchesCity = !selectedCity || 
+                        (company.cities && company.cities.length > 0 && company.cities.some(city => {
+                            const cityLower = city.toLowerCase();
+                            const mappedCity = cityMapping[selectedCity]?.toLowerCase();
+                            return cityLower === mappedCity || cityLower.includes(mappedCity) || (mappedCity && mappedCity.includes(cityLower));
+                        }));
+                    
+                    const matchesService = !selectedService || 
+                        (company.services && company.services.length > 0 && company.services.some(service => service.name === serviceMapping[selectedService]));
+                    
+                    return matchesSearch && matchesCity && matchesService;
+                });
+                
+                console.log('Filtered companies:', filteredCompanies.length, 'out of', allCompanies.length);
+                updateCompanyDisplay();
+            }
+            
+            // Update search on input change
+            if (searchInput) {
+                searchInput.addEventListener('input', performSearch);
+                // Also trigger search and scroll on Enter key
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        performSearch();
+                        // Scroll to companies section after search
+                        setTimeout(() => {
+                            const companiesSection = document.getElementById('companiesSection');
+                            if (companiesSection) {
+                                const headerOffset = 120; // Account for sticky header
+                                const elementPosition = companiesSection.getBoundingClientRect().top;
+                                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                                
+                                window.scrollTo({
+                                    top: offsetPosition,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }, 100);
+                    }
+                });
+            }
+            if (citySelect) {
+                citySelect.addEventListener('change', performSearch);
+            }
+            if (serviceSelect) {
+                serviceSelect.addEventListener('change', performSearch);
+            }
+            if (searchButton) {
+                searchButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    performSearch();
+                    // Scroll to companies section after search
+                    setTimeout(() => {
+                        const companiesSection = document.getElementById('companiesSection');
+                        if (companiesSection) {
+                            const headerOffset = 120; // Account for sticky header
+                            const elementPosition = companiesSection.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                            
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, 100);
+                });
+            }
+            
+            function getLocalApprovedCompanies() {
+                try {
+                    const local = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                    return (local || [])
+                        .filter(c => (c.status || '').toLowerCase() === 'approved')
+                        .map(c => ({
+                            id: c.id,
+                            name: c.name,
+                            description: c.description || '',
+                            phone: c.phone,
+                            cities: Array.isArray(c.cities) ? c.cities : [],
+                            services: Array.isArray(c.services) ? c.services : [],
+                        }));
+                } catch (_) { return []; }
+            }
+
+            function mergeCompanies(primary, secondary) {
+                const byKey = new Map();
+                [...primary, ...secondary].forEach(c => {
+                    const key = c.id || c.name;
+                    if (!byKey.has(key)) byKey.set(key, c);
+                });
+                return Array.from(byKey.values());
+            }
+
+            async function loadApprovedCompaniesFromAPI() {
+                let apiBase = 'http://localhost:3000';
+                let apiSuccess = false;
+                
+                try {
+                    const res = await fetch(`${apiBase}/api/companies`);
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const data = await res.json();
+                    if (data.success && Array.isArray(data.companies)) {
+                        const apiCompanies = data.companies.map(c => ({
+                            id: c.id,
+                            name: c.name,
+                            description: c.description || '',
+                            phone: c.phone,
+                            cities: c.cities || [],
+                            services: c.services || []
+                        }));
+                        const localApproved = getLocalApprovedCompanies();
+                        // Merge API companies with local approved and default companies
+                        const mergedApi = mergeCompanies(apiCompanies, localApproved);
+                        allCompanies = mergeCompanies(mergedApi, defaultCompanies);
+                        filteredCompanies = [...allCompanies];
+                        updateCompanyDisplay();
+                        updateStats();
+                        // Persist cache for next visits (only API + local approved, not default)
+                        try { localStorage.setItem('approvedCompaniesCache', JSON.stringify(mergedApi)); } catch(_) {}
+                        apiSuccess = true;
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('Failed to fetch from port 3000:', e);
+                }
+                
+                // Try port 3001 if 3000 fails
+                if (!apiSuccess) {
+                    try {
+                        const res = await fetch('http://localhost:3001/api/companies');
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                        const data = await res.json();
+                        if (data.success && Array.isArray(data.companies)) {
+                            const apiCompanies = data.companies.map(c => ({
+                                id: c.id,
+                                name: c.name,
+                                description: c.description || '',
+                                phone: c.phone,
+                                cities: c.cities || [],
+                                services: c.services || []
+                            }));
+                            const localApproved = getLocalApprovedCompanies();
+                            // Merge API companies with local approved and default companies
+                            const mergedApi = mergeCompanies(apiCompanies, localApproved);
+                            allCompanies = mergeCompanies(mergedApi, defaultCompanies);
+                            filteredCompanies = [...allCompanies];
+                            updateCompanyDisplay();
+                            updateStats();
+                            // Persist cache for next visits (only API + local approved, not default)
+                            try { localStorage.setItem('approvedCompaniesCache', JSON.stringify(mergedApi)); } catch(_) {}
+                            apiSuccess = true;
+                            return;
+                        }
+                    } catch (e2) {
+                        console.warn('Failed to fetch from port 3001:', e2);
+                    }
+                }
+                
+                // Fallback: approved companies from cache + default companies (always show something)
+                if (!apiSuccess) {
+                    const localApproved = getLocalApprovedCompanies();
+                    // Always merge with default companies so something is always shown
+                    allCompanies = mergeCompanies(localApproved, defaultCompanies);
+                    filteredCompanies = [...allCompanies];
+                    updateCompanyDisplay();
+                    updateStats();
+                    console.log('Using fallback: showing', allCompanies.length, 'companies (cache + defaults)');
+                }
+            }
+            
+            function updateCompanyDisplay() {
+                const companiesContainer = document.getElementById('companiesContainer');
+                const resultsCount = document.getElementById('resultsCount');
+                
+                // Filter out companies that are not approved (only show approved companies)
+                // Companies without status are considered approved (demo companies)
+                const approvedOnly = filteredCompanies.filter(company => {
+                    const status = (company.status || '').toLowerCase();
+                    // Only show if status is 'approved' or if status doesn't exist (demo companies)
+                    return !status || status === 'approved';
+                });
+                
+                if (approvedOnly.length === 0) {
+                    companiesContainer.innerHTML = `
+                        <div class="col-span-full text-center py-12">
+                            <i data-lucide="building-2" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
+                            <h3 class="text-xl font-medium text-gray-900 mb-2">Nuk u gjetën kompani</h3>
+                            <p class="text-gray-600">Provoni të rregulloni kriteret e kërkimit ose shfletoni të gjitha kompanitë.</p>
+                        </div>
+                    `;
+                    resultsCount.textContent = getResultsText(0);
+                } else {
+                    companiesContainer.innerHTML = approvedOnly.map(company => `
+                        <div class="bg-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="viewCompanyDetails('${company.id}')">
+                            <div class="flex items-center mb-4">
+                                <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="building-2" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="text-lg font-semibold text-gray-900">${company.name}</h4>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i data-lucide="map-pin" class="h-4 w-4 mr-1"></i>
+                                        ${company.cities.join(', ')}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gray-600 mb-4 line-clamp-2">${company.description}</p>
+                            
+                            <div class="mb-4">
+                                <h5 class="text-sm font-medium text-gray-900 mb-2">Shërbimet & Çmimet:</h5>
+                                <div class="space-y-1">
+                                    ${company.services.slice(0, 3).map(service => `
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-600">${service.name}</span>
+                                            <span class="font-medium text-green-600">€${service.price}</span>
+                                        </div>
+                                    `).join('')}
+                                    ${company.services.length > 3 ? `
+                                        <p class="text-xs text-gray-500">+${company.services.length - 3} shërbime të tjera</p>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-2" onclick="event.stopPropagation()">
+                                <a href="tel:${company.phone}" class="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+                                    <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                                    Telefono
+                                </a>
+                                <button onclick="openEmailModal('${company.name}', '${company.email || ''}')" class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
+                                    <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
+                                    Email
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                    resultsCount.textContent = getResultsText(approvedOnly.length);
+                }
+                
+                // Re-initialize Lucide icons
+                lucide.createIcons();
+                
+                // Add hover effects to new cards
+                const cards = document.querySelectorAll('.card-hover');
+                cards.forEach(card => {
+                    card.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-4px)';
+                    });
+                    
+                    card.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                    });
+                });
+            }
+            
+            function updateStats() {
+                const companiesCount = document.getElementById('companiesCount');
+                companiesCount.textContent = allCompanies.length;
+            }
+            
+            // Check if user is signed in
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                const nav = document.querySelector('nav.flex.items-center.space-x-4');
+                
+                // Check if user is admin (admin doesn't need subscription)
+                const isAdmin = user.role === 'admin' || user.email === 'admin@pastro.com' || user.id === 0;
+                
+                if (isAdmin) {
+                    // Admin panel - no subscription needed
+                    nav.innerHTML = `
+                        <span class="text-gray-700">Mirë se erdhe, ${user.name}</span>
+                        <a href="admin-approve-sq.html" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                            <i data-lucide="shield-check" class="h-4 w-4 inline mr-2"></i>
+                            Mirato Kompanitë
+                        </a>
+                        <a href="demo-sq-fixed.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Kryefaqja</a>
+                        <button onclick="signOut()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">Dil</button>
+                    `;
+                    lucide.createIcons();
+                    // Reload categories and advertisement for admin view
+                    loadServiceCategories();
+                    loadAdminAdvertisement();
+                } else {
+                    // Check if company has active subscription
+                    const subscription = localStorage.getItem(`subscription_${user.id}`);
+                    let subscriptionStatus = 'inactive';
+                    if (subscription) {
+                        const subData = JSON.parse(subscription);
+                        if (subData.status === 'active' && new Date(subData.expiresAt) > new Date()) {
+                            subscriptionStatus = 'active';
+                        }
+                    }
+                    
+                    if (subscriptionStatus === 'active') {
+                        nav.innerHTML = `
+                            <span class="text-gray-700">Mirë se erdhe, ${user.name}</span>
+                            <a href="demo-sq.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Paneli</a>
+                            <a href="edit-company-sq.html" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Edito Kompaninë</a>
+                            <button onclick="signOut()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">Dil</button>
+                        `;
+                    } else {
+                        nav.innerHTML = `
+                            <span class="text-gray-700">Mirë se erdhe, ${user.name}</span>
+                            <a href="subscription.html" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Abonohu (€4/muaj)</a>
+                            <button onclick="signOut()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">Dil</button>
+                        `;
+                    }
+                    lucide.createIcons();
+                }
+            }
+        });
+        
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuOverlay = document.getElementById('mobileMenuOverlay');
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (mobileMenu && menuOverlay) {
+                const isOpen = mobileMenu.classList.contains('open');
+                mobileMenu.classList.toggle('open');
+                menuOverlay.classList.toggle('open');
+                // Update icon
+                if (mobileMenu.classList.contains('open')) {
+                    menuBtn.innerHTML = '<i data-lucide="x" class="h-6 w-6"></i>';
+                } else {
+                    menuBtn.innerHTML = '<i data-lucide="menu" class="h-6 w-6"></i>';
+                }
+                lucide.createIcons();
+            }
+        }
+        
+        // Close mobile menu when clicking on overlay
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuOverlay = document.getElementById('mobileMenuOverlay');
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            if (mobileMenu && menuOverlay && menuBtn && !mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
+                if (mobileMenu.classList.contains('open')) {
+                    mobileMenu.classList.remove('open');
+                    menuOverlay.classList.remove('open');
+                    menuBtn.innerHTML = '<i data-lucide="menu" class="h-6 w-6"></i>';
+                    lucide.createIcons();
+                }
+            }
+        });
+        
+        
+        function signOut() {
+            localStorage.removeItem('currentUser');
+            location.reload();
+        }
+
+        // Navigate to company details page
+        function viewCompanyDetails(companyId) {
+            // Store company ID in localStorage to retrieve on detail page
+            localStorage.setItem('viewingCompanyId', companyId.toString());
+            window.location.href = 'company-detail-sq.html';
+        }
+
+        // Email Modal Functions
+        let currentCompanyEmail = '';
+        
+        function openEmailModal(companyName, companyEmail) {
+            currentCompanyEmail = companyEmail;
+            
+            // Update modal title
+            document.getElementById('modalCompanyName').textContent = `Dergo mesazh ${companyName}`;
+            document.getElementById('modalCompanyNameInfo').textContent = `"${companyName}"`;
+            
+            // Pre-fill email if user is logged in
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                if (user.email) {
+                    document.getElementById('customerEmail').value = user.email;
+                }
+            }
+            
+            // Reset form
+            document.getElementById('customerMessage').value = '';
+            
+            // Show modal
+            document.getElementById('emailModal').classList.remove('hidden');
+            document.getElementById('emailModal').classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeEmailModal() {
+            document.getElementById('emailModal').classList.add('hidden');
+            document.getElementById('emailModal').classList.remove('flex');
+            // Reset form
+            document.getElementById('emailForm').reset();
+        }
+
+        // Handle email form submission
+        async function handleEmailSubmit(e) {
+            e.preventDefault();
+            
+            const customerEmail = document.getElementById('customerEmail').value.trim();
+            const message = document.getElementById('customerMessage').value.trim();
+            
+            if (!customerEmail || !message) {
+                alert('Ju lutemi plotësoni të gjitha fushat.');
+                return;
+            }
+            
+            if (!currentCompanyEmail) {
+                alert('Email i kompanisë nuk është i disponueshëm. Ju lutemi provoni më vonë.');
+                return;
+            }
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="inline-block animate-spin mr-2">⏳</span> Po dërgohet...';
+            submitBtn.disabled = true;
+            
+            try {
+                const companyName = document.getElementById('modalCompanyNameInfo').textContent.replace(/"/g, '');
+                
+                // Try to send email, first try port 3001, then 3000
+                let response;
+                let data;
+                let apiBase = 'http://localhost:3001';
+                
+                try {
+                    // Try port 3001 first
+                    response = await fetch(`${apiBase}/api/contact`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            to: currentCompanyEmail,
+                            from: customerEmail,
+                            message: message,
+                            companyName: companyName
+                        })
+                    });
+                    
+                    data = await response.json();
+                    
+                    if (!response.ok && response.status !== 503) {
+                        throw new Error(data.error || 'Failed to send email');
+                    }
+                } catch (error) {
+                    // If port 3001 fails, try port 3000
+                    apiBase = 'http://localhost:3000';
+                    response = await fetch(`${apiBase}/api/contact`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            to: currentCompanyEmail,
+                            from: customerEmail,
+                            message: message,
+                            companyName: companyName
+                        })
+                    });
+                    
+                    data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Failed to send email');
+                    }
+                }
+                
+                // Check if SMTP is not configured
+                if (response.status === 503 || data.error?.includes('SMTP')) {
+                    throw new Error('Servisi i email-it nuk është i konfiguruar. Ju lutemi konfiguro SMTP settings në .env file.');
+                }
+                
+                alert('Mesazhi u dërgua me sukses! Kompania do të marrë një email me mesazhin tuaj.');
+                
+                // Close modal
+                closeEmailModal();
+                
+            } catch (error) {
+                console.error('Error sending email:', error);
+                alert('Ndodhi një gabim gjatë dërgimit të mesazhit. Ju lutemi provoni përsëri ose kontaktoni mbështetjen.');
+            } finally {
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+        
+        // Attach event listener when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailForm = document.getElementById('emailForm');
+            if (emailForm) {
+                emailForm.addEventListener('submit', handleEmailSubmit);
+            }
+
+            // Close modal when clicking outside
+            const emailModal = document.getElementById('emailModal');
+            if (emailModal) {
+                emailModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeEmailModal();
+                    }
+                });
+            }
+        });
+    </script>
+    <a id="page-bottom"></a>
+
+    <script>
+        // Show/hide quick nav on scroll
+        (function(){
+            const quickNav = document.getElementById('quickNav');
+            function toggleQuickNav(){
+                if (!quickNav) return;
+                if (window.scrollY > 200) quickNav.classList.remove('hidden');
+                else quickNav.classList.add('hidden');
+            }
+            window.addEventListener('scroll', toggleQuickNav, { passive: true });
+            toggleQuickNav();
+        })();
+
+        // Smooth scroll helper
+        function scrollToAnchor(id){
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>

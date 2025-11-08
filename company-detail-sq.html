@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detajet e Kompanisë - Pastro.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #dbeafe 0%, #dcfce7 100%);
+        }
+        .star-rating {
+            display: inline-flex;
+            gap: 0.25rem;
+        }
+        .star {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .star:hover {
+            transform: scale(1.2);
+        }
+        .star.filled {
+            color: #fbbf24;
+        }
+        .star.empty {
+            color: #d1d5db;
+        }
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        .photo-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        .photo-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .photo-item:hover img {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center">
+                    <i data-lucide="building-2" class="h-8 w-8 text-blue-600"></i>
+                    <h1 class="ml-2 text-2xl font-bold text-gray-900">Pastro.com</h1>
+                </div>
+                <nav class="flex items-center space-x-4">
+                    <a href="demo-sq-fixed.html" class="text-gray-700 hover:text-blue-600 transition-colors">← Kthehu në Kryefaqe</a>
+                    <button id="editCompanyBtn" class="hidden bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                        <i data-lucide="edit" class="h-4 w-4 mr-2"></i>
+                        Edito Kompaninë
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Loading State -->
+        <div id="loadingState" class="text-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p class="text-gray-600">Po ngarkohen detajet e kompanisë...</p>
+        </div>
+
+        <!-- Company Details -->
+        <div id="companyDetails" class="hidden">
+            <!-- Company Header -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex items-start space-x-4">
+                        <div id="companyLogo" class="h-20 w-20 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i data-lucide="building-2" class="h-10 w-10 text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h2 id="companyName" class="text-3xl font-bold text-gray-900 mb-2"></h2>
+                            <div id="companyRating" class="flex items-center mb-2"></div>
+                            <div class="flex items-center text-gray-600">
+                                <i data-lucide="map-pin" class="h-4 w-4 mr-1"></i>
+                                <span id="companyCities"></span>
+                            </div>
+                            <div class="flex items-center text-gray-600 mt-2">
+                                <i data-lucide="phone" class="h-4 w-4 mr-1"></i>
+                                <span id="companyPhone"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <a id="callButton" href="#" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                            <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
+                            Telefono
+                        </a>
+                        <button id="emailButton" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                            <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
+                            Email
+                        </button>
+                    </div>
+                </div>
+                <p id="companyDescription" class="text-gray-600 text-lg"></p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left Column - Main Content -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Photos Gallery -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Fotografit gjate punes</h3>
+                        <div id="photoGallery" class="photo-gallery">
+                            <!-- Photos will be loaded dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Services & Prices -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Shërbimet & Çmimet</h3>
+                        <div id="servicesList" class="space-y-3">
+                            <!-- Services will be loaded dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Metodat e Pagesës</h3>
+                        <div id="paymentMethods" class="flex flex-wrap gap-3">
+                            <!-- Payment methods will be loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Sidebar -->
+                <div class="space-y-6">
+                    <!-- Working Hours -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                            <i data-lucide="clock" class="h-5 w-5 inline mr-2"></i>
+                            Orari i Punës
+                        </h3>
+                        <div id="workingHours" class="space-y-2">
+                            <!-- Working hours will be loaded dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Rating Section -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Vlerësimi</h3>
+                        <div class="text-center mb-4">
+                            <div id="averageRating" class="text-4xl font-bold text-gray-900 mb-2"></div>
+                            <div id="averageStars" class="star-rating justify-center mb-2"></div>
+                            <p id="ratingCount" class="text-gray-600 text-sm"></p>
+                        </div>
+                        <hr class="my-4">
+                        <h4 class="font-semibold text-gray-900 mb-3">Jepni Vlerësimin Tuaj</h4>
+                        <div class="star-rating mb-3" id="userRating">
+                            <span class="star empty" data-rating="1">★</span>
+                            <span class="star empty" data-rating="2">★</span>
+                            <span class="star empty" data-rating="3">★</span>
+                            <span class="star empty" data-rating="4">★</span>
+                            <span class="star empty" data-rating="5">★</span>
+                        </div>
+                        <textarea id="ratingComment" placeholder="Shkruani komentin tuaj..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-3" rows="3"></textarea>
+                        <button id="submitRating" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                            Dërgo Vlerësimin
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="hidden text-center py-12">
+            <i data-lucide="alert-circle" class="h-16 w-16 text-red-400 mx-auto mb-4"></i>
+            <h3 class="text-xl font-medium text-gray-900 mb-2">Kompania nuk u gjet</h3>
+            <p class="text-gray-600 mb-4">Kompania që po kërkoni nuk ekziston ose është fshirë.</p>
+            <a href="demo-sq-fixed.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-block">
+                Kthehu në Kryefaqe
+            </a>
+        </div>
+    </div>
+
+    <!-- Edit Company Modal (Admin Only) -->
+    <div id="editCompanyModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto my-8">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900">Edito Kompaninë</h3>
+                    <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <i data-lucide="x" class="h-6 w-6"></i>
+                    </button>
+                </div>
+                
+                <form id="editCompanyForm" onsubmit="saveCompanyChanges(event); return false;">
+                    <!-- Basic Info -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-4">Informacion Bazë</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Emri i Kompanisë *</label>
+                                <input type="text" id="editCompanyName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Telefoni *</label>
+                                <input type="tel" id="editCompanyPhone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                <input type="email" id="editCompanyEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Qytetet (të ndara me presje)</label>
+                                <input type="text" id="editCompanyCities" placeholder="Prishtina, Prizren, Gjakova" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Përshkrimi</label>
+                                <textarea id="editCompanyDescription" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Services -->
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="text-lg font-semibold text-gray-900">Shërbimet & Çmimet</h4>
+                            <button type="button" onclick="addServiceRow()" class="bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700 transition-colors text-sm">
+                                <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
+                                Shto Shërbim
+                            </button>
+                        </div>
+                        <div id="editServicesContainer" class="space-y-3">
+                            <!-- Services will be added dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Working Hours -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-4">Orari i Punës</h4>
+                        <div id="editWorkingHoursContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Working hours will be added dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-4">Metodat e Pagesës</h4>
+                        <div class="flex flex-wrap gap-3">
+                            <label class="flex items-center">
+                                <input type="checkbox" value="Cash" class="editPaymentMethod mr-2">
+                                <span>Cash</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" value="Card" class="editPaymentMethod mr-2">
+                                <span>Card</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" value="Bank Transfer" class="editPaymentMethod mr-2">
+                                <span>Bank Transfer</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="flex space-x-3">
+                        <button type="button" onclick="closeEditModal()" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            Anulo
+                        </button>
+                        <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            Ruaj Ndryshimet
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 transform transition-all">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
+                    <i data-lucide="check-circle" class="h-10 w-10 text-green-600"></i>
+                </div>
+                <h3 id="successModalTitle" class="text-xl font-bold text-gray-900 mb-2">Ndryshimet e kompanisë</h3>
+                <p id="successModalMessage" class="text-gray-600 mb-6"></p>
+                <button onclick="closeSuccessModal()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Sample companies data (same as in demo-sq-fixed.html)
+        const defaultCompanies = [
+            {
+                id: 1,
+                name: "CleanPro Kosovo",
+                email: "info@cleanprokosovo.com",
+                description: "Shërbime profesionale pastrimi për shtëpi dhe zyra. Të besuar nga 500+ klientë nëpër Kosovë.",
+                phone: "+383 44 123 456",
+                cities: ["Prishtina", "Prizren"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 25 },
+                    { name: "Pastrimi i Zyrës", price: 35 },
+                    { name: "Pastrimi i Thellë", price: 80 }
+                ],
+                workingHours: {
+                    "Hënë": "08:00 - 18:00",
+                    "Martë": "08:00 - 18:00",
+                    "Mërkurë": "08:00 - 18:00",
+                    "Enjte": "08:00 - 18:00",
+                    "Premte": "08:00 - 18:00",
+                    "Shtunë": "09:00 - 15:00",
+                    "Dielë": "E mbyllur"
+                },
+                paymentMethods: ["Cash", "Card", "Bank Transfer"],
+                photos: [
+                    "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400",
+                    "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400",
+                    "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=400"
+                ],
+                rating: 4.5,
+                ratingCount: 24
+            },
+            {
+                id: 2,
+                name: "EcoClean Solutions",
+                email: "contact@ecocleansolutions.com",
+                description: "Zgjidhje pastrimi miqësore me mjedisin për klientët e vetëdijshëm mjedisorë. Pastrimi i gjelbër i certifikuar.",
+                phone: "+383 44 123 457",
+                cities: ["Gjakova", "Peja"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 30 },
+                    { name: "Pastrimi i Dritareve", price: 20 },
+                    { name: "Pastrimi i Qilimave", price: 45 }
+                ],
+                workingHours: {
+                    "Hënë": "07:00 - 17:00",
+                    "Martë": "07:00 - 17:00",
+                    "Mërkurë": "07:00 - 17:00",
+                    "Enjte": "07:00 - 17:00",
+                    "Premte": "07:00 - 17:00",
+                    "Shtunë": "E mbyllur",
+                    "Dielë": "E mbyllur"
+                },
+                paymentMethods: ["Cash", "Card"],
+                photos: [
+                    "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400",
+                    "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400"
+                ],
+                rating: 4.8,
+                ratingCount: 18
+            },
+            {
+                id: 3,
+                name: "Premium Clean",
+                email: "info@premiumclean.com",
+                description: "Shërbime pastrimi luksoze për shtëpi të larta dhe hapësira komerciale. Cilësia premium e garantuar.",
+                phone: "+383 44 123 458",
+                cities: ["Ferizaj", "Gjilan"],
+                services: [
+                    { name: "Pastrimi i Thellë", price: 120 },
+                    { name: "Pastrimi i Zyrës", price: 50 },
+                    { name: "Pastrimi i Objektit", price: 60 }
+                ],
+                workingHours: {
+                    "Hënë": "09:00 - 19:00",
+                    "Martë": "09:00 - 19:00",
+                    "Mërkurë": "09:00 - 19:00",
+                    "Enjte": "09:00 - 19:00",
+                    "Premte": "09:00 - 19:00",
+                    "Shtunë": "10:00 - 16:00",
+                    "Dielë": "10:00 - 14:00"
+                },
+                paymentMethods: ["Card", "Bank Transfer"],
+                photos: [
+                    "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400",
+                    "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400",
+                    "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=400",
+                    "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400"
+                ],
+                rating: 4.9,
+                ratingCount: 31
+            },
+            {
+                id: 4,
+                name: "QuickClean Express",
+                email: "info@quickcleanexpress.com",
+                description: "Shërbime pastrimi të shpejta dhe të besueshme. Shërbim në të njëjtën ditë i disponueshëm. Zgjidhje pastrimi urgjente.",
+                phone: "+383 44 123 459",
+                cities: ["Mitrovica", "Vushtrri"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 20 },
+                    { name: "Pastrimi i Dritareve", price: 15 },
+                    { name: "Pastrimi i Urgjencës", price: 40 }
+                ],
+                workingHours: {
+                    "Hënë": "06:00 - 20:00",
+                    "Martë": "06:00 - 20:00",
+                    "Mërkurë": "06:00 - 20:00",
+                    "Enjte": "06:00 - 20:00",
+                    "Premte": "06:00 - 20:00",
+                    "Shtunë": "07:00 - 18:00",
+                    "Dielë": "08:00 - 16:00"
+                },
+                paymentMethods: ["Cash", "Card"],
+                photos: [
+                    "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400",
+                    "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400"
+                ],
+                rating: 4.3,
+                ratingCount: 15
+            },
+            {
+                id: 5,
+                name: "Family Clean Co.",
+                email: "info@familycleanco.com",
+                description: "Biznes familjar me 15+ vjet përvojë. Shërbim i personalizuar për çdo familje.",
+                phone: "+383 44 123 460",
+                cities: ["Podujeva", "Rahovec"],
+                services: [
+                    { name: "Pastrimi i Shtëpisë", price: 22 },
+                    { name: "Mirëmbajtja e Rregullt", price: 18 },
+                    { name: "Hyrje/Dalje", price: 70 }
+                ],
+                workingHours: {
+                    "Hënë": "08:00 - 17:00",
+                    "Martë": "08:00 - 17:00",
+                    "Mërkurë": "08:00 - 17:00",
+                    "Enjte": "08:00 - 17:00",
+                    "Premte": "08:00 - 17:00",
+                    "Shtunë": "09:00 - 13:00",
+                    "Dielë": "E mbyllur"
+                },
+                paymentMethods: ["Cash"],
+                photos: [
+                    "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400"
+                ],
+                rating: 4.6,
+                ratingCount: 12
+            },
+            {
+                id: 6,
+                name: "Commercial Clean Pro",
+                email: "info@commercialcleanpro.com",
+                description: "Specializuar në pastrimin komercial dhe industrial. Projekte të mëdha dhe kontrata mirëmbajtjeje të rregullt.",
+                phone: "+383 44 123 461",
+                cities: ["Lipjan", "Malisheva"],
+                services: [
+                    { name: "Pastrimi Komercial", price: 80 },
+                    { name: "Pastrimi Industrial", price: 150 },
+                    { name: "Pas Ndërtimit", price: 200 }
+                ],
+                workingHours: {
+                    "Hënë": "07:00 - 19:00",
+                    "Martë": "07:00 - 19:00",
+                    "Mërkurë": "07:00 - 19:00",
+                    "Enjte": "07:00 - 19:00",
+                    "Premte": "07:00 - 19:00",
+                    "Shtunë": "08:00 - 14:00",
+                    "Dielë": "E mbyllur"
+                },
+                paymentMethods: ["Card", "Bank Transfer"],
+                photos: [
+                    "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400",
+                    "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400",
+                    "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=400"
+                ],
+                rating: 4.7,
+                ratingCount: 22
+            }
+        ];
+
+        let currentCompany = null;
+        let userRating = 0;
+
+        // Load company data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const companyId = localStorage.getItem('viewingCompanyId');
+            
+            if (!companyId) {
+                showError();
+                return;
+            }
+
+            // Load company from localStorage or default companies
+            const registeredCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+            // Prioritize registeredCompanies over defaultCompanies (in case of ID conflicts)
+            const allCompanies = [...defaultCompanies, ...registeredCompanies];
+            
+            // Try to find in registeredCompanies first (they take precedence)
+            let foundCompany = registeredCompanies.find(c => c.id.toString() === companyId || c.id === parseInt(companyId));
+            if (!foundCompany) {
+                foundCompany = defaultCompanies.find(c => c.id.toString() === companyId || c.id === parseInt(companyId));
+            }
+            
+            currentCompany = foundCompany;
+
+            if (!currentCompany) {
+                showError();
+                return;
+            }
+
+            // Set default values if not present
+            if (!currentCompany.workingHours) {
+                currentCompany.workingHours = {
+                    "Hënë": "08:00 - 18:00",
+                    "Martë": "08:00 - 18:00",
+                    "Mërkurë": "08:00 - 18:00",
+                    "Enjte": "08:00 - 18:00",
+                    "Premte": "08:00 - 18:00",
+                    "Shtunë": "09:00 - 15:00",
+                    "Dielë": "E mbyllur"
+                };
+            }
+
+            if (!currentCompany.paymentMethods) {
+                currentCompany.paymentMethods = ["Cash", "Card"];
+            }
+
+            if (!currentCompany.photos || currentCompany.photos.length === 0) {
+                currentCompany.photos = ["https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400"];
+            }
+
+            if (currentCompany.rating === undefined) {
+                currentCompany.rating = 4.5;
+            }
+
+            if (currentCompany.ratingCount === undefined) {
+                currentCompany.ratingCount = 0;
+            }
+
+            displayCompanyDetails();
+            setupRatingSystem();
+            setupEmailButton();
+            checkAdminAccess();
+        });
+
+        function displayCompanyDetails() {
+            // Basic Info
+            document.getElementById('companyName').textContent = currentCompany.name;
+            document.getElementById('companyDescription').textContent = currentCompany.description || 'Nuk ka përshkrim';
+            document.getElementById('companyCities').textContent = currentCompany.cities ? currentCompany.cities.join(', ') : 'Nuk ka qytet';
+            document.getElementById('companyPhone').textContent = currentCompany.phone || 'Nuk ka telefon';
+            
+            // Phone link
+            if (currentCompany.phone) {
+                document.getElementById('callButton').href = `tel:${currentCompany.phone}`;
+            }
+
+            // Logo/Photo
+            if (currentCompany.photos && currentCompany.photos.length > 0) {
+                const logoContainer = document.getElementById('companyLogo');
+                logoContainer.innerHTML = `<img src="${currentCompany.photos[0]}" alt="${currentCompany.name}" class="h-20 w-20 rounded-lg object-cover" />`;
+            }
+
+            // Rating
+            displayRating(currentCompany.rating, currentCompany.ratingCount);
+
+            // Services
+            const servicesList = document.getElementById('servicesList');
+            if (currentCompany.services && currentCompany.services.length > 0) {
+                servicesList.innerHTML = currentCompany.services.map(service => `
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <span class="text-gray-700">${service.name}</span>
+                        <span class="font-semibold text-green-600">€${service.price}</span>
+                    </div>
+                `).join('');
+            } else {
+                servicesList.innerHTML = '<p class="text-gray-600">Nuk ka shërbime të disponueshme</p>';
+            }
+
+            // Working Hours
+            const workingHours = document.getElementById('workingHours');
+            const days = ["Hënë", "Martë", "Mërkurë", "Enjte", "Premte", "Shtunë", "Dielë"];
+            workingHours.innerHTML = days.map(day => `
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700">${day}:</span>
+                    <span class="font-medium text-gray-900">${currentCompany.workingHours[day] || 'E mbyllur'}</span>
+                </div>
+            `).join('');
+
+            // Payment Methods
+            const paymentMethods = document.getElementById('paymentMethods');
+            const methodIcons = {
+                "Cash": "dollar-sign",
+                "Card": "credit-card",
+                "Bank Transfer": "banknote"
+            };
+            paymentMethods.innerHTML = currentCompany.paymentMethods.map(method => `
+                <div class="flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-lg">
+                    <i data-lucide="${methodIcons[method] || 'credit-card'}" class="h-4 w-4 text-gray-600"></i>
+                    <span class="text-gray-700">${method}</span>
+                </div>
+            `).join('');
+            lucide.createIcons();
+
+            // Photos Gallery
+            const photoGallery = document.getElementById('photoGallery');
+            if (currentCompany.photos && currentCompany.photos.length > 0) {
+                const photoUrls = currentCompany.photos.map(photo => {
+                    if (typeof photo === 'string' && photo.startsWith('http')) {
+                        return photo;
+                    } else if (photo && photo.dataUrl) {
+                        return photo.dataUrl;
+                    } else if (typeof photo === 'string') {
+                        return photo;
+                    }
+                    return null;
+                }).filter(url => url !== null);
+
+                if (photoUrls.length > 0) {
+                    photoGallery.innerHTML = photoUrls.map((photoUrl, index) => `
+                        <div class="photo-item" onclick="openPhotoModal(${index})">
+                            <img src="${photoUrl}" alt="Foto ${index + 1}" />
+                        </div>
+                    `).join('');
+                } else {
+                    photoGallery.innerHTML = '<p class="text-gray-600">Nuk ka fotografi të disponueshme</p>';
+                }
+            } else {
+                photoGallery.innerHTML = '<p class="text-gray-600">Nuk ka fotografi të disponueshme</p>';
+            }
+
+            // Show company details
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('companyDetails').classList.remove('hidden');
+        }
+
+        function displayRating(rating, count) {
+            const averageRating = document.getElementById('averageRating');
+            averageRating.textContent = rating.toFixed(1);
+
+            const averageStars = document.getElementById('averageStars');
+            averageStars.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+                star.className = i <= Math.round(rating) ? 'text-yellow-400' : 'text-gray-300';
+                star.textContent = '★';
+                star.style.fontSize = '1.5rem';
+                averageStars.appendChild(star);
+            }
+
+            const ratingCount = document.getElementById('ratingCount');
+            ratingCount.textContent = `${count} vlerësime`;
+        }
+
+        function setupRatingSystem() {
+            const stars = document.querySelectorAll('#userRating .star');
+            stars.forEach((star, index) => {
+                star.addEventListener('mouseenter', function() {
+                    const rating = index + 1;
+                    fillStars(rating);
+                });
+
+                star.addEventListener('click', function() {
+                    userRating = index + 1;
+                    fillStars(userRating);
+                });
+            });
+
+            document.getElementById('userRating').addEventListener('mouseleave', function() {
+                fillStars(userRating);
+            });
+
+            document.getElementById('submitRating').addEventListener('click', function() {
+                if (userRating === 0) {
+                    alert('Ju lutemi zgjidhni një vlerësim');
+                    return;
+                }
+
+                const comment = document.getElementById('ratingComment').value.trim();
+
+                // Update company rating (in real app, this would be saved to database)
+                const totalRating = (currentCompany.rating * currentCompany.ratingCount) + userRating;
+                currentCompany.ratingCount = (currentCompany.ratingCount || 0) + 1;
+                currentCompany.rating = totalRating / currentCompany.ratingCount;
+
+                displayRating(currentCompany.rating, currentCompany.ratingCount);
+
+                // Reset form
+                userRating = 0;
+                fillStars(0);
+                document.getElementById('ratingComment').value = '';
+
+                alert('Vlerësimi juaj u dërgua me sukses!');
+            });
+        }
+
+        function fillStars(rating) {
+            const stars = document.querySelectorAll('#userRating .star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('empty');
+                    star.classList.add('filled');
+                } else {
+                    star.classList.remove('filled');
+                    star.classList.add('empty');
+                }
+            });
+        }
+
+        function setupEmailButton() {
+            document.getElementById('emailButton').addEventListener('click', function() {
+                if (currentCompany.email) {
+                    // Check if email modal exists on this page or go back to main page
+                    if (typeof openEmailModal === 'function') {
+                        openEmailModal(currentCompany.name, currentCompany.email);
+                    } else {
+                        // Store company info and redirect to main page with modal
+                        localStorage.setItem('emailModalCompany', JSON.stringify({
+                            name: currentCompany.name,
+                            email: currentCompany.email
+                        }));
+                        window.location.href = 'demo-sq-fixed.html#openEmailModal';
+                    }
+                } else {
+                    alert('Email i kompanisë nuk është i disponueshëm');
+                }
+            });
+        }
+
+        function openPhotoModal(index) {
+            // Get all photo URLs
+            const photoUrls = currentCompany.photos.map(photo => {
+                if (typeof photo === 'string' && photo.startsWith('http')) {
+                    return photo;
+                } else if (photo && photo.dataUrl) {
+                    return photo.dataUrl;
+                } else if (typeof photo === 'string') {
+                    return photo;
+                }
+                return null;
+            }).filter(url => url !== null);
+
+            if (photoUrls[index]) {
+                // Open in new window or show in modal
+                const img = new Image();
+                img.src = photoUrls[index];
+                const newWindow = window.open('', '_blank');
+                newWindow.document.write(`
+                    <html>
+                        <head><title>Foto - ${currentCompany.name}</title></head>
+                        <body style="margin:0; display:flex; justify-content:center; align-items:center; min-height:100vh; background:#000;">
+                            <img src="${photoUrls[index]}" style="max-width:100%; max-height:100vh; object-fit:contain;" />
+                        </body>
+                    </html>
+                `);
+            }
+        }
+
+        function showError() {
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('errorState').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        // Admin Edit Functionality
+        function checkAdminAccess() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                const isAdmin = user.role === 'admin' || user.email === 'admin@pastro.com' || user.id === 0;
+                
+                if (isAdmin) {
+                    const editBtn = document.getElementById('editCompanyBtn');
+                    if (editBtn) {
+                        editBtn.classList.remove('hidden');
+                        editBtn.addEventListener('click', openEditModal);
+                    }
+                }
+            }
+        }
+
+        function openEditModal() {
+            if (!currentCompany) return;
+
+            // Fill basic info
+            document.getElementById('editCompanyName').value = currentCompany.name || '';
+            document.getElementById('editCompanyPhone').value = currentCompany.phone || '';
+            document.getElementById('editCompanyEmail').value = currentCompany.email || '';
+            document.getElementById('editCompanyCities').value = currentCompany.cities ? currentCompany.cities.join(', ') : '';
+            document.getElementById('editCompanyDescription').value = currentCompany.description || '';
+
+            // Fill services
+            populateServices();
+
+            // Fill working hours
+            populateWorkingHours();
+
+            // Fill payment methods
+            populatePaymentMethods();
+
+            // Show modal
+            document.getElementById('editCompanyModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }
+
+        function closeEditModal() {
+            document.getElementById('editCompanyModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function populateServices() {
+            const container = document.getElementById('editServicesContainer');
+            container.innerHTML = '';
+
+            if (currentCompany.services && currentCompany.services.length > 0) {
+                currentCompany.services.forEach((service, index) => {
+                    addServiceRow(service.name, service.price, index);
+                });
+            } else {
+                addServiceRow();
+            }
+        }
+
+        function addServiceRow(serviceName = '', servicePrice = '', index = null) {
+            const container = document.getElementById('editServicesContainer');
+            const rowIndex = index !== null ? index : container.children.length;
+            const row = document.createElement('div');
+            row.className = 'flex gap-3 items-center';
+            row.innerHTML = `
+                <input type="text" placeholder="Emri i shërbimit" value="${serviceName}" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" data-service-index="${rowIndex}">
+                <input type="number" placeholder="Çmimi (€)" value="${servicePrice}" min="0" step="0.01" class="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" data-price-index="${rowIndex}">
+                <button type="button" onclick="removeServiceRow(this)" class="bg-red-600 text-white px-3 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                    <i data-lucide="trash-2" class="h-4 w-4"></i>
+                </button>
+            `;
+            container.appendChild(row);
+            lucide.createIcons();
+        }
+
+        function removeServiceRow(button) {
+            button.closest('div').remove();
+        }
+
+        function populateWorkingHours() {
+            const container = document.getElementById('editWorkingHoursContainer');
+            container.innerHTML = '';
+            const days = ["Hënë", "Martë", "Mërkurë", "Enjte", "Premte", "Shtunë", "Dielë"];
+            
+            days.forEach(day => {
+                const hours = currentCompany.workingHours && currentCompany.workingHours[day] ? currentCompany.workingHours[day] : '';
+                const row = document.createElement('div');
+                row.className = 'flex items-center gap-2';
+                row.innerHTML = `
+                    <label class="w-24 text-sm font-medium text-gray-700">${day}:</label>
+                    <input type="text" value="${hours}" placeholder="08:00 - 18:00 ose E mbyllur" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" data-day="${day}">
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function populatePaymentMethods() {
+            const checkboxes = document.querySelectorAll('.editPaymentMethod');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = currentCompany.paymentMethods && currentCompany.paymentMethods.includes(checkbox.value);
+            });
+        }
+
+        function saveCompanyChanges(event) {
+            event.preventDefault();
+
+            // Get basic info
+            const updatedCompany = {
+                ...currentCompany,
+                name: document.getElementById('editCompanyName').value.trim(),
+                phone: document.getElementById('editCompanyPhone').value.trim(),
+                email: document.getElementById('editCompanyEmail').value.trim(),
+                description: document.getElementById('editCompanyDescription').value.trim(),
+                cities: document.getElementById('editCompanyCities').value.split(',').map(c => c.trim()).filter(c => c)
+            };
+
+            // Get services
+            const serviceInputs = document.querySelectorAll('#editServicesContainer input[data-service-index]');
+            const priceInputs = document.querySelectorAll('#editServicesContainer input[data-price-index]');
+            updatedCompany.services = [];
+            for (let i = 0; i < serviceInputs.length; i++) {
+                const serviceName = serviceInputs[i].value.trim();
+                const price = parseFloat(priceInputs[i].value);
+                if (serviceName && !isNaN(price) && price > 0) {
+                    updatedCompany.services.push({ name: serviceName, price: price });
+                }
+            }
+
+            // Get working hours
+            const workingHourInputs = document.querySelectorAll('#editWorkingHoursContainer input[data-day]');
+            updatedCompany.workingHours = {};
+            workingHourInputs.forEach(input => {
+                const day = input.getAttribute('data-day');
+                updatedCompany.workingHours[day] = input.value.trim();
+            });
+
+            // Get payment methods
+            const selectedPaymentMethods = Array.from(document.querySelectorAll('.editPaymentMethod:checked')).map(cb => cb.value);
+            updatedCompany.paymentMethods = selectedPaymentMethods.length > 0 ? selectedPaymentMethods : ['Cash'];
+
+            // Update in localStorage
+            const registeredCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+            
+            // Check if company is in registeredCompanies
+            const companyIndex = registeredCompanies.findIndex(c => c.id === updatedCompany.id || c.id === updatedCompany.id.toString());
+            if (companyIndex !== -1) {
+                // Update existing company
+                registeredCompanies[companyIndex] = updatedCompany;
+                localStorage.setItem('pastroCompanies', JSON.stringify(registeredCompanies));
+            } else {
+                // Company is from defaultCompanies - add it to registeredCompanies as a copy
+                // This allows editing default companies without modifying the original array
+                registeredCompanies.push(updatedCompany);
+                localStorage.setItem('pastroCompanies', JSON.stringify(registeredCompanies));
+            }
+
+            // Update current company
+            currentCompany = updatedCompany;
+
+            // Refresh display
+            displayCompanyDetails();
+
+            // Close modal dhe shfaq suksesin
+            closeEditModal();
+            showSuccessModal('Ndryshimet e kompanisë', 'Të dhënat e kompanisë u përditësuan me sukses!');
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('editCompanyModal');
+            if (modal && e.target === modal) {
+                closeEditModal();
+            }
+        });
+    </script>
+    <script>
+        function showSuccessModal(title, message) {
+            const modal = document.getElementById('successModal');
+            const modalTitle = document.getElementById('successModalTitle');
+            const modalMessage = document.getElementById('successModalMessage');
+            modalTitle.textContent = title || 'Ndryshimet e kompanisë';
+            modalMessage.textContent = message || '';
+            modal.classList.remove('hidden');
+            lucide.createIcons();
+        }
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
+
