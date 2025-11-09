@@ -691,23 +691,34 @@
         <!-- Success Message -->
         <div id="success-message" class="hidden form-section p-8 text-center">
             <div class="mb-4">
-                <i data-lucide="clock" class="h-16 w-16 text-yellow-600 mx-auto"></i>
+                <i data-lucide="check-circle" class="h-16 w-16 text-green-600 mx-auto"></i>
             </div>
             <h3 class="text-2xl font-bold text-gray-900 mb-4">Regjistrimi u Krye me Sukses!</h3>
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6 max-w-2xl mx-auto">
+            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 max-w-2xl mx-auto">
                 <div class="flex items-start">
-                    <i data-lucide="alert-circle" class="h-5 w-5 text-yellow-600 mr-2 mt-0.5"></i>
+                    <i data-lucide="check-circle" class="h-5 w-5 text-green-600 mr-2 mt-0.5"></i>
                     <div class="text-left">
-                        <p class="text-gray-800 font-semibold mb-2">Kompania juaj po kontrollohet</p>
+                        <p class="text-gray-800 font-semibold mb-2">Ju jeni të kyçur automatikisht!</p>
                         <p class="text-gray-600 text-sm">
-                            Kompania juaj u regjistrua me sukses dhe emri u verifikua. Sidoqoftë, 
-                            kompania juaj do të kontrollohet nga administratori para se të shfaqet në platformë. 
+                            Kompania juaj u regjistrua me sukses dhe ju jeni të kyçur në llogarinë tuaj. 
+                            Po të ridrejtojmë në faqen kryesore...
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 max-w-2xl mx-auto">
+                <div class="flex items-start">
+                    <i data-lucide="info" class="h-5 w-5 text-blue-600 mr-2 mt-0.5"></i>
+                    <div class="text-left">
+                        <p class="text-gray-800 font-semibold mb-2">Informacion i Rëndësishëm</p>
+                        <p class="text-gray-600 text-sm">
+                            Kompania juaj do të kontrollohet nga administratori para se të shfaqet në platformë. 
                             Ju do të merrni një email kur kompania juaj të miratohet.
                         </p>
                     </div>
                 </div>
             </div>
-            <p class="text-gray-600 mb-6">Pas miratimit nga administratori, kompania juaj do të shfaqet në platformë.</p>
+            <p class="text-gray-600 mb-6">Po të ridrejtojmë në faqen kryesore...</p>
             <div class="flex justify-center space-x-4">
                 <a href="demo-sq-fixed.html" class="btn-primary">Kthehu në Kryefaqe</a>
                 <button onclick="resetForm()" class="btn-secondary">Regjistro Kompani Tjetër</button>
@@ -1860,88 +1871,226 @@
                 }
             }
 
-            // Store password separately for backend submission, but don't save it in localStorage
+            // Store password separately for backend submission
             const passwordForBackend = formData.password;
-            delete formData.password; // Remove password from formData before saving to localStorage
             
+            // Keep password in formData for localStorage (needed for login functionality)
+            // This is for demo purposes - in production, passwords should be hashed
             const existingCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
             existingCompanies.push(formData);
             localStorage.setItem('pastroCompanies', JSON.stringify(existingCompanies));
             
-            // Debug: log what was saved (without password)
-            // Removed detailed logging for security - password is never logged
+            // Debug: log what was saved
             console.log('Company registered successfully:', formData.name);
             
-            // Restore password for backend submission
-            formData.password = passwordForBackend;
+            // Auto-login after successful registration
+            // Store user in currentUser for immediate access
+            const userForLogin = {
+                id: formData.id,
+                email: formData.email,
+                name: formData.name,
+                password: formData.password, // Keep password for login check
+                role: 'company',
+                type: formData.type
+            };
+            localStorage.setItem('currentUser', JSON.stringify(userForLogin));
+            console.log('Auto-logged in user:', userForLogin.email);
 
             // Sync to backend (with error handling)
             async function saveToBackend() {
                 let apiBase = 'http://localhost:3000';
-                const minimalPayload = {
-                    email: formData.email,
-                    password: formData.password,
-                    companyName: formData.name,
-                    phone: formData.phone,
-                    description: formData.description || '',
-                    cities: [],
-                    services: []
-                };
-
-                console.log('[saveToBackend] Attempting to save company:', formData.name, 'to backend');
-
-                const post = async (base) => {
+                
+                // Helper function to find API base
+                const findApiBase = async () => {
+                    console.log('[saveToBackend] 🔍 Checking API server availability...');
                     try {
-                        console.log(`[saveToBackend] Trying ${base}/api/auth/register`);
-                        const response = await fetch(`${base}/api/auth/register`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(minimalPayload),
-                            keepalive: true,
-                            mode: 'cors'
+                        const test = await fetch(`${apiBase}/api/cities`, { 
+                            method: 'GET',
+                            mode: 'cors',
+                            cache: 'no-cache'
                         });
-
-                        console.log(`[saveToBackend] Response status: ${response.status} from ${base}`);
-
-                        if (response.ok) {
-                            const data = await response.json();
-                            console.log(`[saveToBackend] Registration successful on ${base}`, data);
-                            return data;
+                        console.log('[saveToBackend] Port 3000 test response:', test.status, test.statusText);
+                        if (test.ok) {
+                            console.log('[saveToBackend] ✅ API server found on port 3000');
+                            return apiBase;
                         }
-                        
-                        // Handle error response
-                        let errorText;
-                        try {
-                            errorText = await response.text();
-                            const errorData = JSON.parse(errorText);
-                            console.error(`[saveToBackend] Error from ${base}:`, response.status, errorData);
-                            throw new Error(`HTTP ${response.status}: ${errorData.error || errorData.message || response.statusText}`);
-                        } catch (parseError) {
-                            console.error(`[saveToBackend] Error response (non-JSON) from ${base}:`, response.status, errorText);
-                            throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
-                        }
-                    } catch (error) {
-                        console.error(`[saveToBackend] Network/request error to ${base}:`, error);
-                        throw error;
+                    } catch (e) {
+                        console.warn('[saveToBackend] ⚠️ Port 3000 not available:', e.message);
                     }
+                    apiBase = 'http://localhost:3001';
+                    console.log('[saveToBackend] 🔍 Trying port 3001...');
+                    try {
+                        const test = await fetch(`${apiBase}/api/cities`, { 
+                            method: 'GET',
+                            mode: 'cors',
+                            cache: 'no-cache'
+                        });
+                        console.log('[saveToBackend] Port 3001 test response:', test.status, test.statusText);
+                        if (test.ok) {
+                            console.log('[saveToBackend] ✅ API server found on port 3001');
+                            return apiBase;
+                        }
+                    } catch (e) {
+                        console.error('[saveToBackend] ❌ Port 3001 also not available:', e.message);
+                        throw new Error('API server not available on ports 3000 or 3001. Please make sure the Next.js server is running (npm run dev)');
+                    }
+                    return apiBase;
                 };
 
                 try {
-                    await post(apiBase);
-                } catch (error) {
-                    console.warn('[saveToBackend] Failed on port 3000, trying 3001...', error.message);
-                    try {
-                        await post('http://localhost:3001');
-                    } catch (error2) {
-                        console.error('[saveToBackend] Failed to save to backend on both ports:', error2.message || error2);
-                        // Show warning but don't block user flow
-                        console.warn('[saveToBackend] Company saved to localStorage but not synced to database. Please check server connection.');
+                    apiBase = await findApiBase();
+                    console.log('[saveToBackend] Using API base:', apiBase);
+
+                    // Fetch cities and services to map names to IDs
+                    const [citiesRes, servicesRes] = await Promise.all([
+                        fetch(`${apiBase}/api/cities`),
+                        fetch(`${apiBase}/api/services`)
+                    ]);
+
+                    if (!citiesRes.ok || !servicesRes.ok) {
+                        throw new Error('Failed to fetch cities or services');
                     }
+
+                    const citiesData = await citiesRes.json();
+                    const servicesData = await servicesRes.json();
+
+                    const cities = citiesData.cities || [];
+                    const services = servicesData.services || [];
+
+                    // Map city names to IDs
+                    const cityIds = formData.cities
+                        .map(cityName => {
+                            // Normalize city name for comparison (lowercase, trim, remove accents)
+                            const normalize = (str) => {
+                                return str.toLowerCase()
+                                    .trim()
+                                    .normalize('NFD')
+                                    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+                                    .replace(/[ë]/g, 'e')
+                                    .replace(/[ç]/g, 'c')
+                                    .replace(/[š]/g, 's')
+                                    .replace(/\s+/g, ' '); // Normalize spaces
+                            };
+                            
+                            const normalized = normalize(cityName);
+                            const city = cities.find(c => {
+                                const dbNormalized = normalize(c.name);
+                                return dbNormalized === normalized || 
+                                       dbNormalized.replace(/\s+/g, '') === normalized.replace(/\s+/g, '');
+                            });
+                            
+                            if (city) {
+                                console.log(`[saveToBackend] Mapped city "${cityName}" to "${city.name}" (ID: ${city.id})`);
+                                return city.id;
+                            } else {
+                                console.warn(`[saveToBackend] City "${cityName}" not found in database. Available cities:`, cities.map(c => c.name).join(', '));
+                                return null;
+                            }
+                        })
+                        .filter(id => id !== null);
+
+                    // Map service names to IDs and prices
+                    const servicePayloads = formData.services
+                        .map(service => {
+                            // Normalize service name for comparison
+                            const normalized = service.name.toLowerCase().trim();
+                            const dbService = services.find(s => 
+                                s.name.toLowerCase().trim() === normalized
+                            );
+                            if (dbService && service.price > 0) {
+                                console.log(`[saveToBackend] Mapped service "${service.name}" to ID: ${dbService.id} with price: ${service.price}`);
+                                return {
+                                    serviceId: dbService.id,
+                                    price: service.price
+                                };
+                            } else {
+                                console.warn(`[saveToBackend] Service "${service.name}" not found in database or invalid price`);
+                                return null;
+                            }
+                        })
+                        .filter(s => s !== null);
+
+                    console.log('[saveToBackend] City IDs:', cityIds);
+                    console.log('[saveToBackend] Service payloads:', servicePayloads);
+
+                    const payload = {
+                        email: formData.email,
+                        password: formData.password,
+                        companyName: formData.name,
+                        phone: formData.phone,
+                        description: formData.description || '',
+                        cities: cityIds,
+                        services: servicePayloads
+                    };
+
+                    console.log('[saveToBackend] 📤 Attempting to save company:', formData.name, 'to backend');
+                    console.log('[saveToBackend] Payload:', JSON.stringify(payload, null, 2));
+                    console.log('[saveToBackend] Payload summary - Cities:', payload.cities.length, 'Services:', payload.services.length);
+
+                    if (payload.cities.length === 0) {
+                        console.warn('[saveToBackend] ⚠️ No cities selected - company will be created but not auto-approved');
+                    }
+                    if (payload.services.length === 0) {
+                        console.warn('[saveToBackend] ⚠️ No services selected - company will be created but not auto-approved');
+                    }
+
+                    const response = await fetch(`${apiBase}/api/auth/register`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                        keepalive: true,
+                        mode: 'cors'
+                    });
+
+                    console.log(`[saveToBackend] 📥 Response status: ${response.status} from ${apiBase}`);
+                    console.log(`[saveToBackend] Response headers:`, Object.fromEntries(response.headers.entries()));
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log(`[saveToBackend] Registration successful on ${apiBase}`, data);
+                        return data;
+                    }
+                    
+                    // Handle error response
+                    let errorText;
+                    try {
+                        errorText = await response.text();
+                        const errorData = JSON.parse(errorText);
+                        console.error(`[saveToBackend] Error from ${apiBase}:`, response.status, errorData);
+                        throw new Error(`HTTP ${response.status}: ${errorData.error || errorData.message || response.statusText}`);
+                    } catch (parseError) {
+                        console.error(`[saveToBackend] Error response (non-JSON) from ${apiBase}:`, response.status, errorText);
+                        throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
+                    }
+                } catch (error) {
+                    console.error('[saveToBackend] Failed to save to backend:', error);
+                    // Show warning but don't block user flow
+                    console.warn('[saveToBackend] Company saved to localStorage but not synced to database. Please check server connection.');
+                    throw error;
                 }
             }
 
-            // Call async function
-            saveToBackend().catch(err => console.error('Background save failed:', err));
+            // Call async function with better error handling
+            saveToBackend()
+                .then(data => {
+                    console.log('[completeRegistration] ✅ Company successfully saved to database:', data);
+                    // Show success notification
+                    const successMsg = document.getElementById('success-message');
+                    if (successMsg) {
+                        const existingText = successMsg.innerHTML;
+                        successMsg.innerHTML = existingText + '<div class="mt-2 text-sm text-green-600">✅ Kompania u ruajt në databazë me sukses!</div>';
+                    }
+                })
+                .catch(err => {
+                    console.error('[completeRegistration] ❌ Background save failed:', err);
+                    console.error('[completeRegistration] Error details:', err.message, err.stack);
+                    // Show warning notification
+                    const successMsg = document.getElementById('success-message');
+                    if (successMsg) {
+                        const existingText = successMsg.innerHTML;
+                        successMsg.innerHTML = existingText + '<div class="mt-2 text-sm text-yellow-600">⚠️ Kompania u ruajt lokal, por nuk u ruajt në databazë. Kontrollo lidhjen me serverin.</div>';
+                    }
+                });
 
             // Simulo abonimin
             if (providerType === 'company') {
@@ -1974,6 +2123,11 @@
             setTimeout(() => {
                 document.getElementById('registrationForm').classList.add('hidden');
                 document.getElementById('success-message').classList.remove('hidden');
+                
+                // Redirect to homepage after 3 seconds (user is already logged in)
+                setTimeout(() => {
+                    window.location.href = 'demo-sq-fixed.html';
+                }, 3000);
             }, 800);
         }
 

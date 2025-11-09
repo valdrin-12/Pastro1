@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API Connection</title>
+</head>
+<body>
+    <h1>Test API Connection</h1>
+    <button onclick="testAPI()">Test API</button>
+    <div id="result"></div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Testing...</p>';
+
+            const ports = [3000, 3001];
+            let success = false;
+
+            for (const port of ports) {
+                try {
+                    console.log(`Testing port ${port}...`);
+                    const response = await fetch(`http://localhost:${port}/api/cities`, {
+                        method: 'GET',
+                        mode: 'cors',
+                        cache: 'no-cache'
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        resultDiv.innerHTML = `
+                            <h2>✅ API Server is running on port ${port}</h2>
+                            <p>Cities endpoint: OK</p>
+                            <p>Number of cities: ${data.cities?.length || 0}</p>
+                        `;
+                        success = true;
+                        break;
+                    } else {
+                        resultDiv.innerHTML = `<p>Port ${port}: HTTP ${response.status}</p>`;
+                    }
+                } catch (error) {
+                    resultDiv.innerHTML += `<p>Port ${port}: Error - ${error.message}</p>`;
+                }
+            }
+
+            if (!success) {
+                resultDiv.innerHTML = `
+                    <h2>❌ API Server not found</h2>
+                    <p>Please start the Next.js server:</p>
+                    <pre>npm run dev</pre>
+                `;
+            }
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            setTimeout(testAPI, 500);
+        });
+    </script>
+</body>
+</html>
+

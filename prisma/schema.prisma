@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,17 +8,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  role      UserRole @default(COMPANY)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
+  id                  String               @id @default(cuid())
+  email               String               @unique
+  password            String
+  role                UserRole             @default(COMPANY)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
   company             Company?
-  sessions            Session[]
   passwordResetTokens PasswordResetToken[]
+  sessions            Session[]
 
   @@map("users")
 }
@@ -32,26 +27,22 @@ model Session {
   token     String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
-
-  // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
 }
 
 model Company {
-  id          String        @id @default(cuid())
-  userId      String        @unique
-  name        String
-  description String?
-  phone       String
-  logo        String?
-  isActive    Boolean       @default(true)
-  status      CompanyStatus @default(PENDING)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  // Relations
+  id              String           @id @default(cuid())
+  userId          String           @unique
+  name            String
+  description     String?
+  phone           String
+  logo            String?
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  status          CompanyStatus    @default(PENDING)
   user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   companyCities   CompanyCity[]
   companyServices CompanyService[]
@@ -61,65 +52,55 @@ model Company {
 }
 
 model City {
-  id   String @id @default(cuid())
-  name String @unique
-
-  // Relations
+  id            String        @id @default(cuid())
+  name          String        @unique
   companyCities CompanyCity[]
 
   @@map("cities")
 }
 
 model CompanyCity {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   companyId String
   cityId    String
-
-  // Relations
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  city    City    @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  city      City    @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@unique([companyId, cityId])
   @@map("company_cities")
 }
 
 model ServiceCategory {
-  id          String   @id @default(cuid())
-  name        String   @unique
+  id          String    @id @default(cuid())
+  name        String    @unique
   description String?
-  icon        String? // Emoji ose emri i ikonës
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relations
-  services Service[]
+  icon        String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  services    Service[]
 
   @@map("service_categories")
 }
 
 model Service {
-  id          String  @id @default(cuid())
-  name        String  @unique
-  description String?
-  categoryId  String?
-
-  // Relations
-  category        ServiceCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  id              String           @id @default(cuid())
+  name            String           @unique
+  categoryId      String?
+  description     String?
   companyServices CompanyService[]
+  category        ServiceCategory? @relation(fields: [categoryId], references: [id])
 
   @@map("services")
 }
 
 model CompanyService {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   companyId String
   serviceId String
   price     Float
-
-  // Relations
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 
   @@unique([companyId, serviceId])
   @@map("company_services")
@@ -133,11 +114,21 @@ model Transaction {
   description String
   date        DateTime        @default(now())
   createdAt   DateTime        @default(now())
-
-  // Relations
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  company     Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@map("transactions")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_reset_tokens")
 }
 
 enum UserRole {
@@ -148,20 +139,6 @@ enum UserRole {
 enum TransactionType {
   INCOME
   EXPENSE
-}
-
-model PasswordResetToken {
-  id        String   @id @default(cuid())
-  userId    String
-  token     String   @unique
-  expiresAt DateTime
-  used      Boolean  @default(false)
-  createdAt DateTime @default(now())
-
-  // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("password_reset_tokens")
 }
 
 enum CompanyStatus {

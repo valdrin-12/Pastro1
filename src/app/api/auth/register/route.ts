@@ -84,6 +84,19 @@ export async function POST(request: NextRequest) {
         })
       }
 
+      // Auto-approve company if it has cities and services
+      const hasCities = validatedData.cities.length > 0
+      const hasServices = validatedData.services.length > 0
+      
+      if (hasCities && hasServices) {
+        const updatedCompany = await tx.company.update({
+          where: { id: company.id },
+          data: { status: 'APPROVED' }
+        })
+        console.log('[register] Company auto-approved:', updatedCompany.id, 'Status:', updatedCompany.status)
+        return { user, company: updatedCompany }
+      }
+
       return { user, company }
     }).catch((e) => {
       console.error('[register] transaction error:', e)
