@@ -88,26 +88,13 @@ export async function POST(request: NextRequest) {
       const hasCities = validatedData.cities.length > 0
       const hasServices = validatedData.services.length > 0
       
-      console.log('[register] Auto-approval check:', { 
-        hasCities, 
-        hasServices, 
-        citiesCount: validatedData.cities.length, 
-        servicesCount: validatedData.services.length 
-      })
-      
       if (hasCities && hasServices) {
         const updatedCompany = await tx.company.update({
           where: { id: company.id },
-          data: { status: 'APPROVED', isActive: true }
+          data: { status: 'APPROVED' }
         })
-        console.log('[register] ✅ Company auto-approved:', updatedCompany.id, 'Status:', updatedCompany.status, 'isActive:', updatedCompany.isActive)
+        console.log('[register] Company auto-approved:', updatedCompany.id, 'Status:', updatedCompany.status)
         return { user, company: updatedCompany }
-      } else {
-        console.log('[register] ⚠️ Company NOT auto-approved (missing cities or services):', {
-          companyId: company.id,
-          citiesCount: validatedData.cities.length,
-          servicesCount: validatedData.services.length
-        })
       }
 
       return { user, company }

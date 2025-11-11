@@ -1958,121 +1958,60 @@
                     const services = servicesData.services || [];
 
                     // Map city names to IDs
-                    const normalizeCity = (str) => {
-                        if (!str) return '';
-                        return str.toLowerCase()
-                            .trim()
-                            .normalize('NFD')
-                            .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-                            .replace(/[ë]/g, 'e')
-                            .replace(/[ç]/g, 'c')
-                            .replace(/[š]/g, 's')
-                            .replace(/[đ]/g, 'd')
-                            .replace(/[ž]/g, 'z')
-                            .replace(/\s+/g, ' ') // Normalize spaces
-                            .replace(/[^a-z0-9\s]/g, ''); // Remove special characters
-                    };
-                    
                     const cityIds = formData.cities
                         .map(cityName => {
-                            if (!cityName) return null;
+                            // Normalize city name for comparison (lowercase, trim, remove accents)
+                            const normalize = (str) => {
+                                return str.toLowerCase()
+                                    .trim()
+                                    .normalize('NFD')
+                                    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+                                    .replace(/[ë]/g, 'e')
+                                    .replace(/[ç]/g, 'c')
+                                    .replace(/[š]/g, 's')
+                                    .replace(/\s+/g, ' '); // Normalize spaces
+                            };
                             
-                            const normalized = normalizeCity(cityName);
-                            console.log(`[saveToBackend] Looking for city: "${cityName}" (normalized: "${normalized}")`);
-                            
-                            // Try exact match first
-                            let city = cities.find(c => {
-                                const dbNormalized = normalizeCity(c.name);
-                                return dbNormalized === normalized;
+                            const normalized = normalize(cityName);
+                            const city = cities.find(c => {
+                                const dbNormalized = normalize(c.name);
+                                return dbNormalized === normalized || 
+                                       dbNormalized.replace(/\s+/g, '') === normalized.replace(/\s+/g, '');
                             });
                             
-                            // If no exact match, try without spaces
-                            if (!city) {
-                                const normalizedNoSpaces = normalized.replace(/\s+/g, '');
-                                city = cities.find(c => {
-                                    const dbNormalized = normalizeCity(c.name).replace(/\s+/g, '');
-                                    return dbNormalized === normalizedNoSpaces;
-                                });
-                            }
-                            
-                            // If still no match, try partial match
-                            if (!city) {
-                                city = cities.find(c => {
-                                    const dbNormalized = normalizeCity(c.name);
-                                    return dbNormalized.includes(normalized) || normalized.includes(dbNormalized);
-                                });
-                            }
-                            
                             if (city) {
-                                console.log(`[saveToBackend] ✅ Mapped city "${cityName}" to "${city.name}" (ID: ${city.id})`);
+                                console.log(`[saveToBackend] Mapped city "${cityName}" to "${city.name}" (ID: ${city.id})`);
                                 return city.id;
                             } else {
-                                console.warn(`[saveToBackend] ⚠️ City "${cityName}" not found in database.`);
-                                console.warn(`[saveToBackend] Available cities:`, cities.map(c => `${c.name} (${normalizeCity(c.name)})`).join(', '));
+                                console.warn(`[saveToBackend] City "${cityName}" not found in database. Available cities:`, cities.map(c => c.name).join(', '));
                                 return null;
                             }
                         })
                         .filter(id => id !== null);
 
                     // Map service names to IDs and prices
-                    const normalizeService = (str) => {
-                        if (!str) return '';
-                        return str.toLowerCase()
-                            .trim()
-                            .normalize('NFD')
-                            .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-                            .replace(/[ë]/g, 'e')
-                            .replace(/[ç]/g, 'c')
-                            .replace(/\s+/g, ' '); // Normalize spaces
-                    };
-                    
                     const servicePayloads = formData.services
                         .map(service => {
-                            if (!service || !service.name) {
-                                console.warn(`[saveToBackend] ⚠️ Invalid service object:`, service);
-                                return null;
-                            }
-                            
-                            const normalized = normalizeService(service.name);
-                            console.log(`[saveToBackend] Looking for service: "${service.name}" (normalized: "${normalized}")`);
-                            
-                            // Try exact match first
-                            let dbService = services.find(s => {
-                                const dbNormalized = normalizeService(s.name);
-                                return dbNormalized === normalized;
-                            });
-                            
-                            // If no exact match, try partial match
-                            if (!dbService) {
-                                dbService = services.find(s => {
-                                    const dbNormalized = normalizeService(s.name);
-                                    return dbNormalized.includes(normalized) || normalized.includes(dbNormalized);
-                                });
-                            }
-                            
+                            // Normalize service name for comparison
+                            const normalized = service.name.toLowerCase().trim();
+                            const dbService = services.find(s => 
+                                s.name.toLowerCase().trim() === normalized
+                            );
                             if (dbService && service.price > 0) {
-                                console.log(`[saveToBackend] ✅ Mapped service "${service.name}" to "${dbService.name}" (ID: ${dbService.id}) with price: ${service.price}`);
+                                console.log(`[saveToBackend] Mapped service "${service.name}" to ID: ${dbService.id} with price: ${service.price}`);
                                 return {
                                     serviceId: dbService.id,
                                     price: service.price
                                 };
                             } else {
-                                if (!dbService) {
-                                    console.warn(`[saveToBackend] ⚠️ Service "${service.name}" not found in database.`);
-                                    console.warn(`[saveToBackend] Available services:`, services.map(s => `${s.name} (${normalizeService(s.name)})`).join(', '));
-                                } else if (service.price <= 0) {
-                                    console.warn(`[saveToBackend] ⚠️ Service "${service.name}" has invalid price: ${service.price}`);
-                                }
+                                console.warn(`[saveToBackend] Service "${service.name}" not found in database or invalid price`);
                                 return null;
                             }
                         })
                         .filter(s => s !== null);
 
-                    console.log('[saveToBackend] 📊 Mapping Summary:');
-                    console.log('[saveToBackend]   - Selected cities:', formData.cities);
-                    console.log('[saveToBackend]   - Mapped city IDs:', cityIds);
-                    console.log('[saveToBackend]   - Selected services:', formData.services.map(s => `${s.name} (${s.price}€)`));
-                    console.log('[saveToBackend]   - Mapped service payloads:', servicePayloads);
+                    console.log('[saveToBackend] City IDs:', cityIds);
+                    console.log('[saveToBackend] Service payloads:', servicePayloads);
 
                     const payload = {
                         email: formData.email,
@@ -2089,18 +2028,10 @@
                     console.log('[saveToBackend] Payload summary - Cities:', payload.cities.length, 'Services:', payload.services.length);
 
                     if (payload.cities.length === 0) {
-                        console.warn('[saveToBackend] ⚠️ No cities mapped - company will be created but not auto-approved');
-                        console.warn('[saveToBackend] ⚠️ Original city values:', formData.cities);
+                        console.warn('[saveToBackend] ⚠️ No cities selected - company will be created but not auto-approved');
                     }
                     if (payload.services.length === 0) {
-                        console.warn('[saveToBackend] ⚠️ No services mapped - company will be created but not auto-approved');
-                        console.warn('[saveToBackend] ⚠️ Original service values:', formData.services);
-                    }
-                    
-                    if (payload.cities.length > 0 && payload.services.length > 0) {
-                        console.log('[saveToBackend] ✅ Company will be auto-approved (has cities and services)');
-                    } else {
-                        console.warn('[saveToBackend] ⚠️ Company will be PENDING (missing cities or services)');
+                        console.warn('[saveToBackend] ⚠️ No services selected - company will be created but not auto-approved');
                     }
 
                     const response = await fetch(`${apiBase}/api/auth/register`, {
@@ -2194,9 +2125,8 @@
                 document.getElementById('success-message').classList.remove('hidden');
                 
                 // Redirect to homepage after 3 seconds (user is already logged in)
-                // Add hash to trigger company reload on homepage
                 setTimeout(() => {
-                    window.location.href = 'demo-sq-fixed.html#reloadCompanies';
+                    window.location.href = 'demo-sq-fixed.html';
                 }, 3000);
             }, 800);
         }
