@@ -543,11 +543,15 @@
                 <div class="flex items-center gap-2 md:space-x-4 flex-shrink-0 md:flex-initial justify-end ml-auto">
                     <!-- Desktop Navigation - Hidden on mobile -->
                     <nav class="hidden md:flex items-center space-x-4 desktop-nav">
+                        <span id="desktopAdminWelcome" class="text-gray-700 font-medium hidden">Admin</span>
+                        <span id="desktopCompanyName" class="text-gray-700 font-medium hidden"></span>
                         <button id="desktopLogoutBtn" onclick="signOut()" class="hidden border border-gray-700 bg-white text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Ç'kyçu</button>
                         <a id="desktopSignInBtn" href="signin-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Kyçu</a>
                         <a href="register-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Regjistro Kompani</a>
                     </nav>
                     <!-- Mobile: Login Button + Hamburger Menu - Right side on mobile -->
+                    <span id="mobileAdminWelcome" class="md:hidden text-gray-700 font-medium text-sm whitespace-nowrap flex-shrink-0 flex items-center hidden">Admin</span>
+                    <span id="mobileCompanyName" class="md:hidden text-gray-700 font-medium text-sm whitespace-nowrap flex-shrink-0 flex items-center hidden"></span>
                     <button id="mobileLogoutBtn" onclick="signOut()" class="md:hidden hidden text-gray-700 hover:text-gray-900 transition-colors text-sm font-medium whitespace-nowrap flex-shrink-0 flex items-center">Ç'kyçu</button>
                     <a id="mobileSignInBtn" href="signin-sq.html" class="md:hidden text-gray-700 hover:text-gray-900 transition-colors text-sm font-medium whitespace-nowrap flex-shrink-0 flex items-center">Kyçu</a>
                     <!-- Mobile Menu Button - Right side on mobile (hamburger icon) -->
@@ -573,6 +577,8 @@
                         <h2 class="text-base font-bold text-blue-600">Pastro.com</h2>
                     </div>
                     <div class="flex items-center space-x-1.5">
+                        <span id="mobileMenuAdminWelcome" class="px-2 py-1 text-xs font-medium text-gray-700 whitespace-nowrap hidden">Admin</span>
+                        <span id="mobileMenuCompanyName" class="px-2 py-1 text-xs font-medium text-gray-700 whitespace-nowrap hidden"></span>
                         <button id="mobileMenuLogoutBtn" onclick="signOut()" class="hidden px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Ç'kyçu</button>
                         <a id="mobileMenuSignInBtn" href="signin-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Kyçu</a>
                         <a href="register-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Regjistro Kompani</a>
@@ -1431,6 +1437,35 @@
                             mobileMenuBottomSignInBtn.classList.add('hidden');
                             mobileMenuBottomSignInBtn.style.display = 'none';
                         }
+                        
+                        // Show admin welcome if admin
+                        if (isAdmin) {
+                            const desktopAdminWelcome = document.getElementById('desktopAdminWelcome');
+                            const mobileAdminWelcome = document.getElementById('mobileAdminWelcome');
+                            const mobileMenuAdminWelcome = document.getElementById('mobileMenuAdminWelcome');
+                            if (desktopAdminWelcome) desktopAdminWelcome.classList.remove('hidden');
+                            if (mobileAdminWelcome) mobileAdminWelcome.classList.remove('hidden');
+                            if (mobileMenuAdminWelcome) mobileMenuAdminWelcome.classList.remove('hidden');
+                        }
+                        
+                        // Show company name if company
+                        if (isCompany && user.name) {
+                            const desktopCompanyName = document.getElementById('desktopCompanyName');
+                            const mobileCompanyName = document.getElementById('mobileCompanyName');
+                            const mobileMenuCompanyName = document.getElementById('mobileMenuCompanyName');
+                            if (desktopCompanyName) {
+                                desktopCompanyName.textContent = user.name;
+                                desktopCompanyName.classList.remove('hidden');
+                            }
+                            if (mobileCompanyName) {
+                                mobileCompanyName.textContent = user.name;
+                                mobileCompanyName.classList.remove('hidden');
+                            }
+                            if (mobileMenuCompanyName) {
+                                mobileMenuCompanyName.textContent = user.name;
+                                mobileMenuCompanyName.classList.remove('hidden');
+                            }
+                        }
                     } else {
                         showSignInButtons();
                     }
@@ -1470,6 +1505,22 @@
                 mobileMenuBottomSignInBtn.classList.remove('hidden');
                 mobileMenuBottomSignInBtn.style.display = '';
             }
+            
+            // Hide admin welcome
+            const desktopAdminWelcome = document.getElementById('desktopAdminWelcome');
+            const mobileAdminWelcome = document.getElementById('mobileAdminWelcome');
+            const mobileMenuAdminWelcome = document.getElementById('mobileMenuAdminWelcome');
+            if (desktopAdminWelcome) desktopAdminWelcome.classList.add('hidden');
+            if (mobileAdminWelcome) mobileAdminWelcome.classList.add('hidden');
+            if (mobileMenuAdminWelcome) mobileMenuAdminWelcome.classList.add('hidden');
+            
+            // Hide company name
+            const desktopCompanyName = document.getElementById('desktopCompanyName');
+            const mobileCompanyName = document.getElementById('mobileCompanyName');
+            const mobileMenuCompanyName = document.getElementById('mobileMenuCompanyName');
+            if (desktopCompanyName) desktopCompanyName.classList.add('hidden');
+            if (mobileCompanyName) mobileCompanyName.classList.add('hidden');
+            if (mobileMenuCompanyName) mobileMenuCompanyName.classList.add('hidden');
         }
         
         function signOut() {
@@ -1509,6 +1560,9 @@
                     setTimeout(function() {
                         checkUserAndUpdateHeader();
                     }, 300);
+                    
+                    // Highlight active navigation link
+                    highlightActiveNavLink();
                 });
             } else {
                 setTimeout(function() {
@@ -1517,8 +1571,13 @@
                 setTimeout(function() {
                     checkUserAndUpdateHeader();
                 }, 200);
+                highlightActiveNavLink();
             }
         })();
+        
+        // Also highlight on page load
+        window.addEventListener('load', highlightActiveNavLink);
+        window.addEventListener('pageshow', highlightActiveNavLink);
         
         if (document.visibilityState === 'visible') {
             setTimeout(function() {
