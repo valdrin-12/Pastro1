@@ -2149,17 +2149,10 @@
         // Load advertisement on page load
         loadAdminAdvertisement();
         
-        // Service Categories Data
+        // Service Categories Data - Only categories that match navigation bar
         const defaultCategories = [
-            { id: 'brendshem', name: 'Pastrimi i Brendshëm', icon: 'home', color: 'yellow', link: 'pastrimi-brendshem.html', description: '' },
-            { id: 'jashtme', name: 'Shërbimet e Jashtme', icon: 'trees', color: 'blue', link: 'sherbimet-jashtme.html', description: '' },
             { id: 'zyres', name: 'Pastrimi i Zyrës', icon: 'building', color: 'orange', link: 'pastrimi-zyres.html', description: '' },
-            { id: 'levizjes', name: 'Pastrimi i Lëvizjes', icon: 'key', color: 'blue', link: 'pastrimi-levizjes.html', description: '' },
-            { id: 'larje', name: 'Larje & Hekurosje', icon: 'shirt', color: 'yellow', link: 'larje-hekurosje.html', description: '' },
-            { id: 'mamases', name: 'Ndihmësja e Mamasë', icon: 'users', color: 'pink', link: 'ndihmesja-mamases.html', description: '' },
-            { id: 'moshuarit', name: 'Kujdesi për të Moshuarit', icon: 'heart-handshake', color: 'blue', link: 'kujdesi-moshuarit.html', description: '' },
-            { id: 'shtese', name: 'Kujdes Shtesë', icon: 'heart-plus', color: 'orange', link: 'kujdes-shtese.html', description: '' },
-            { id: 'shpejte', name: 'Pastrimi i Shpejtë', icon: 'zap', color: 'pink', link: 'pastrimi-shpejte.html', description: '' },
+            { id: 'brendshem', name: 'Pastrimi i Shtëpisë', icon: 'home', color: 'yellow', link: 'pastrimi-brendshem.html', description: '' },
             { id: 'thelle', name: 'Pastrimi i Detajuar', icon: 'sparkles', color: 'purple', link: 'pastrimi-thelle.html', description: '' },
             { id: 'oborreve', name: 'Pastrimi i Oborreve', icon: 'tree-pine', color: 'green', link: 'pastrimi-oborreve.html', description: '' },
             { id: 'kimik', name: 'Pastrimi Kimik', icon: 'flask-conical', color: 'cyan', link: 'pastrimi-kimik.html', description: '' },
@@ -2190,7 +2183,10 @@
                     blue: 'bg-blue-100 text-blue-600',
                     orange: 'bg-orange-100 text-orange-600',
                     pink: 'bg-pink-100 text-pink-600',
-                    purple: 'bg-purple-100 text-purple-600'
+                    purple: 'bg-purple-100 text-purple-600',
+                    green: 'bg-green-100 text-green-600',
+                    cyan: 'bg-cyan-100 text-cyan-600',
+                    indigo: 'bg-indigo-100 text-indigo-600'
                 };
                 
                 const colorClass = colorClasses[category.color] || 'bg-gray-100 text-gray-600';
