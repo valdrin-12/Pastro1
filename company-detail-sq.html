@@ -772,22 +772,50 @@
 
         // Load company data on page load
         document.addEventListener('DOMContentLoaded', function() {
-            const companyId = localStorage.getItem('viewingCompanyId');
+            // First check URL query parameter, then localStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            let companyId = urlParams.get('id');
+            
+            if (!companyId) {
+                companyId = localStorage.getItem('viewingCompanyId');
+            }
             
             if (!companyId) {
                 showError();
                 return;
             }
 
-            // Load company from localStorage or default companies
+            // Load company from multiple sources: API cache, registered companies, and default companies
+            const approvedCompaniesCache = JSON.parse(localStorage.getItem('approvedCompaniesCache') || '[]');
             const registeredCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
-            // Prioritize registeredCompanies over defaultCompanies (in case of ID conflicts)
-            const allCompanies = [...defaultCompanies, ...registeredCompanies];
+            // Prioritize: approvedCompaniesCache (from API) > registeredCompanies > defaultCompanies
+            const allCompanies = [...approvedCompaniesCache, ...registeredCompanies, ...defaultCompanies];
             
-            // Try to find in registeredCompanies first (they take precedence)
-            let foundCompany = registeredCompanies.find(c => c.id.toString() === companyId || c.id === parseInt(companyId));
+            // Try to find in approvedCompaniesCache first (API companies take precedence)
+            let foundCompany = approvedCompaniesCache.find(c => c.id.toString() === companyId || c.id === parseInt(companyId));
             if (!foundCompany) {
+                // Try registeredCompanies
+                foundCompany = registeredCompanies.find(c => c.id.toString() === companyId || c.id === parseInt(companyId));
+            }
+            if (!foundCompany) {
+                // Try defaultCompanies
                 foundCompany = defaultCompanies.find(c => c.id.toString() === companyId || c.id === parseInt(companyId));
+            }
+            
+            // If still not found, try to fetch from API
+            if (!foundCompany) {
+                try {
+                    const apiBase = 'http://localhost:3000';
+                    const res = await fetch(`${apiBase}/api/companies`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.success && Array.isArray(data.companies)) {
+                            foundCompany = data.companies.find(c => c.id.toString() === companyId || c.id === parseInt(companyId));
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Failed to fetch from API:', error);
+                }
             }
             
             currentCompany = foundCompany;

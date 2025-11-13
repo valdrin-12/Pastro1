@@ -3351,6 +3351,7 @@
                             name: c.name,
                             description: c.description || '',
                             phone: c.phone,
+                            email: c.email || '',
                             logo: c.logo || null,
                             cities: c.cities || [],
                             services: c.services || []
@@ -3479,7 +3480,7 @@
                                     <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
                                     Telefono
                                 </a>
-                                <button onclick="openEmailModal('${company.name}', '${company.email || ''}')" class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
+                                <button onclick="openEmailModal('${company.name}', '${company.email || ''}'); event.stopPropagation();" class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
                                     <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
                                     Email
                                 </button>
@@ -3606,10 +3607,14 @@
 
         // Navigate to company details page
         function viewCompanyDetails(companyId) {
-            // Store company ID in localStorage to retrieve on detail page
+            // Store company ID in localStorage to retrieve on detail page (fallback)
             localStorage.setItem('viewingCompanyId', companyId.toString());
-            window.location.href = 'company-detail-sq.html';
+            // Use query parameter for better URL sharing and consistency
+            window.location.href = `company-detail-sq.html?id=${companyId}`;
         }
+        
+        // Make function globally accessible
+        window.viewCompanyDetails = viewCompanyDetails;
 
         // Email Modal Functions
         let currentCompanyEmail = '';

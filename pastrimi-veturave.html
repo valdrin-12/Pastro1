@@ -1194,7 +1194,7 @@
                 } else {
 
                     companiesContainer.innerHTML = filteredCompanies.map(company => `
-                        <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                        <div class="bg-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="viewCompanyDetails('${company.id}')">
                             <div class="flex items-center mb-4">
                                 <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
                                     <i data-lucide="building-2" class="h-6 w-6 text-blue-600"></i>
@@ -1225,12 +1225,12 @@
                                 </div>
                             </div>
                             
-                            <div class="flex space-x-2">
+                            <div class="flex space-x-2" onclick="event.stopPropagation()">
                                 <a href="tel:${company.phone}" class="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
                                     <i data-lucide="phone" class="h-4 w-4 mr-2"></i>
                                     Telefono
                                 </a>
-                                <button class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
+                                <button onclick="openEmailModal('${company.name}', '${company.email || ''}'); event.stopPropagation();" class="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center">
                                     <i data-lucide="mail" class="h-4 w-4 mr-2"></i>
                                     Email
                                 </button>
@@ -1258,9 +1258,10 @@
         
         // Navigate to company details page
         function viewCompanyDetails(companyId) {
-            // Store company ID in localStorage to retrieve on detail page
+            // Store company ID in localStorage to retrieve on detail page (fallback)
             localStorage.setItem('viewingCompanyId', companyId.toString());
-            window.location.href = 'company-detail-sq.html';
+            // Use query parameter for better URL sharing and consistency
+            window.location.href = `company-detail-sq.html?id=${companyId}`;
         }
 
         // Email Modal Functions

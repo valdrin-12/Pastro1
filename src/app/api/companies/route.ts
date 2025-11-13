@@ -19,6 +19,9 @@ export async function GET() {
         isActive: true,
       },
       include: {
+        user: {
+          select: { email: true }
+        },
         companyCities: {
           include: {
             city: {
@@ -42,6 +45,7 @@ export async function GET() {
       name: c.name,
       description: c.description || '',
       phone: c.phone,
+      email: c.user?.email || '',
       logo: c.logo || null,
       cities: (c.companyCities || []).map(cc => cc?.city?.name).filter(Boolean) || [],
       services: (c.companyServices || []).map(cs => ({ 
