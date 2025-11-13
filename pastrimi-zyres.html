@@ -543,11 +543,13 @@
                 <div class="flex items-center gap-2 md:space-x-4 flex-shrink-0 md:flex-initial justify-end ml-auto">
                     <!-- Desktop Navigation - Hidden on mobile -->
                     <nav class="hidden md:flex items-center space-x-4 desktop-nav">
-                        <a href="signin-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Kyçu</a>
+                        <button id="desktopLogoutBtn" onclick="signOut()" class="hidden border border-gray-700 bg-white text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Ç'kyçu</button>
+                        <a id="desktopSignInBtn" href="signin-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Kyçu</a>
                         <a href="register-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Regjistro Kompani</a>
                     </nav>
                     <!-- Mobile: Login Button + Hamburger Menu - Right side on mobile -->
-                    <a href="signin-sq.html" class="md:hidden text-gray-700 hover:text-gray-900 transition-colors text-sm font-medium whitespace-nowrap flex-shrink-0 flex items-center">Kyçu</a>
+                    <button id="mobileLogoutBtn" onclick="signOut()" class="md:hidden hidden text-gray-700 hover:text-gray-900 transition-colors text-sm font-medium whitespace-nowrap flex-shrink-0 flex items-center">Ç'kyçu</button>
+                    <a id="mobileSignInBtn" href="signin-sq.html" class="md:hidden text-gray-700 hover:text-gray-900 transition-colors text-sm font-medium whitespace-nowrap flex-shrink-0 flex items-center">Kyçu</a>
                     <!-- Mobile Menu Button - Right side on mobile (hamburger icon) -->
                     <button id="mobileMenuBtn" class="md:hidden mobile-menu-btn flex items-center justify-center p-2.5 text-gray-700 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 border border-gray-300 hover:border-gray-400 transition-all min-w-[48px] min-h-[48px] rounded-lg flex-shrink-0 shadow-sm" onclick="toggleMobileMenu(); event.stopPropagation(); return false;" aria-label="Open menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
@@ -571,7 +573,8 @@
                         <h2 class="text-base font-bold text-blue-600">Pastro.com</h2>
                     </div>
                     <div class="flex items-center space-x-1.5">
-                        <a href="signin-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Kyçu</a>
+                        <button id="mobileMenuLogoutBtn" onclick="signOut()" class="hidden px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Ç'kyçu</button>
+                        <a id="mobileMenuSignInBtn" href="signin-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Kyçu</a>
                         <a href="register-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Regjistro Kompani</a>
                         <button onclick="toggleMobileMenu(); event.stopPropagation(); return false;" class="p-1.5 hover:bg-gray-100 rounded-md flex items-center justify-center min-w-[36px] min-h-[36px]" aria-label="Close menu">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-700"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
@@ -608,7 +611,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path><path d="M6.453 15h11.094"></path><path d="M8.5 2h7"></path></svg>
                     <span class="text-gray-900 font-medium">Pastrimi Kimik</span>
                 </a>
-                <a href="signin-sq.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                <button id="mobileMenuBottomLogoutBtn" onclick="signOut()" class="hidden flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50 w-full text-left">
+                    <span class="text-gray-900 font-medium">Ç'kyçu</span>
+                </button>
+                <a id="mobileMenuBottomSignInBtn" href="signin-sq.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
                     <span class="text-gray-900 font-medium">Kyçu</span>
                 </a>
             </nav>
@@ -1261,7 +1267,7 @@
                                 </button>
                             </div>
                         </div>
-                    `).join('')`).join('');
+                    `).join('');
                     resultsCount.textContent = getResultsText(filteredCompanies.length);
                 }
                 
@@ -1279,10 +1285,7 @@
                     });
                 });
             }
-            
-                        }
-
-            }
+        });
         
         // Navigate to company details page
         function viewCompanyDetails(companyId) {
@@ -1579,5 +1582,203 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Check if user is logged in (company or admin) and update header buttons
+        function checkUserAndUpdateHeader() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                try {
+                    const user = JSON.parse(currentUser);
+                    const isAdmin = user.role === 'admin' || user.email === 'admin@pastro.com' || user.id === 0;
+                    const isCompany = !isAdmin && (user.name || user.email);
+                    
+                    if (isAdmin || isCompany) {
+                        // User is logged in - show Ç'kyçu, hide Kyçu
+                        const desktopLogoutBtn = document.getElementById('desktopLogoutBtn');
+                        const desktopSignInBtn = document.getElementById('desktopSignInBtn');
+                        if (desktopLogoutBtn) {
+                            desktopLogoutBtn.classList.remove('hidden');
+                            desktopLogoutBtn.style.setProperty('display', '', 'important');
+                        }
+                        if (desktopSignInBtn) {
+                            desktopSignInBtn.classList.add('hidden');
+                            desktopSignInBtn.style.setProperty('display', 'none', 'important');
+                        }
+                        
+                        const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+                        const mobileSignInBtn = document.getElementById('mobileSignInBtn');
+                        if (mobileLogoutBtn) {
+                            mobileLogoutBtn.classList.remove('hidden');
+                            mobileLogoutBtn.style.setProperty('display', '', 'important');
+                        }
+                        if (mobileSignInBtn) {
+                            mobileSignInBtn.classList.add('hidden');
+                            mobileSignInBtn.style.setProperty('display', 'none', 'important');
+                        }
+                        
+                        const mobileMenuLogoutBtn = document.getElementById('mobileMenuLogoutBtn');
+                        const mobileMenuSignInBtn = document.getElementById('mobileMenuSignInBtn');
+                        if (mobileMenuLogoutBtn) {
+                            mobileMenuLogoutBtn.classList.remove('hidden');
+                            mobileMenuLogoutBtn.style.setProperty('display', '', 'important');
+                        }
+                        if (mobileMenuSignInBtn) {
+                            mobileMenuSignInBtn.classList.add('hidden');
+                            mobileMenuSignInBtn.style.setProperty('display', 'none', 'important');
+                        }
+                        
+                        // Mobile menu bottom (at the end of menu list)
+                        const mobileMenuBottomLogoutBtn = document.getElementById('mobileMenuBottomLogoutBtn');
+                        const mobileMenuBottomSignInBtn = document.getElementById('mobileMenuBottomSignInBtn');
+                        if (mobileMenuBottomLogoutBtn) {
+                            mobileMenuBottomLogoutBtn.classList.remove('hidden');
+                            mobileMenuBottomLogoutBtn.style.setProperty('display', '', 'important');
+                        }
+                        if (mobileMenuBottomSignInBtn) {
+                            mobileMenuBottomSignInBtn.classList.add('hidden');
+                            mobileMenuBottomSignInBtn.style.setProperty('display', 'none', 'important');
+                        }
+                    } else {
+                        showSignInButtons();
+                    }
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                    showSignInButtons();
+                }
+            } else {
+                showSignInButtons();
+            }
+        }
+        
+        function showSignInButtons() {
+            const desktopLogoutBtn = document.getElementById('desktopLogoutBtn');
+            const desktopSignInBtn = document.getElementById('desktopSignInBtn');
+            if (desktopLogoutBtn) {
+                desktopLogoutBtn.classList.add('hidden');
+                desktopLogoutBtn.style.setProperty('display', 'none', 'important');
+            }
+            if (desktopSignInBtn) {
+                desktopSignInBtn.classList.remove('hidden');
+                desktopSignInBtn.style.setProperty('display', '', 'important');
+            }
+            
+            const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+            const mobileSignInBtn = document.getElementById('mobileSignInBtn');
+            if (mobileLogoutBtn) {
+                mobileLogoutBtn.classList.add('hidden');
+                mobileLogoutBtn.style.setProperty('display', 'none', 'important');
+            }
+            if (mobileSignInBtn) {
+                mobileSignInBtn.classList.remove('hidden');
+                mobileSignInBtn.style.setProperty('display', '', 'important');
+            }
+            
+            const mobileMenuLogoutBtn = document.getElementById('mobileMenuLogoutBtn');
+            const mobileMenuSignInBtn = document.getElementById('mobileMenuSignInBtn');
+            if (mobileMenuLogoutBtn) {
+                mobileMenuLogoutBtn.classList.add('hidden');
+                mobileMenuLogoutBtn.style.setProperty('display', 'none', 'important');
+            }
+            if (mobileMenuSignInBtn) {
+                mobileMenuSignInBtn.classList.remove('hidden');
+                mobileMenuSignInBtn.style.setProperty('display', '', 'important');
+            }
+            
+            // Mobile menu bottom (at the end of menu list)
+            const mobileMenuBottomLogoutBtn = document.getElementById('mobileMenuBottomLogoutBtn');
+            const mobileMenuBottomSignInBtn = document.getElementById('mobileMenuBottomSignInBtn');
+            if (mobileMenuBottomLogoutBtn) {
+                mobileMenuBottomLogoutBtn.classList.add('hidden');
+                mobileMenuBottomLogoutBtn.style.setProperty('display', 'none', 'important');
+            }
+            if (mobileMenuBottomSignInBtn) {
+                mobileMenuBottomSignInBtn.classList.remove('hidden');
+                mobileMenuBottomSignInBtn.style.setProperty('display', '', 'important');
+            }
+        }
+        
+        function signOut() {
+            localStorage.removeItem('currentUser');
+            location.reload();
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 100);
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 300);
+        });
+        
+        window.addEventListener('storage', checkUserAndUpdateHeader);
+        
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 100);
+        }
+        
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 100);
+        });
+        
+        (function() {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(function() {
+                        checkUserAndUpdateHeader();
+                    }, 100);
+                    setTimeout(function() {
+                        checkUserAndUpdateHeader();
+                    }, 300);
+                });
+            } else {
+                setTimeout(function() {
+                    checkUserAndUpdateHeader();
+                }, 50);
+                setTimeout(function() {
+                    checkUserAndUpdateHeader();
+                }, 200);
+            }
+        })();
+        
+        if (document.visibilityState === 'visible') {
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 100);
+        }
+        
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                setTimeout(function() {
+                    checkUserAndUpdateHeader();
+                }, 100);
+            }
+        });
+        
+        setTimeout(function() {
+            checkUserAndUpdateHeader();
+        }, 500);
+        
+        setTimeout(function() {
+            checkUserAndUpdateHeader();
+        }, 1000);
+        
+        window.addEventListener('focus', function() {
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 100);
+        });
+        
+        window.addEventListener('pageshow', function(event) {
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 100);
+        });
+    </script>
 </body>
 </html>

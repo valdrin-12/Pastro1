@@ -635,6 +635,16 @@
                 gap: 0.75rem;
             }
             
+            /* Companies carousel scrollbar hide */
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            
             /* Footer */
             footer .grid {
                 grid-template-columns: 1fr;
@@ -1106,11 +1116,13 @@
                 <div class="flex items-center gap-2 md:space-x-4 flex-shrink-0 md:flex-initial justify-end ml-auto">
                     <!-- Desktop Navigation - Hidden on mobile -->
                     <nav class="hidden md:flex items-center space-x-4 desktop-nav">
-                        <a href="signin-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Kyçu</a>
+                        <button id="desktopLogoutBtn" onclick="signOut()" class="hidden border border-gray-700 bg-white text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Ç'kyçu</button>
+                        <a id="desktopSignInBtn" href="signin-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Kyçu</a>
                         <a href="register-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Regjistro Kompani</a>
                     </nav>
                     <!-- Mobile: Login Button + Hamburger Menu - Right side on mobile -->
-                    <a href="signin-sq.html" class="md:hidden text-gray-700 hover:text-gray-900 transition-colors text-sm font-medium whitespace-nowrap flex-shrink-0 flex items-center">Kyçu</a>
+                    <button id="mobileLogoutBtn" onclick="signOut()" class="md:hidden hidden text-gray-700 hover:text-gray-900 transition-colors text-sm font-medium whitespace-nowrap flex-shrink-0 flex items-center">Ç'kyçu</button>
+                    <a id="mobileSignInBtn" href="signin-sq.html" class="md:hidden text-gray-700 hover:text-gray-900 transition-colors text-sm font-medium whitespace-nowrap flex-shrink-0 flex items-center">Kyçu</a>
                     <!-- Mobile Menu Button - Right side on mobile (hamburger icon) -->
                     <button id="mobileMenuBtn" class="md:hidden mobile-menu-btn flex items-center justify-center p-2.5 text-gray-700 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 border border-gray-300 hover:border-gray-400 transition-all min-w-[48px] min-h-[48px] rounded-lg flex-shrink-0 shadow-sm" onclick="toggleMobileMenu(); event.stopPropagation(); return false;" aria-label="Open menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
@@ -1134,7 +1146,8 @@
                         <h2 class="text-base font-bold text-blue-600">Pastro.com</h2>
                     </div>
                     <div class="flex items-center space-x-1.5">
-                        <a href="signin-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Kyçu</a>
+                        <button id="mobileMenuLogoutBtn" onclick="signOut()" class="hidden px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Ç'kyçu</button>
+                        <a id="mobileMenuSignInBtn" href="signin-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Kyçu</a>
                         <a href="register-sq.html" class="px-2 py-1 border border-gray-300 rounded-full text-xs font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Regjistro Kompani</a>
                         <button onclick="toggleMobileMenu(); event.stopPropagation(); return false;" class="p-1.5 hover:bg-gray-100 rounded-md flex items-center justify-center min-w-[36px] min-h-[36px]" aria-label="Close menu">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-gray-700"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
@@ -1171,7 +1184,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-3 text-gray-700"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"></path><path d="M6.453 15h11.094"></path><path d="M8.5 2h7"></path></svg>
                     <span class="text-gray-900 font-medium">Pastrimi Kimik</span>
                 </a>
-                <a href="signin-sq.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
+                <button id="mobileMenuBottomLogoutBtn" onclick="signOut()" class="hidden flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50 w-full text-left">
+                    <span class="text-gray-900 font-medium">Ç'kyçu</span>
+                </button>
+                <a id="mobileMenuBottomSignInBtn" href="signin-sq.html" class="flex items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50">
                     <span class="text-gray-900 font-medium">Kyçu</span>
                 </a>
             </nav>
@@ -1426,6 +1442,41 @@
             <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Shërbimet Tona</h2>
             <div id="serviceCategories" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                 <!-- Categories will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Companies Carousel Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-bold text-gray-900">Kompanitë</h2>
+                <a href="#page-bottom" onclick="scrollToAnchor('page-bottom')" class="px-4 py-2 border border-red-500 rounded-lg text-red-600 hover:bg-red-50 transition-colors text-sm font-medium">
+                    Shiko të gjitha
+                </a>
+            </div>
+            
+            <div class="relative">
+                <!-- Previous Button -->
+                <button id="companiesPrevBtn" onclick="scrollCompaniesCarousel(-1)" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors hidden md:flex items-center justify-center w-10 h-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-600">
+                        <path d="m15 18-6-6 6-6"></path>
+                    </svg>
+                </button>
+                
+                <!-- Companies Carousel Container -->
+                <div id="companiesCarousel" class="overflow-x-auto scrollbar-hide scroll-smooth" style="scrollbar-width: none; -ms-overflow-style: none;">
+                    <div id="companiesCarouselInner" class="flex gap-4 px-2" style="scroll-behavior: smooth;">
+                        <!-- Companies will be loaded dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Next Button -->
+                <button id="companiesNextBtn" onclick="scrollCompaniesCarousel(1)" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors hidden md:flex items-center justify-center w-10 h-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-600">
+                        <path d="m9 18 6-6-6-6"></path>
+                    </svg>
+                </button>
             </div>
         </div>
     </section>
@@ -2234,6 +2285,89 @@
         // Load categories on page load
         loadServiceCategories();
         
+        // Companies Carousel Functions
+        function scrollCompaniesCarousel(direction) {
+            const carousel = document.getElementById('companiesCarousel');
+            if (!carousel) return;
+            const scrollAmount = 300;
+            const currentScroll = carousel.scrollLeft;
+            const newScroll = currentScroll + (direction * scrollAmount);
+            carousel.scrollTo({
+                left: newScroll,
+                behavior: 'smooth'
+            });
+        }
+        
+        function loadCompaniesCarousel() {
+            const carouselInner = document.getElementById('companiesCarouselInner');
+            if (!carouselInner) return;
+            
+            // Use the same filteredCompanies that are shown in the main section
+            // Wait a bit to ensure filteredCompanies is populated
+            setTimeout(() => {
+                let companies = [];
+                
+                // Check if filteredCompanies exists and use it
+                if (typeof filteredCompanies !== 'undefined' && Array.isArray(filteredCompanies)) {
+                    // Filter approved companies (same logic as updateCompanyDisplay)
+                    companies = filteredCompanies.filter(company => {
+                        const status = (company.status || '').toLowerCase();
+                        return !status || status === 'approved';
+                    }).slice(0, 17);
+                }
+                
+                if (companies.length === 0) {
+                    carouselInner.innerHTML = `
+                        <div class="flex items-center justify-center w-full py-8 text-gray-500">
+                            <p>Nuk ka kompani të disponueshme</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                carouselInner.innerHTML = companies.map(company => {
+                    // Create default logo as SVG data URI if no logo exists
+                    const firstLetter = (company.name || 'C').charAt(0).toUpperCase();
+                    const svgContent = `<svg width="170" height="170" xmlns="http://www.w3.org/2000/svg"><circle cx="85" cy="85" r="85" fill="#3B82F6"/><text x="50%" y="50%" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="central">${firstLetter}</text></svg>`;
+                    const defaultLogoSVG = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgContent)}`;
+                    const logoUrl = company.logo || defaultLogoSVG;
+                    
+                    return `
+                    <div role="group" aria-roledescription="slide" class="min-w-0 shrink-0 grow-0 pl-4 basis-1/4 xl:basis-1/5 h-[106px] md:h-[230px] xl:h-[270px]">
+                        <a href="company-detail-sq.html?id=${company.id}">
+                            <div class="flex flex-col justify-between items-center gap-2 relative hover:store-card-hover">
+                                <div class="rounded-full relative overflow-hidden w-[64px] h-[64px] md:w-[130px] md:h-[130px] xl:w-[170px] xl:h-[170px] bg-gray-100">
+                                    <img alt="${company.name}" loading="lazy" class="object-cover w-full h-full" src="${logoUrl}" onerror="this.onerror=null; this.src='${defaultLogoSVG}'">
+                                </div>
+                                <p class="text-sm !text-xs md:!text-base xl:!text-lg text-center hover:underline text-gray-900 font-medium">${company.name || 'Kompani'}</p>
+                                <div class="rounded-full absolute bg-black opacity-0 hover:opacity-20 cursor-pointer overflow-hidden w-[64px] h-[64px] md:w-[130px] md:h-[130px] xl:w-[170px] xl:h-[170px] card-hover"></div>
+                            </div>
+                        </a>
+                    </div>
+                    `;
+                }).join('');
+                
+                updateCarouselButtons();
+            }, 500); // Wait 500ms for filteredCompanies to be populated
+        }
+        
+        function updateCarouselButtons() {
+            const carousel = document.getElementById('companiesCarousel');
+            const prevBtn = document.getElementById('companiesPrevBtn');
+            const nextBtn = document.getElementById('companiesNextBtn');
+            
+            if (!carousel || !prevBtn || !nextBtn) return;
+            
+            const updateButtons = () => {
+                const { scrollLeft, scrollWidth, clientWidth } = carousel;
+                prevBtn.style.opacity = scrollLeft > 0 ? '1' : '0.5';
+                nextBtn.style.opacity = scrollLeft < scrollWidth - clientWidth - 10 ? '1' : '0.5';
+            };
+            
+            carousel.addEventListener('scroll', updateButtons);
+            updateButtons();
+        }
+        
         // Sample companies data (simulating database)
         const defaultCompanies = [
             {
@@ -3036,6 +3170,9 @@
             
             // Load services from API
             loadServices();
+            
+            // Load companies carousel
+            loadCompaniesCarousel();
 
             // 1) Show cached approved companies immediately + default companies (works for anonymous users)
             try {
@@ -3188,6 +3325,7 @@
                             name: c.name,
                             description: c.description || '',
                             phone: c.phone,
+                            logo: c.logo || null,
                             cities: Array.isArray(c.cities) ? c.cities : [],
                             services: Array.isArray(c.services) ? c.services : [],
                         }));
@@ -3217,6 +3355,7 @@
                             name: c.name,
                             description: c.description || '',
                             phone: c.phone,
+                            logo: c.logo || null,
                             cities: c.cities || [],
                             services: c.services || []
                         }));
@@ -3291,6 +3430,11 @@
                     // Only show if status is 'approved' or if status doesn't exist (demo companies)
                     return !status || status === 'approved';
                 });
+                
+                // Update carousel with the same companies
+                if (typeof loadCompaniesCarousel === 'function') {
+                    loadCompaniesCarousel();
+                }
                 
                 if (approvedOnly.length === 0) {
                     companiesContainer.innerHTML = `
@@ -3637,6 +3781,204 @@
             const el = document.getElementById(id);
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+    </script>
+
+    <script>
+        // Check if user is logged in (company or admin) and update header buttons
+        function checkUserAndUpdateHeader() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                try {
+                    const user = JSON.parse(currentUser);
+                    const isAdmin = user.role === 'admin' || user.email === 'admin@pastro.com' || user.id === 0;
+                    const isCompany = !isAdmin && (user.name || user.email);
+                    
+                    if (isAdmin || isCompany) {
+                        // User is logged in - show Ç'kyçu, hide Kyçu
+                        const desktopLogoutBtn = document.getElementById('desktopLogoutBtn');
+                        const desktopSignInBtn = document.getElementById('desktopSignInBtn');
+                        if (desktopLogoutBtn) {
+                            desktopLogoutBtn.classList.remove('hidden');
+                            desktopLogoutBtn.style.setProperty('display', '', 'important');
+                        }
+                        if (desktopSignInBtn) {
+                            desktopSignInBtn.classList.add('hidden');
+                            desktopSignInBtn.style.setProperty('display', 'none', 'important');
+                        }
+                        
+                        const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+                        const mobileSignInBtn = document.getElementById('mobileSignInBtn');
+                        if (mobileLogoutBtn) {
+                            mobileLogoutBtn.classList.remove('hidden');
+                            mobileLogoutBtn.style.setProperty('display', '', 'important');
+                        }
+                        if (mobileSignInBtn) {
+                            mobileSignInBtn.classList.add('hidden');
+                            mobileSignInBtn.style.setProperty('display', 'none', 'important');
+                        }
+                        
+                        const mobileMenuLogoutBtn = document.getElementById('mobileMenuLogoutBtn');
+                        const mobileMenuSignInBtn = document.getElementById('mobileMenuSignInBtn');
+                        if (mobileMenuLogoutBtn) {
+                            mobileMenuLogoutBtn.classList.remove('hidden');
+                            mobileMenuLogoutBtn.style.setProperty('display', '', 'important');
+                        }
+                        if (mobileMenuSignInBtn) {
+                            mobileMenuSignInBtn.classList.add('hidden');
+                            mobileMenuSignInBtn.style.setProperty('display', 'none', 'important');
+                        }
+                        
+                        // Mobile menu bottom (at the end of menu list)
+                        const mobileMenuBottomLogoutBtn = document.getElementById('mobileMenuBottomLogoutBtn');
+                        const mobileMenuBottomSignInBtn = document.getElementById('mobileMenuBottomSignInBtn');
+                        if (mobileMenuBottomLogoutBtn) {
+                            mobileMenuBottomLogoutBtn.classList.remove('hidden');
+                            mobileMenuBottomLogoutBtn.style.setProperty('display', '', 'important');
+                        }
+                        if (mobileMenuBottomSignInBtn) {
+                            mobileMenuBottomSignInBtn.classList.add('hidden');
+                            mobileMenuBottomSignInBtn.style.setProperty('display', 'none', 'important');
+                        }
+                    } else {
+                        showSignInButtons();
+                    }
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                    showSignInButtons();
+                }
+            } else {
+                showSignInButtons();
+            }
+        }
+        
+        function showSignInButtons() {
+            const desktopLogoutBtn = document.getElementById('desktopLogoutBtn');
+            const desktopSignInBtn = document.getElementById('desktopSignInBtn');
+            if (desktopLogoutBtn) {
+                desktopLogoutBtn.classList.add('hidden');
+                desktopLogoutBtn.style.setProperty('display', 'none', 'important');
+            }
+            if (desktopSignInBtn) {
+                desktopSignInBtn.classList.remove('hidden');
+                desktopSignInBtn.style.setProperty('display', '', 'important');
+            }
+            
+            const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+            const mobileSignInBtn = document.getElementById('mobileSignInBtn');
+            if (mobileLogoutBtn) {
+                mobileLogoutBtn.classList.add('hidden');
+                mobileLogoutBtn.style.setProperty('display', 'none', 'important');
+            }
+            if (mobileSignInBtn) {
+                mobileSignInBtn.classList.remove('hidden');
+                mobileSignInBtn.style.setProperty('display', '', 'important');
+            }
+            
+            const mobileMenuLogoutBtn = document.getElementById('mobileMenuLogoutBtn');
+            const mobileMenuSignInBtn = document.getElementById('mobileMenuSignInBtn');
+            if (mobileMenuLogoutBtn) {
+                mobileMenuLogoutBtn.classList.add('hidden');
+                mobileMenuLogoutBtn.style.setProperty('display', 'none', 'important');
+            }
+            if (mobileMenuSignInBtn) {
+                mobileMenuSignInBtn.classList.remove('hidden');
+                mobileMenuSignInBtn.style.setProperty('display', '', 'important');
+            }
+            
+            // Mobile menu bottom (at the end of menu list)
+            const mobileMenuBottomLogoutBtn = document.getElementById('mobileMenuBottomLogoutBtn');
+            const mobileMenuBottomSignInBtn = document.getElementById('mobileMenuBottomSignInBtn');
+            if (mobileMenuBottomLogoutBtn) {
+                mobileMenuBottomLogoutBtn.classList.add('hidden');
+                mobileMenuBottomLogoutBtn.style.setProperty('display', 'none', 'important');
+            }
+            if (mobileMenuBottomSignInBtn) {
+                mobileMenuBottomSignInBtn.classList.remove('hidden');
+                mobileMenuBottomSignInBtn.style.setProperty('display', '', 'important');
+            }
+        }
+        
+        function signOut() {
+            localStorage.removeItem('currentUser');
+            location.reload();
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 100);
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 300);
+        });
+        
+        window.addEventListener('storage', checkUserAndUpdateHeader);
+        
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 100);
+        }
+        
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 100);
+        });
+        
+        (function() {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(function() {
+                        checkUserAndUpdateHeader();
+                    }, 100);
+                    setTimeout(function() {
+                        checkUserAndUpdateHeader();
+                    }, 300);
+                });
+            } else {
+                setTimeout(function() {
+                    checkUserAndUpdateHeader();
+                }, 50);
+                setTimeout(function() {
+                    checkUserAndUpdateHeader();
+                }, 200);
+            }
+        })();
+        
+        if (document.visibilityState === 'visible') {
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 100);
+        }
+        
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                setTimeout(function() {
+                    checkUserAndUpdateHeader();
+                }, 100);
+            }
+        });
+        
+        setTimeout(function() {
+            checkUserAndUpdateHeader();
+        }, 500);
+        
+        setTimeout(function() {
+            checkUserAndUpdateHeader();
+        }, 1000);
+        
+        window.addEventListener('focus', function() {
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 100);
+        });
+        
+        window.addEventListener('pageshow', function(event) {
+            setTimeout(function() {
+                checkUserAndUpdateHeader();
+            }, 100);
+        });
     </script>
 </body>
 </html>
