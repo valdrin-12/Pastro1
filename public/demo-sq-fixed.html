@@ -4105,9 +4105,10 @@
                 try {
                     const user = JSON.parse(currentUser);
                     const isAdmin = user.role === 'admin' || user.email === 'admin@pastro.com' || user.id === 0;
-                    const isCompany = !isAdmin && (user.name || user.email);
+                    const isCompany = !isAdmin && (user.role === 'company' || user.role === 'COMPANY' || (user.name && user.role !== 'user'));
+                    const isUser = !isAdmin && !isCompany && (user.role === 'user' || user.role === 'USER');
                     
-                    if (isAdmin || isCompany) {
+                    if (isAdmin || isCompany || isUser) {
                         // User is logged in - show Ç'kyçu, hide Kyçu
                         const desktopLogoutBtn = document.getElementById('desktopLogoutBtn');
                         const desktopSignInBtn = document.getElementById('desktopSignInBtn');
@@ -4122,13 +4123,17 @@
                             desktopSignInBtn.style.setProperty('display', 'none', 'important');
                         }
                         
-                        // Show company name if it's a company user, or "Admin" if it's admin
+                        // Show company name if it's a company user, "Admin" if it's admin, or email if it's a simple user
                         if (companyNameHeader) {
                             if (isCompany && user.name) {
                                 companyNameHeader.textContent = user.name;
                                 companyNameHeader.classList.remove('hidden');
                             } else if (isAdmin) {
                                 companyNameHeader.textContent = 'Admin';
+                                companyNameHeader.classList.remove('hidden');
+                            } else if (isUser) {
+                                // For simple users, show email or "Përdorues"
+                                companyNameHeader.textContent = user.email || 'Përdorues';
                                 companyNameHeader.classList.remove('hidden');
                             } else {
                                 companyNameHeader.classList.add('hidden');

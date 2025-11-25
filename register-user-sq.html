@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krijo Llogari - Pastro.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #dbeafe 0%, #dcfce7 100%);
+        }
+        .form-container {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .input-group {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <!-- Header -->
+        <div class="text-center">
+            <a href="demo-sq-fixed.html" class="flex justify-center cursor-pointer hover:opacity-80 transition-opacity">
+                <i data-lucide="building-2" class="h-12 w-12 text-blue-600"></i>
+            </a>
+            <h2 class="mt-6 text-3xl font-bold text-gray-900">
+                Krijo Llogari
+            </h2>
+            <p class="mt-2 text-sm text-gray-600">
+                Tashmë keni llogari? <a href="signin-sq.html" class="font-medium text-blue-600 hover:text-blue-500">Hyr këtu</a>
+            </p>
+        </div>
+
+        <!-- Registration Form -->
+        <form id="registerForm" class="form-container p-8 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">
+                        Emri *
+                    </label>
+                    <div class="input-group">
+                        <i data-lucide="user" class="input-icon"></i>
+                        <input
+                            id="firstName"
+                            name="firstName"
+                            type="text"
+                            required
+                            autocomplete="given-name"
+                            value=""
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Shkruani emrin tuaj"
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">
+                        Mbiemri *
+                    </label>
+                    <div class="input-group">
+                        <i data-lucide="user" class="input-icon"></i>
+                        <input
+                            id="lastName"
+                            name="lastName"
+                            type="text"
+                            required
+                            autocomplete="family-name"
+                            value=""
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Shkruani mbiemrin tuaj"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                    Adresa e Email-it *
+                </label>
+                <div class="input-group">
+                    <i data-lucide="mail" class="input-icon"></i>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        autocomplete="off"
+                        value=""
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Shkruani email-in tuaj"
+                    />
+                </div>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                    Fjalëkalimi *
+                </label>
+                <div class="input-group">
+                    <i data-lucide="lock" class="input-icon"></i>
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        required
+                        minlength="6"
+                        autocomplete="new-password"
+                        value=""
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Minimum 6 karaktere"
+                    />
+                </div>
+                <p class="mt-1 text-xs text-gray-500">Fjalëkalimi duhet të jetë të paktën 6 karaktere</p>
+            </div>
+
+            <div>
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                    Konfirmo Fjalëkalimin *
+                </label>
+                <div class="input-group">
+                    <i data-lucide="lock" class="input-icon"></i>
+                    <input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type="password"
+                        required
+                        minlength="6"
+                        autocomplete="new-password"
+                        value=""
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Konfirmo fjalëkalimin"
+                    />
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="btn-primary">
+                    Krijo Llogari
+                </button>
+            </div>
+        </form>
+
+        <!-- Back to Home -->
+        <div class="text-center">
+            <a href="demo-sq-fixed.html" class="text-gray-600 hover:text-blue-600 transition-colors">
+                ← Kthehu në Kryefaqe
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Form submission
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+            
+            // Validate first name
+            if (!firstName || firstName.length < 2) {
+                showErrorModal('Emri i pavlefshëm', 'Emri duhet të jetë të paktën 2 karaktere.');
+                return;
+            }
+            
+            // Validate last name
+            if (!lastName || lastName.length < 2) {
+                showErrorModal('Mbiemri i pavlefshëm', 'Mbiemri duhet të jetë të paktën 2 karaktere.');
+                return;
+            }
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                showErrorModal('Fjalëkalimet nuk përputhen', 'Fjalëkalimi dhe konfirmimi i fjalëkalimit duhet të jenë të njëjta.');
+                return;
+            }
+            
+            // Validate password length
+            if (password.length < 6) {
+                showErrorModal('Fjalëkalimi shumë i shkurtër', 'Fjalëkalimi duhet të jetë të paktën 6 karaktere.');
+                return;
+            }
+            
+            // Combine first and last name
+            const fullName = `${firstName} ${lastName}`;
+            
+            console.log('Attempting to register user with:', { email, name: fullName });
+            
+            // Check if page is opened as file:// - will try to use API but may fail due to CORS
+            const isFileProtocol = window.location.protocol === 'file:';
+            if (isFileProtocol) {
+                console.warn('[register-user] ⚠️ Page opened as file:// - API calls may fail due to CORS');
+                console.warn('[register-user] Will try API, but if it fails, user will be saved only to localStorage');
+            }
+            
+            // Helper function to find API base
+            const findApiBase = async () => {
+                console.log('[register-user] 🔍 Checking API server availability...');
+                
+                // Try port 3000 first
+                let testApiBase = 'http://localhost:3000';
+                try {
+                    console.log(`[register-user] Testing ${testApiBase}/api/cities...`);
+                    const test = await fetch(`${testApiBase}/api/cities`, { 
+                        method: 'GET',
+                        mode: 'cors',
+                        credentials: 'omit',
+                        cache: 'no-cache',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    console.log('[register-user] Port 3000 test response:', test.status, test.statusText);
+                    if (test.ok) {
+                        console.log('[register-user] ✅ API server found on port 3000');
+                        return testApiBase;
+                    } else {
+                        console.warn('[register-user] ⚠️ Port 3000 responded with status:', test.status);
+                    }
+                } catch (e) {
+                    console.warn('[register-user] ⚠️ Port 3000 not available:', e.message);
+                }
+                
+                // Try port 3001 as fallback
+                testApiBase = 'http://localhost:3001';
+                console.log('[register-user] 🔍 Trying port 3001...');
+                try {
+                    console.log(`[register-user] Testing ${testApiBase}/api/cities...`);
+                    const test = await fetch(`${testApiBase}/api/cities`, { 
+                        method: 'GET',
+                        mode: 'cors',
+                        credentials: 'omit',
+                        cache: 'no-cache',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    console.log('[register-user] Port 3001 test response:', test.status, test.statusText);
+                    if (test.ok) {
+                        console.log('[register-user] ✅ API server found on port 3001');
+                        return testApiBase;
+                    } else {
+                        console.warn('[register-user] ⚠️ Port 3001 responded with status:', test.status);
+                    }
+                } catch (e) {
+                    console.error('[register-user] ❌ Port 3001 also not available:', e.message);
+                }
+                
+                // If we get here, neither port worked
+                return null;
+            };
+            
+            let registerSuccess = false;
+            
+            // Try to register via API (even if file:// protocol)
+            try {
+                const apiBase = await findApiBase();
+                
+                if (apiBase) {
+                    console.log('[register-user] Using API base:', apiBase);
+                    
+                    // Try to register via API
+                    let registerResponse;
+                    try {
+                        registerResponse = await fetch(`${apiBase}/api/auth/register-user`, {
+                            method: 'POST',
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ email, password, name: fullName }),
+                            mode: 'cors',
+                            credentials: 'omit'
+                        });
+                    } catch (fetchError) {
+                        // CORS or network error
+                        console.error('[register-user] ❌ Fetch error (CORS/Network):', fetchError.message);
+                        throw fetchError; // Re-throw to be caught by outer catch
+                    }
+                    
+                    if (registerResponse.ok) {
+                        const registerData = await registerResponse.json();
+                        console.log('[register-user] ✅ Registration successful via API:', registerData);
+                        
+                        if (registerData.success && registerData.user) {
+                            // Create user object for localStorage
+                            const userForStorage = {
+                                id: registerData.user.id,
+                                email: registerData.user.email,
+                                role: registerData.user.role.toLowerCase(),
+                                fromDatabase: true
+                            };
+                            
+                            localStorage.setItem('currentUser', JSON.stringify(userForStorage));
+                            
+                            // Check if there's a redirect destination (e.g., from company registration page)
+                            const redirectAfterRegistration = sessionStorage.getItem('redirectAfterRegistration');
+                            const redirectUrl = redirectAfterRegistration || 'demo-sq-fixed.html';
+                            if (redirectAfterRegistration) {
+                                sessionStorage.removeItem('redirectAfterRegistration');
+                            }
+                            
+                            showSuccessModal(
+                                'Llogaria u krijua me sukses!',
+                                redirectAfterRegistration ? 'Po të ridrejtojmë në regjistrimin e kompanisë...' : 'Po të ridrejtojmë në kryefaqe...',
+                                redirectUrl
+                            );
+                            registerSuccess = true;
+                            return; // Exit early on success
+                        } else {
+                            console.error('[register-user] ❌ API response missing success or user data:', registerData);
+                        }
+                    } else {
+                        const errorData = await registerResponse.json().catch(() => ({ error: 'Unknown error' }));
+                        console.error('[register-user] ❌ API registration failed:', registerResponse.status, errorData);
+                        
+                        // If user already exists, show error and return
+                        if (errorData.error && (errorData.error.includes('ekziston tashmë') || errorData.error.includes('exists'))) {
+                            showErrorModal('Email ekziston tashmë', errorData.error);
+                            return;
+                        }
+                        
+                        // For other errors, throw to be caught by outer catch
+                        throw new Error(errorData.error || `HTTP ${registerResponse.status}: Registration failed`);
+                    }
+                } else {
+                    console.warn('[register-user] ⚠️ API server not available on ports 3000 or 3001');
+                    throw new Error('API server not available');
+                }
+            } catch (apiError) {
+                console.error('[register-user] ⚠️ API registration error:', apiError.message);
+                // Check if it's a CORS or network error
+                const isCorsOrNetworkError = apiError.message.includes('CORS') || 
+                    apiError.message.includes('Failed to fetch') || 
+                    apiError.message.includes('NetworkError') ||
+                    apiError.message.includes('Network request failed') ||
+                    apiError.message.includes('API server not available') ||
+                    apiError.name === 'TypeError';
+                
+                if (isCorsOrNetworkError) {
+                    console.warn('[register-user] CORS or network error detected - will use localStorage fallback');
+                    // Continue to fallback below
+                } else {
+                    // For other errors (like validation errors), show error and don't fallback
+                    console.error('[register-user] Non-CORS error, showing error modal:', apiError.message);
+                    showErrorModal('Regjistrimi dështoi', apiError.message || 'Gabim i panjohur gjatë regjistrimit.');
+                    return;
+                }
+            }
+            
+            // Fallback to localStorage if API registration failed or file:// protocol
+            if (!registerSuccess) {
+                // Check if user already exists in localStorage
+                const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+                const userExists = existingUsers.some(u => u.email === email);
+                
+                if (userExists) {
+                    showErrorModal('Email ekziston tashmë', 'Një përdorues me këtë email ekziston tashmë. Ju lutemi kyçuni ose përdorni një email tjetër.');
+                    return;
+                }
+                
+                // Create user object
+                const newUser = {
+                    id: Date.now().toString(),
+                    firstName: firstName,
+                    lastName: lastName,
+                    name: fullName,
+                    email: email,
+                    password: password, // In production, this should be hashed
+                    role: 'user',
+                    fromDatabase: false,
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Save to localStorage
+                existingUsers.push(newUser);
+                localStorage.setItem('registeredUsers', JSON.stringify(existingUsers));
+                localStorage.setItem('currentUser', JSON.stringify({
+                    id: newUser.id,
+                    email: newUser.email,
+                    role: newUser.role,
+                    fromDatabase: false
+                }));
+                
+                // Check if there's a redirect destination (e.g., from company registration page)
+                const redirectAfterRegistration = sessionStorage.getItem('redirectAfterRegistration');
+                const redirectUrl = redirectAfterRegistration || 'demo-sq-fixed.html';
+                if (redirectAfterRegistration) {
+                    sessionStorage.removeItem('redirectAfterRegistration');
+                }
+                
+                showSuccessModal(
+                    'Llogaria u krijua me sukses!',
+                    redirectAfterRegistration ? 'Po të ridrejtojmë në regjistrimin e kompanisë...' : 'Po të ridrejtojmë në kryefaqe...',
+                    redirectUrl
+                );
+            }
+        });
+
+        // Success Modal Function
+        function showSuccessModal(title, message, redirectUrl) {
+            const modal = document.createElement('div');
+            modal.id = 'successModal';
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 transform transition-all">
+                    <div class="text-center">
+                        <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
+                            <i data-lucide="check-circle" class="h-10 w-10 text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">${title}</h3>
+                        <p class="text-gray-600 mb-6">${message}</p>
+                        <div class="flex justify-center">
+                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            lucide.createIcons();
+            
+            // Auto-redirect after 2 seconds
+            setTimeout(() => {
+                window.location.href = redirectUrl;
+            }, 2000);
+        }
+
+        // Error Modal Function
+        function showErrorModal(title, message) {
+            const modal = document.createElement('div');
+            modal.id = 'errorModal';
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 transform transition-all">
+                    <div class="text-center">
+                        <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4">
+                            <i data-lucide="alert-circle" class="h-10 w-10 text-red-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">${title}</h3>
+                        <p class="text-gray-600 mb-6">${message}</p>
+                        <button onclick="this.closest('#errorModal').remove()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
+

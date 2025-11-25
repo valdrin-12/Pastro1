@@ -164,20 +164,6 @@
     </style>
 </head>
 <body class="gradient-bg min-h-screen py-8">
-        <!-- Warning banner for file:// protocol -->
-        <div id="fileProtocolWarning" class="hidden fixed top-0 left-0 right-0 bg-yellow-500 text-white p-4 z-50 shadow-lg">
-            <div class="container mx-auto flex items-center justify-between">
-                <div class="flex items-center">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                    </svg>
-                    <span class="font-semibold">⚠️ Kujdes: Faqja është hapur si file lokal. Për të ruajtur kompaninë në databazë, ju lutemi hapni faqen përmes serverit:</span>
-                </div>
-                <a href="http://localhost:3001/register-sq.html" class="ml-4 bg-white text-yellow-600 px-4 py-2 rounded font-semibold hover:bg-yellow-50 transition-colors">
-                    Hap përmes Serverit
-                </a>
-            </div>
-        </div>
     <!-- Header -->
     <header class="max-w-4xl mx-auto px-4 mb-8">
         <div class="flex items-center justify-between">
@@ -744,12 +730,94 @@
         let currentStep = 1;
         let serviceCount = 0;
         let providerType = null; // 'company' or 'individual'
+        let isSimpleUserLoggedIn = false; // flag for users already logged in
 
         // Initialize Lucide icons
         lucide.createIcons();
 
         // Provider type selection
         document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in - if not, redirect to user registration
+            const currentUserStr = localStorage.getItem('currentUser');
+            if (!currentUserStr) {
+                // No user logged in - redirect to user registration
+                const redirectMessage = 'Për të regjistruar një kompani, ju duhet të keni një llogari. Po të ridrejtojmë në faqen e regjistrimit...';
+                alert(redirectMessage);
+                // Store the intended destination so we can redirect back after registration
+                sessionStorage.setItem('redirectAfterRegistration', 'register-sq.html');
+                window.location.href = 'register-user-sq.html';
+                return;
+            }
+            
+            // User is logged in - continue with company registration
+            try {
+                const currentUser = JSON.parse(currentUserStr);
+                if (currentUser && (currentUser.role === 'user' || currentUser.role === 'USER')) {
+                    isSimpleUserLoggedIn = true;
+                    // Check if user already has a company
+                    const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                    const userCompany = companies.find(c => c.email === currentUser.email);
+                    
+                    if (userCompany) {
+                        // User already has a company - show message and redirect
+                        alert('Ju keni regjistruar tashmë një kompani. Ju lutemi përdorni kompaninë ekzistuese ose dilni nga llogaria për të regjistruar një të re.');
+                        window.location.href = 'demo-sq-fixed.html';
+                        return;
+                    } else {
+                        // User is logged in but doesn't have a company - hide email/password fields
+                        const emailField = document.getElementById('email');
+                        const passwordField = document.getElementById('password');
+                        const confirmPasswordField = document.getElementById('confirmPassword');
+                        const emailLabel = emailField?.closest('div')?.previousElementSibling;
+                        const passwordLabel = passwordField?.closest('div')?.previousElementSibling;
+                        const confirmPasswordLabel = confirmPasswordField?.closest('div')?.previousElementSibling;
+                        
+                        if (emailField && passwordField && confirmPasswordField) {
+                            // Populate values so other logic can reuse them if needed
+                            emailField.value = currentUser.email;
+                            passwordField.value = '********';
+                            confirmPasswordField.value = '********';
+
+                            // Remove required attribute to avoid native validation issues
+                            emailField.required = false;
+                            passwordField.required = false;
+                            confirmPasswordField.required = false;
+
+                            // Hide email field and label
+                            if (emailLabel) emailLabel.style.display = 'none';
+                            emailField.closest('div').style.display = 'none';
+                            
+                            // Hide password fields and labels
+                            if (passwordLabel) passwordLabel.style.display = 'none';
+                            passwordField.closest('div').style.display = 'none';
+                            
+                            if (confirmPasswordLabel) confirmPasswordLabel.style.display = 'none';
+                            confirmPasswordField.closest('div').style.display = 'none';
+                            
+                            // Show info message
+                            const step2Content = document.getElementById('step2-content');
+                            if (step2Content) {
+                                const infoMsg = document.createElement('div');
+                                infoMsg.className = 'bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6';
+                                infoMsg.innerHTML = `
+                                    <div class="flex items-start">
+                                        <i data-lucide="info" class="h-5 w-5 text-blue-600 mr-2 mt-0.5"></i>
+                                        <div>
+                                            <p class="text-sm font-medium text-blue-800">Ju jeni të kyqur si: ${currentUser.email}</p>
+                                            <p class="text-sm text-blue-700 mt-1">Kompania do të regjistrohet me këtë email.</p>
+                                        </div>
+                                    </div>
+                                `;
+                                step2Content.insertBefore(infoMsg, step2Content.firstChild);
+                                lucide.createIcons();
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Failed to parse currentUser:', e);
+            }
+            
             const providerCards = document.querySelectorAll('.provider-type-card');
             const nextBtn = document.getElementById('nextStepBtn');
 
@@ -784,7 +852,11 @@
             let success = false;
             
             try {
-                const response = await fetch(`${apiBase}/api/services`);
+                const response = await fetch(`${apiBase}/api/services`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'omit'
+                });
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -816,7 +888,11 @@
             if (!success) {
                 try {
                     apiBase = 'http://localhost:3001';
-                    const response = await fetch(`${apiBase}/api/services`);
+                    const response = await fetch(`${apiBase}/api/services`, {
+                        method: 'GET',
+                        mode: 'cors',
+                        credentials: 'omit'
+                    });
                     
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -958,6 +1034,10 @@
                     break;
                     
                 case 2:
+                    if (isSimpleUserLoggedIn) {
+                        // Logged-in simple users skip manual credential entry
+                        return true;
+                    }
                     const email = document.getElementById('email').value;
                     const password = document.getElementById('password').value;
                     const confirmPassword = document.getElementById('confirmPassword').value;
@@ -1747,8 +1827,11 @@
                     // Try port 3001 first
                     const response = await fetch(`${apiBase}/api/company/verify`, {
                         method: 'POST',
+                        mode: 'cors',
+                        credentials: 'omit',
                         headers: {
                             'Content-Type': 'application/json',
+                            'Accept': 'application/json'
                         },
                         body: JSON.stringify({ companyName: companyName })
                     });
@@ -1761,6 +1844,8 @@
                     apiBase = 'http://localhost:3000';
                     const response = await fetch(`${apiBase}/api/company/verify`, {
                         method: 'POST',
+                        mode: 'cors',
+                        credentials: 'omit',
                         headers: {
                             'Content-Type': 'application/json',
                         },
@@ -1829,6 +1914,33 @@
         }
 
         async function completeRegistration() {
+            // Check if user is logged in (for USER role)
+            const currentUserStr = localStorage.getItem('currentUser');
+            let currentUser = null;
+            let isLoggedInUser = false;
+            
+            if (currentUserStr) {
+                try {
+                    currentUser = JSON.parse(currentUserStr);
+                    // Check if user is logged in and has USER role
+                    if (currentUser && (currentUser.role === 'user' || currentUser.role === 'USER')) {
+                        isLoggedInUser = true;
+                        console.log('[completeRegistration] User is logged in:', currentUser.email);
+                        
+                        // Double-check: user should not already have a company
+                        const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                        const userCompany = companies.find(c => c.email === currentUser.email);
+                        if (userCompany) {
+                            alert('Ju keni regjistruar tashmë një kompani. Ju lutemi përdorni kompaninë ekzistuese.');
+                            window.location.href = 'demo-sq-fixed.html';
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Failed to parse currentUser:', e);
+                }
+            }
+            
             // Verify company name first
             const companyName = document.getElementById('companyName').value.trim();
             
@@ -1837,20 +1949,38 @@
                 return;
             }
             
-            // Validate email format
-            const email = document.getElementById('email').value.trim();
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert('Ju lutemi shkruani një email të vlefshëm. P.sh. kompani@example.com');
-                document.getElementById('email').focus();
-                return;
+            // Validate email format (only if not logged in as USER)
+            let email;
+            if (!isLoggedInUser) {
+                email = document.getElementById('email').value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Ju lutemi shkruani një email të vlefshëm. P.sh. kompani@example.com');
+                    document.getElementById('email').focus();
+                    return;
+                }
+                
+                // Check if email already has a company (in localStorage)
+                const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                const existingCompany = companies.find(c => c.email === email);
+                if (existingCompany) {
+                    alert('Ju keni regjistruar tashmë një kompani me këtë email. Një email mund të ketë vetëm një kompani. Ju lutemi kyçuni dhe përdorni kompaninë ekzistuese.');
+                    window.location.href = 'signin-sq.html';
+                    return;
+                }
+            } else {
+                // Use logged in user's email
+                email = currentUser.email;
             }
             
-            // Check company name for inappropriate content
-            const verificationResult = await verifyCompanyName(companyName);
-            if (!verificationResult.isValid) {
-                alert(verificationResult.reason || 'Emri i kompanisë nuk është i pranueshëm. Ju lutemi zgjidhni një emër tjetër.');
-                return;
+            // Check company name for inappropriate content (skip if file://)
+            const isFileProtocolCheck = window.location.protocol === 'file:';
+            if (!isFileProtocolCheck) {
+                const verificationResult = await verifyCompanyName(companyName);
+                if (!verificationResult.isValid) {
+                    alert(verificationResult.reason || 'Emri i kompanisë nuk është i pranueshëm. Ju lutemi zgjidhni një emër tjetër.');
+                    return;
+                }
             }
             
             // Grumbullo te dhenat dhe ruaji ne localStorage (logjika e demos)
@@ -1859,7 +1989,7 @@
                 type: providerType,
                 name: companyName,
                 email: email,
-                password: document.getElementById('password').value,
+                password: isLoggedInUser ? (currentUser.password || '') : document.getElementById('password').value,
                 phone: document.getElementById('phone').value,
                 description: document.getElementById('description').value,
                 cities: Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value),
@@ -1932,6 +2062,7 @@
                         const test = await fetch(`${testApiBase}/api/cities`, { 
                             method: 'GET',
                             mode: 'cors',
+                            credentials: 'omit',
                             cache: 'no-cache',
                             headers: {
                                 'Accept': 'application/json'
@@ -1957,6 +2088,7 @@
                         const test = await fetch(`${testApiBase}/api/cities`, { 
                             method: 'GET',
                             mode: 'cors',
+                            credentials: 'omit',
                             cache: 'no-cache',
                             headers: {
                                 'Accept': 'application/json'
@@ -2071,6 +2203,7 @@
                     console.log('[saveToBackend] City IDs:', cityIds);
                     console.log('[saveToBackend] Service payloads:', servicePayloads);
 
+                    // Include userId if user is logged in
                     const payload = {
                         email: formData.email,
                         password: formData.password,
@@ -2080,6 +2213,11 @@
                         cities: cityIds,
                         services: servicePayloads
                     };
+                    
+                    // If user is logged in, include userId to check for existing company
+                    if (isLoggedInUser && currentUser && currentUser.id) {
+                        payload.userId = currentUser.id;
+                    }
 
                     console.log('[saveToBackend] 📤 Attempting to save company:', formData.name, 'to backend');
                     console.log('[saveToBackend] Payload:', JSON.stringify(payload, null, 2));
@@ -2118,7 +2256,23 @@
                     let errorText;
                     try {
                         errorText = await response.text();
-                        const errorData = JSON.parse(errorText);
+                        let errorData;
+                        try {
+                            errorData = JSON.parse(errorText);
+                        } catch {
+                            errorData = { error: errorText };
+                        }
+                        
+                        // Check if error is about existing company
+                        if (errorData.error && (
+                            errorData.error.includes('kompani tashmë') || 
+                            errorData.error.includes('një kompani') ||
+                            errorData.error.includes('already has a company')
+                        )) {
+                            console.error('[saveToBackend] User already has a company:', errorData.error);
+                            throw new Error(errorData.error);
+                        }
+                        
                         console.error(`[saveToBackend] Error from ${apiBase}:`, response.status, errorData);
                         throw new Error(`HTTP ${response.status}: ${errorData.error || errorData.message || response.statusText}`);
                     } catch (parseError) {
@@ -2131,6 +2285,8 @@
                     console.error('[saveToBackend] Error message:', error.message);
                     
                     // Check if it's a CORS or network error
+                    // Nëse është CORS error, lejojmë që të vazhdojë me localStorage
+                    // sepse CORS headers tani janë të konfiguruara në server
                     if (error.message.includes('Failed to fetch') || 
                         error.message.includes('NetworkError') || 
                         error.message.includes('CORS') ||
@@ -2138,7 +2294,10 @@
                         error.message.includes('Network request failed')) {
                         const isFileProtocol = window.location.protocol === 'file:';
                         if (isFileProtocol) {
-                            throw new Error('CORS_ERROR: Faqja është hapur si file lokal. Për të ruajtur kompaninë në databazë, ju lutemi hapni faqen përmes http://localhost:3001/register-sq.html në vend të file://');
+                            // Nëse serveri ka CORS headers, kjo nuk duhet të ndodhë
+                            // Por nëse ndodh, lejojmë që të vazhdojë me localStorage
+                            console.warn('[saveToBackend] CORS error detected with file:// protocol. Company will be saved to localStorage only.');
+                            throw new Error('CORS_ERROR: Kompania u ruajt lokal. Për të ruajtur në databazë, sigurohuni që serveri Next.js është duke punuar dhe ka CORS headers të konfiguruara.');
                         } else {
                             throw new Error('Serveri nuk është i disponueshëm. Ju lutemi sigurohuni që serveri Next.js është duke punuar (npm run dev).');
                         }
@@ -2148,9 +2307,18 @@
                 }
             }
 
-            // Save to localStorage FIRST (for file:// compatibility)
+            // Check if email already has a company in localStorage BEFORE saving
             const existingCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+            const existingCompanyByEmail = existingCompanies.find(c => c.email === formData.email);
             
+            if (existingCompanyByEmail && !isLoggedInUser) {
+                // Only check if not logged in as USER (USER can register one company)
+                alert('Ju keni regjistruar tashmë një kompani me këtë email. Një email mund të ketë vetëm një kompani. Ju lutemi kyçuni dhe përdorni kompaninë ekzistuese.');
+                window.location.href = 'signin-sq.html';
+                return;
+            }
+            
+            // Save to localStorage (for file:// compatibility)
             // Remove duplicate if exists (by email)
             const filteredCompanies = existingCompanies.filter(c => c.email !== formData.email);
             filteredCompanies.push(formData);
@@ -2199,107 +2367,82 @@
             }
             
             // Try to sync to backend (but don't block if it fails)
+            // Skip backend if file:// protocol or if user is logged in (will save locally only)
+            const isFileProtocolBackend = window.location.protocol === 'file:';
             let backendSaveSuccess = false;
-            try {
-                console.log('[completeRegistration] ⏳ Attempting to save to backend...');
-                const data = await saveToBackend();
-                
-                console.log('[completeRegistration] ✅ Company successfully saved to database:', data);
-                backendSaveSuccess = true;
-                
-                // Update user with database ID
-                userForLogin.id = data.userId || formData.id;
-                userForLogin.fromDatabase = true;
-                localStorage.setItem('currentUser', JSON.stringify(userForLogin));
-                
-                // Show success notification
-                const successMsg = document.getElementById('success-message');
-                if (successMsg) {
-                    // Clear any previous error messages
-                    const errorDivs = successMsg.querySelectorAll('.text-yellow-600, .text-red-600');
-                    errorDivs.forEach(div => div.remove());
+            
+            if (!isFileProtocolBackend && !isLoggedInUser) {
+                try {
+                    console.log('[completeRegistration] ⏳ Attempting to save to backend...');
+                    const data = await saveToBackend();
                     
-                    // Add success message
-                    const existingText = successMsg.innerHTML;
-                    successMsg.innerHTML = existingText + '<div class="mt-2 text-sm text-green-600 font-medium">✅ Kompania u ruajt në databazë me sukses!</div>';
-                }
-                
-                // Simulo abonimin
-                if (providerType === 'company') {
-                    const subscriptionData = {
-                        id: Date.now(),
-                        companyId: data.userId || formData.id,
-                        plan: 'premium',
-                        price: 5.00,
-                        status: 'active',
-                        startDate: new Date().toISOString(),
-                        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-                        paymentMethod: 'credit_card',
-                        cardLast4: document.getElementById('cardNumber')?.value?.slice(-4) || '0000'
-                    };
-                    localStorage.setItem(`subscription_${data.userId || formData.id}`, JSON.stringify(subscriptionData));
-                } else {
-                    const subscriptionData = {
-                        id: Date.now(),
-                        companyId: data.userId || formData.id,
-                        plan: 'free',
-                        price: 0.00,
-                        status: 'active',
-                        startDate: new Date().toISOString(),
-                        expiresAt: null,
-                        paymentMethod: 'none'
-                    };
-                    localStorage.setItem(`subscription_${data.userId || formData.id}`, JSON.stringify(subscriptionData));
-                }
-                
-                // Show success screen
-                document.getElementById('registrationForm').classList.add('hidden');
-                document.getElementById('success-message').classList.remove('hidden');
-                
-                // Redirect to homepage after 3 seconds (user is already logged in)
-                setTimeout(() => {
-                    window.location.href = 'demo-sq-fixed.html';
-                }, 3000);
-                
-            } catch (err) {
-                console.error('[completeRegistration] ⚠️ Backend save failed (but company saved to localStorage):', err);
-                console.error('[completeRegistration] Error details:', err.message);
-                
-                // Company is already saved to localStorage and user is logged in
-                // Just show a warning that it wasn't saved to database
-                const successMsg = document.getElementById('success-message');
-                if (successMsg) {
-                    // Clear any previous error messages
-                    const errorDivs = successMsg.querySelectorAll('.text-yellow-600, .text-red-600');
-                    errorDivs.forEach(div => div.remove());
+                    console.log('[completeRegistration] ✅ Company successfully saved to database:', data);
+                    backendSaveSuccess = true;
                     
-                    // Add warning message
-                    const existingText = successMsg.innerHTML;
-                    let warningMessage = 'Kompania u ruajt lokal, por nuk u ruajt në databazë.';
-                    let showLink = false;
+                    // Update user with database ID
+                    userForLogin.id = data.userId || formData.id;
+                    userForLogin.fromDatabase = true;
+                    localStorage.setItem('currentUser', JSON.stringify(userForLogin));
                     
-                    if (err.message && (err.message.includes('Failed to fetch') || err.message.includes('CORS') || err.message.includes('CORS_ERROR'))) {
-                        warningMessage = 'Kompania u ruajt lokal. Për të ruajtur në databazë, ju lutemi hapni faqen përmes serverit Next.js.';
-                        showLink = true;
-                    } else if (err.message && err.message.includes('Serveri nuk është i disponueshëm')) {
-                        warningMessage = 'Kompania u ruajt lokal. Serveri Next.js nuk është i disponueshëm. Ju lutemi sigurohuni që serveri është duke punuar (npm run dev).';
-                        showLink = true;
+                    // Show success notification
+                    const successMsg = document.getElementById('success-message');
+                    if (successMsg) {
+                        // Clear any previous error messages
+                        const errorDivs = successMsg.querySelectorAll('.text-yellow-600, .text-red-600');
+                        errorDivs.forEach(div => div.remove());
+                        
+                        // Add success message
+                        const existingText = successMsg.innerHTML;
+                        successMsg.innerHTML = existingText + '<div class="mt-2 text-sm text-green-600 font-medium">✅ Kompania u ruajt në databazë me sukses!</div>';
+                    }
+                } catch (err) {
+                    console.error('[completeRegistration] ⚠️ Backend save failed:', err);
+                    
+                    // Check if error is about existing company
+                    if (err.message && (
+                        err.message.includes('kompani tashmë') || 
+                        err.message.includes('një kompani') ||
+                        err.message.includes('already has a company')
+                    )) {
+                        // User already has a company - don't save to localStorage and show error
+                        alert(err.message || 'Ju keni një kompani tashmë. Një përdorues mund të ketë vetëm një kompani.');
+                        window.location.href = 'demo-sq-fixed.html';
+                        return;
                     }
                     
-                    let warningHTML = `<div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                        <div class="flex items-start">
-                            <svg class="w-5 h-5 text-yellow-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                            </svg>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-yellow-800">⚠️ ${warningMessage}</p>
-                                ${showLink ? '<a href="http://localhost:3001/register-sq.html" class="mt-2 inline-block text-sm text-yellow-700 underline hover:text-yellow-900">Kliko këtu për të hapur faqen përmes serverit</a>' : ''}
-                            </div>
-                        </div>
-                    </div>`;
-                    
-                    successMsg.innerHTML = existingText + warningHTML;
+                    // For other errors, continue to show success screen (company saved to localStorage)
+                    console.warn('[completeRegistration] Company saved to localStorage only');
                 }
+            } else {
+                console.log('[completeRegistration] Skipping backend save (file:// protocol or logged in user)');
+            }
+            
+            // Simulo abonimin (always, regardless of backend save)
+            if (providerType === 'company') {
+                const subscriptionData = {
+                    id: Date.now(),
+                    companyId: userForLogin.id || formData.id,
+                    plan: 'premium',
+                    price: 5.00,
+                    status: 'active',
+                    startDate: new Date().toISOString(),
+                    expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                    paymentMethod: 'credit_card',
+                    cardLast4: document.getElementById('cardNumber')?.value?.slice(-4) || '0000'
+                };
+                localStorage.setItem(`subscription_${userForLogin.id || formData.id}`, JSON.stringify(subscriptionData));
+            } else {
+                const subscriptionData = {
+                    id: Date.now(),
+                    companyId: userForLogin.id || formData.id,
+                    plan: 'free',
+                    price: 0.00,
+                    status: 'active',
+                    startDate: new Date().toISOString(),
+                    expiresAt: null,
+                    paymentMethod: 'none'
+                };
+                localStorage.setItem(`subscription_${userForLogin.id || formData.id}`, JSON.stringify(subscriptionData));
             }
             
             // Show success screen regardless (company is saved to localStorage)
@@ -2314,14 +2457,6 @@
 
         // Add some sample data for demo
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if page is opened via file:// protocol and show warning
-            if (window.location.protocol === 'file:') {
-                const warningBanner = document.getElementById('fileProtocolWarning');
-                if (warningBanner) {
-                    warningBanner.classList.remove('hidden');
-                }
-            }
-            
             // Pre-fill some fields for demo purposes
             document.getElementById('email').value = 'demo@kompaniapastrimit.com';
             document.getElementById('companyName').value = 'Kompania Demo Pastrimi';

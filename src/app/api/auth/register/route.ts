@@ -5,8 +5,9 @@ import { z } from 'zod'
 import { sendEmail } from '@/lib/email'
 
 const registerSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
+  userId: z.string().optional(), // Optional: if provided, user is already logged in
+  email: z.string().email().optional(), // Optional if userId is provided
+  password: z.string().min(6).optional(), // Optional if userId is provided
   companyName: z.string().min(2),
   phone: z.string().min(8),
   description: z.string().optional(),
@@ -22,27 +23,96 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     console.log('[register] incoming body:', body)
     const validatedData = registerSchema.parse(body)
-    console.log('[register] validated data for:', validatedData.email)
+    console.log('[register] validated data for company:', validatedData.companyName)
 
-    // Check if user already exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email: validatedData.email }
-    })
+    let user;
+    
+    // If userId is provided, user is already logged in
+    if (validatedData.userId) {
+      user = await prisma.user.findUnique({
+        where: { id: validatedData.userId },
+        include: { company: true }
+      })
 
-    if (existingUser) {
-      return NextResponse.json(
-        { error: 'User already exists' },
-        { status: 400 }
-      )
-    }
+      if (!user) {
+        const res = NextResponse.json(
+          { error: 'Përdoruesi nuk u gjet' },
+          { status: 404 }
+        )
+        res.headers.set('Access-Control-Allow-Origin', '*')
+        res.headers.set('Access-Control-Allow-Headers', 'Content-Type')
+        res.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        return res
+      }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(validatedData.password, 10)
+      // Check if user already has a company
+      if (user.company) {
+        const res = NextResponse.json(
+          { error: 'Ju keni një kompani tashmë. Një përdorues mund të ketë vetëm një kompani.' },
+          { status: 400 }
+        )
+        res.headers.set('Access-Control-Allow-Origin', '*')
+        res.headers.set('Access-Control-Allow-Headers', 'Content-Type')
+        res.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        return res
+      }
 
-    // Create user and company in a transaction
-    const result = await prisma.$transaction(async (tx) => {
+      // Update user role to COMPANY if they were USER
+      if (user.role === 'USER') {
+        user = await prisma.user.update({
+          where: { id: user.id },
+          data: { role: 'COMPANY' },
+          include: { company: true }
+        })
+      }
+    } else {
+      // Legacy flow: create new user and company
+      if (!validatedData.email || !validatedData.password) {
+        const res = NextResponse.json(
+          { error: 'Email dhe fjalëkalimi janë të nevojshëm për regjistrim të ri' },
+          { status: 400 }
+        )
+        res.headers.set('Access-Control-Allow-Origin', '*')
+        res.headers.set('Access-Control-Allow-Headers', 'Content-Type')
+        res.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        return res
+      }
+
+      // Check if user already exists
+      const existingUser = await prisma.user.findUnique({
+        where: { email: validatedData.email },
+        include: { company: true }
+      })
+
+      if (existingUser) {
+        // Check if user already has a company
+        if (existingUser.company) {
+          const res = NextResponse.json(
+            { error: 'Ju keni një kompani tashmë me këtë email. Një përdorues mund të ketë vetëm një kompani.' },
+            { status: 400 }
+          )
+          res.headers.set('Access-Control-Allow-Origin', '*')
+          res.headers.set('Access-Control-Allow-Headers', 'Content-Type')
+          res.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS')
+          return res
+        }
+        
+        // User exists but doesn't have a company - tell them to log in first
+        const res = NextResponse.json(
+          { error: 'Përdoruesi me këtë email ekziston tashmë. Ju lutemi kyçuni dhe regjistroni kompaninë tuaj.' },
+          { status: 400 }
+        )
+        res.headers.set('Access-Control-Allow-Origin', '*')
+        res.headers.set('Access-Control-Allow-Headers', 'Content-Type')
+        res.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        return res
+      }
+
+      // Hash password
+      const hashedPassword = await bcrypt.hash(validatedData.password, 10)
+
       // Create user
-      const user = await tx.user.create({
+      user = await prisma.user.create({
         data: {
           email: validatedData.email,
           password: hashedPassword,
@@ -50,6 +120,10 @@ export async function POST(request: NextRequest) {
         }
       })
       console.log('[register] User created:', user.id, user.email)
+    }
+
+    // Create company in a transaction
+    const result = await prisma.$transaction(async (tx) => {
 
       // Create company (status will be set to PENDING by default from schema)
       const company = await tx.company.create({
@@ -105,6 +179,9 @@ export async function POST(request: NextRequest) {
     })
     
     console.log('[register] Transaction completed successfully. Company ID:', result.company.id, 'Status:', result.company.status)
+    
+    // Update user object with company
+    user = result.user
 
     // Fire-and-forget welcome email (do not block the response if it fails)
     sendEmail({

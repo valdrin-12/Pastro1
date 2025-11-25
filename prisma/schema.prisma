@@ -11,7 +11,7 @@ model User {
   id                  String               @id @default(cuid())
   email               String               @unique
   password            String
-  role                UserRole             @default(COMPANY)
+  role                UserRole             @default(USER)
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
   company             Company?
@@ -134,6 +134,7 @@ model PasswordResetToken {
 enum UserRole {
   ADMIN
   COMPANY
+  USER
 }
 
 enum TransactionType {

@@ -72,7 +72,9 @@
                 Hyr në llogarinë tuaj
             </h2>
             <p class="mt-2 text-sm text-gray-600">
-                Ose <a href="register-sq.html" class="font-medium text-blue-600 hover:text-blue-500">regjistro një kompani të re</a>
+                Nuk keni llogari? <a href="register-user-sq.html" class="font-medium text-blue-600 hover:text-blue-500">Krijo llogari</a>
+                <span class="mx-2">|</span>
+                <a href="register-sq.html" class="font-medium text-blue-600 hover:text-blue-500">Regjistro kompani</a>
             </p>
         </div>
 
@@ -275,7 +277,8 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ email, password }),
-                        mode: 'cors'
+                        mode: 'cors',
+                        credentials: 'omit' // Don't send cookies for CORS
                     });
                     
                     if (loginResponse.ok) {
@@ -343,6 +346,23 @@
             
             // Fallback to localStorage if API login failed or file:// protocol
             if (!loginSuccess) {
+                // Check registered users first (USER role)
+                const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+                const simpleUser = registeredUsers.find(u => u.email === email && u.password === password);
+                
+                if (simpleUser) {
+                    const userForStorage = {
+                        id: simpleUser.id,
+                        email: simpleUser.email,
+                        role: 'user',
+                        fromDatabase: simpleUser.fromDatabase || false
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(userForStorage));
+                    showSuccessModal(`Mirë se erdhe!`, 'Po të ridrejtojmë në kryefaqe...', 'demo-sq-fixed.html');
+                    return;
+                }
+                
+                // Check companies
                 const storedCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
                 console.log('Stored companies:', storedCompanies);
                 console.log('Looking for email:', email, 'password:', password);
@@ -356,7 +376,7 @@
                 
                 if (user) {
                     localStorage.setItem('currentUser', JSON.stringify(user));
-                    showSuccessModal(`Mirë se erdhe, ${user.name}!`, 'Po të ridrejtojmë në panelin tuaj...', 'demo-sq-fixed.html');
+                    showSuccessModal(`Mirë se erdhe, ${user.name || user.email}!`, 'Po të ridrejtojmë në panelin tuaj...', 'demo-sq-fixed.html');
                 } else {
                     showErrorModal('Kredencialet janë të pavlefshme', 'Email-i ose fjalëkalimi që keni shkruar nuk është i saktë. Ju lutemi provoni përsëri.');
                 }
