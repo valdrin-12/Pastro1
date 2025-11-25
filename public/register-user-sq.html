@@ -74,7 +74,7 @@
                             autocomplete="given-name"
                             value=""
                             class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Shkruani emrin tuaj"
+                            placeholder="Emri"
                         />
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                             autocomplete="family-name"
                             value=""
                             class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Shkruani mbiemrin tuaj"
+                            placeholder="Mbiemri"
                         />
                     </div>
                 </div>
@@ -299,7 +299,7 @@
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json'
                             },
-                            body: JSON.stringify({ email, password, name: fullName }),
+                            body: JSON.stringify({ firstName, lastName, name: fullName, email, password }),
                             mode: 'cors',
                             credentials: 'omit'
                         });
@@ -318,6 +318,9 @@
                             const userForStorage = {
                                 id: registerData.user.id,
                                 email: registerData.user.email,
+                                firstName: registerData.user.firstName || firstName,
+                                lastName: registerData.user.lastName || lastName,
+                                name: registerData.user.fullName || fullName,
                                 role: registerData.user.role.toLowerCase(),
                                 fromDatabase: true
                             };
@@ -393,8 +396,8 @@
                 // Create user object
                 const newUser = {
                     id: Date.now().toString(),
-                    firstName: firstName,
-                    lastName: lastName,
+                    firstName,
+                    lastName,
                     name: fullName,
                     email: email,
                     password: password, // In production, this should be hashed
@@ -409,6 +412,9 @@
                 localStorage.setItem('currentUser', JSON.stringify({
                     id: newUser.id,
                     email: newUser.email,
+                    firstName,
+                    lastName,
+                    name: fullName,
                     role: newUser.role,
                     fromDatabase: false
                 }));

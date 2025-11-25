@@ -8,12 +8,22 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
         .gradient-bg {
-            background: linear-gradient(135deg, #dbeafe 0%, #dcfce7 100%);
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+        }
+        .header-section {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+        .header-icon {
+            color: #3b82f6;
+            margin-bottom: 1rem;
         }
         .form-container {
             background: white;
-            border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-radius: 0;
+            box-shadow: none;
         }
         .input-group {
             position: relative;
@@ -28,135 +38,137 @@
             height: 1.25rem;
         }
         .btn-primary {
-            background: #2563eb;
+            background: #3F6BF0;
             color: white;
-            padding: 0.75rem 1.5rem;
+            padding: 0.875rem 1.5rem;
             border-radius: 0.5rem;
             border: none;
             font-weight: 500;
             transition: all 0.2s;
             width: 100%;
+            font-size: 16px;
         }
         .btn-primary:hover {
-            background: #1d4ed8;
+            background: #2d5ae0;
+        }
+        .link-orange {
+            color: #ea580c;
+            text-decoration: none;
+        }
+        .link-orange:hover {
+            text-decoration: underline;
+        }
+        .link-blue {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        .link-blue:hover {
+            text-decoration: underline;
+            color: #2563eb;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6b7280;
+            background: none;
+            border: none;
+            padding: 0;
         }
     </style>
 </head>
 <body class="gradient-bg min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-        <!-- Header -->
-        <div class="text-center">
-            <a href="demo-sq-fixed.html" class="flex justify-center cursor-pointer hover:opacity-80 transition-opacity">
-                <i data-lucide="building-2" class="h-12 w-12 text-blue-600"></i>
-            </a>
-            <h2 class="mt-6 text-3xl font-bold text-gray-900">
+    <div class="max-w-md w-full">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="flex justify-center mb-4">
+                <i data-lucide="building-2" class="header-icon w-16 h-16"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-3">
                 Krijo Llogari
             </h2>
-            <p class="mt-2 text-sm text-gray-600">
-                Tashmë keni llogari? <a href="signin-sq.html" class="font-medium text-blue-600 hover:text-blue-500">Hyr këtu</a>
+            <p class="text-sm text-gray-600">
+                Tashmë keni llogari? <a href="signin-sq.html" class="text-blue-600 hover:text-blue-700 font-medium">Hyr këtu</a>
             </p>
         </div>
 
         <!-- Registration Form -->
-        <form id="registerForm" class="form-container p-8 space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">
-                        Emri *
-                    </label>
-                    <div class="input-group">
-                        <i data-lucide="user" class="input-icon"></i>
-                        <input
-                            id="firstName"
-                            name="firstName"
-                            type="text"
-                            required
-                            autocomplete="given-name"
-                            value=""
-                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Shkruani emrin tuaj"
-                        />
-                    </div>
-                </div>
-
-                <div>
-                    <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">
-                        Mbiemri *
-                    </label>
-                    <div class="input-group">
-                        <i data-lucide="user" class="input-icon"></i>
-                        <input
-                            id="lastName"
-                            name="lastName"
-                            type="text"
-                            required
-                            autocomplete="family-name"
-                            value=""
-                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Shkruani mbiemrin tuaj"
-                        />
-                    </div>
-                </div>
+        <form id="registerForm" class="form-container p-6 space-y-4 bg-white rounded-b-lg">
+            <div>
+                <input
+                    id="firstName"
+                    name="firstName"
+                    type="text"
+                    required
+                    autocomplete="given-name"
+                    value=""
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                    placeholder="Emri"
+                />
             </div>
 
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                    Adresa e Email-it *
-                </label>
-                <div class="input-group">
-                    <i data-lucide="mail" class="input-icon"></i>
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        autocomplete="off"
-                        value=""
-                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Shkruani email-in tuaj"
-                    />
-                </div>
+                <input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    required
+                    autocomplete="family-name"
+                    value=""
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                    placeholder="Mbiemri"
+                />
             </div>
 
             <div>
-                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-                    Fjalëkalimi *
-                </label>
-                <div class="input-group">
-                    <i data-lucide="lock" class="input-icon"></i>
-                    <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        required
-                        minlength="6"
-                        autocomplete="new-password"
-                        value=""
-                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Minimum 6 karaktere"
-                    />
-                </div>
-                <p class="mt-1 text-xs text-gray-500">Fjalëkalimi duhet të jetë të paktën 6 karaktere</p>
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    autocomplete="off"
+                    value=""
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                    placeholder="Email"
+                />
             </div>
 
-            <div>
-                <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
-                    Konfirmo Fjalëkalimin *
+            <div class="input-group">
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                    minlength="6"
+                    autocomplete="new-password"
+                    value=""
+                    class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                    placeholder="Fjalëkalimi"
+                />
+                <button
+                    type="button"
+                    id="togglePassword"
+                    class="password-toggle"
+                    onclick="togglePasswordVisibility()"
+                >
+                    <i data-lucide="eye-off" id="passwordIcon" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="flex items-start">
+                <input
+                    type="checkbox"
+                    id="terms"
+                    name="terms"
+                    required
+                    class="mt-1 mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    style="accent-color: #3b82f6;"
+                />
+                <label for="terms" class="text-sm text-gray-700 leading-relaxed">
+                    Duke regjistruar një llogari, ju pranoni <a href="#" class="link-blue">Termet dhe kushtet</a> dhe <a href="#" class="link-blue">Politika e privatësisë</a> *
                 </label>
-                <div class="input-group">
-                    <i data-lucide="lock" class="input-icon"></i>
-                    <input
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        type="password"
-                        required
-                        minlength="6"
-                        autocomplete="new-password"
-                        value=""
-                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Konfirmo fjalëkalimin"
-                    />
-                </div>
             </div>
 
             <div>
@@ -164,11 +176,17 @@
                     Krijo Llogari
                 </button>
             </div>
+
+            <div class="text-center mt-4">
+                <p class="text-sm text-gray-700">
+                    Posedoni një llogari? <a href="signin-sq.html" class="link-blue font-medium">Kyçu</a>
+                </p>
+            </div>
         </form>
 
-        <!-- Back to Home -->
-        <div class="text-center">
-            <a href="demo-sq-fixed.html" class="text-gray-600 hover:text-blue-600 transition-colors">
+        <!-- Back to Home Link -->
+        <div class="text-center mt-6">
+            <a href="demo-sq-fixed.html" class="text-gray-700 hover:text-gray-900 transition-colors text-sm">
                 ← Kthehu në Kryefaqe
             </a>
         </div>
@@ -178,6 +196,21 @@
         // Initialize Lucide icons
         lucide.createIcons();
 
+        // Toggle password visibility - make it globally accessible
+        window.togglePasswordVisibility = function() {
+            const passwordInput = document.getElementById('password');
+            const passwordIcon = document.getElementById('passwordIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.setAttribute('data-lucide', 'eye');
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.setAttribute('data-lucide', 'eye-off');
+            }
+            lucide.createIcons();
+        };
+
         // Form submission
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -186,7 +219,7 @@
             const lastName = document.getElementById('lastName').value.trim();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
-            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+            const terms = document.getElementById('terms').checked;
             
             // Validate first name
             if (!firstName || firstName.length < 2) {
@@ -200,22 +233,27 @@
                 return;
             }
             
-            // Validate passwords match
-            if (password !== confirmPassword) {
-                showErrorModal('Fjalëkalimet nuk përputhen', 'Fjalëkalimi dhe konfirmimi i fjalëkalimit duhet të jenë të njëjta.');
-                return;
-            }
-            
             // Validate password length
             if (password.length < 6) {
                 showErrorModal('Fjalëkalimi shumë i shkurtër', 'Fjalëkalimi duhet të jetë të paktën 6 karaktere.');
+                return;
+            }
+
+            // Validate terms
+            if (!terms) {
+                showErrorModal('Kushtet dhe Rregullorja', 'Ju duhet të pajtoheni me kushtet dhe rregullorën për të vazhduar.');
                 return;
             }
             
             // Combine first and last name
             const fullName = `${firstName} ${lastName}`;
             
-            console.log('Attempting to register user with:', { email, name: fullName });
+            console.log('Attempting to register user with:', { 
+                email, 
+                firstName, 
+                lastName, 
+                name: fullName
+            });
             
             // Check if page is opened as file:// - will try to use API but may fail due to CORS
             const isFileProtocol = window.location.protocol === 'file:';
@@ -299,7 +337,7 @@
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json'
                             },
-                            body: JSON.stringify({ email, password, name: fullName }),
+                            body: JSON.stringify({ firstName, lastName, name: fullName, email, password }),
                             mode: 'cors',
                             credentials: 'omit'
                         });
@@ -318,6 +356,9 @@
                             const userForStorage = {
                                 id: registerData.user.id,
                                 email: registerData.user.email,
+                                firstName: registerData.user.firstName || firstName,
+                                lastName: registerData.user.lastName || lastName,
+                                name: registerData.user.fullName || fullName,
                                 role: registerData.user.role.toLowerCase(),
                                 fromDatabase: true
                             };
@@ -393,8 +434,8 @@
                 // Create user object
                 const newUser = {
                     id: Date.now().toString(),
-                    firstName: firstName,
-                    lastName: lastName,
+                    firstName,
+                    lastName,
                     name: fullName,
                     email: email,
                     password: password, // In production, this should be hashed
@@ -409,6 +450,9 @@
                 localStorage.setItem('currentUser', JSON.stringify({
                     id: newUser.id,
                     email: newUser.email,
+                    firstName,
+                    lastName,
+                    name: fullName,
                     role: newUser.role,
                     fromDatabase: false
                 }));

@@ -5,9 +5,11 @@ import { z } from 'zod'
 import { sendEmail } from '@/lib/email'
 
 const registerUserSchema = z.object({
+  firstName: z.string().min(2).optional(),
+  lastName: z.string().min(2).optional(),
+  name: z.string().min(2).optional(),
   email: z.string().email(),
-  password: z.string().min(6),
-  name: z.string().min(2).optional()
+  password: z.string().min(6)
 })
 
 export async function POST(request: NextRequest) {
@@ -33,6 +35,10 @@ export async function POST(request: NextRequest) {
       return res
     }
 
+    const firstName = validatedData.firstName?.trim()
+    const lastName = validatedData.lastName?.trim()
+    const combinedFullName = validatedData.name?.trim() || [firstName, lastName].filter(Boolean).join(' ').trim() || null
+
     // Hash password
     const hashedPassword = await bcrypt.hash(validatedData.password, 10)
 
@@ -41,6 +47,9 @@ export async function POST(request: NextRequest) {
       data: {
         email: validatedData.email,
         password: hashedPassword,
+        firstName,
+        lastName,
+        fullName: combinedFullName,
         role: 'USER'
       }
     })
@@ -63,6 +72,9 @@ export async function POST(request: NextRequest) {
       user: {
         id: user.id,
         email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        fullName: user.fullName,
         role: user.role
       }
     })

@@ -5,11 +5,11 @@ const prisma = new PrismaClient();
 
 // Users from localStorage (copy from browser console)
 const localUsers = [
-  { email: 'titi@gmail.com', password: '123456' },
-  { email: 'tc@gmail.com', password: '123456' },
-  { email: 'tn1@gmail.com', password: '123456' },
-  { email: 'tmn@gmail.com', password: '123456' },
-  { email: 'tbt@gmail.com', password: '123456' }
+  { firstName: 'Titi', lastName: 'User', email: 'titi@gmail.com', password: '123456' },
+  { firstName: 'Tc', lastName: 'User', email: 'tc@gmail.com', password: '123456' },
+  { firstName: 'Tn1', lastName: 'User', email: 'tn1@gmail.com', password: '123456' },
+  { firstName: 'Tmn', lastName: 'User', email: 'tmn@gmail.com', password: '123456' },
+  { firstName: 'Tbt', lastName: 'User', email: 'tbt@gmail.com', password: '123456' }
 ];
 
 async function syncUsers() {
@@ -35,6 +35,9 @@ async function syncUsers() {
         data: {
           email: userData.email,
           password: hashedPassword,
+          firstName: userData.firstName || null,
+          lastName: userData.lastName || null,
+          fullName: userData.name || [userData.firstName, userData.lastName].filter(Boolean).join(' ').trim() || null,
           role: 'USER'
         }
       });
