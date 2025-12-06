@@ -2367,11 +2367,12 @@
             }
             
             // Try to sync to backend (but don't block if it fails)
-            // Skip backend if file:// protocol or if user is logged in (will save locally only)
+            // Try to save to backend (even with file:// protocol, if server is available)
             const isFileProtocolBackend = window.location.protocol === 'file:';
             let backendSaveSuccess = false;
             
-            if (!isFileProtocolBackend && !isLoggedInUser) {
+            // Always try to save to backend if user is logged in (to ensure database persistence)
+            if (isLoggedInUser || !isFileProtocolBackend) {
                 try {
                     console.log('[completeRegistration] ⏳ Attempting to save to backend...');
                     const data = await saveToBackend();

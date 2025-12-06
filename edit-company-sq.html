@@ -70,6 +70,7 @@
                 </div>
                 <nav class="flex items-center space-x-4">
                     <a href="demo-sq-fixed.html" class="text-gray-700 hover:text-blue-600 transition-colors">← Kthehu në Kryefaqe</a>
+                    <a href="admin-approve-sq.html" id="adminPanelLink" class="text-gray-700 hover:text-blue-600 transition-colors hidden">← Kthehu në Admin Panel</a>
                     <a href="demo-sq.html" class="text-gray-700 hover:text-blue-600 transition-colors">Paneli</a>
                 </nav>
             </div>
@@ -159,40 +160,96 @@
         let serviceCounter = 0;
 
         // Load company data on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             // Check if user is logged in
             const currentUser = localStorage.getItem('currentUser');
             if (!currentUser) {
-                alert('Ju duhet të jeni të kyçur për të edituar kompaninë tuaj.');
+                alert('Ju duhet të jeni të kyçur për të edituar kompaninë.');
                 window.location.href = 'signin-sq.html';
                 return;
             }
 
             const user = JSON.parse(currentUser);
+            const isAdmin = user.role === 'admin' || user.email === 'admin@pastro.com';
             
-            // Check if company has active subscription
-            const subscription = localStorage.getItem(`subscription_${user.id}`);
-            if (!subscription) {
-                alert('Ju duhet të keni një abonim aktiv për të edituar kompaninë tuaj.');
-                window.location.href = 'subscription.html';
-                return;
+            // Get company ID from URL parameter or localStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const companyIdFromUrl = urlParams.get('id');
+            const companyIdFromStorage = localStorage.getItem('viewingCompanyId');
+            const targetCompanyId = companyIdFromUrl || companyIdFromStorage;
+            
+            // If admin and has company ID, allow editing any company
+            if (isAdmin && targetCompanyId) {
+                // Try to find company in admin cache first
+                const adminCompanies = JSON.parse(localStorage.getItem('adminCompaniesCache') || '[]');
+                companyData = adminCompanies.find(c => c.id === targetCompanyId || c.id === targetCompanyId.toString());
+                
+                // If not found in cache, try to fetch from API
+                if (!companyData && window.location.protocol !== 'file:') {
+                    try {
+                        let apiBase = 'http://localhost:3000';
+                        try {
+                            const test = await fetch(`${apiBase}/api/cities`, { method: 'GET', mode: 'cors' });
+                            if (!test.ok) throw new Error('Port 3000 not available');
+                        } catch {
+                            apiBase = 'http://localhost:3001';
+                        }
+                        
+                        const response = await fetch(`${apiBase}/api/admin/companies`);
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.success && data.companies) {
+                                companyData = data.companies.find(c => c.id === targetCompanyId || c.id === targetCompanyId.toString());
+                            }
+                        }
+                    } catch (error) {
+                        console.warn('Could not fetch company from API:', error);
+                    }
+                }
+                
+                if (!companyData) {
+                    alert('Kompania nuk u gjet.');
+                    window.location.href = 'admin-approve-sq.html';
+                    return;
+                }
+            } else {
+                // Regular user flow - check subscription
+                const subscription = localStorage.getItem(`subscription_${user.id}`);
+                if (!subscription) {
+                    alert('Ju duhet të keni një abonim aktiv për të edituar kompaninë tuaj.');
+                    window.location.href = 'subscription.html';
+                    return;
+                }
+
+                const subData = JSON.parse(subscription);
+                if (subData.status !== 'active' || new Date(subData.expiresAt) <= new Date()) {
+                    alert('Abonimi juaj ka skaduar. Ju lutemi abonohuni përsëri.');
+                    window.location.href = 'subscription.html';
+                    return;
+                }
+
+                // Load company data for regular user
+                const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                companyData = companies.find(c => c.id === user.id || c.email === user.email);
+
+                if (!companyData) {
+                    alert('Kompania juaj nuk u gjet. Ju lutemi kontaktoni mbështetjen.');
+                    window.location.href = 'demo-sq-fixed.html';
+                    return;
+                }
             }
-
-            const subData = JSON.parse(subscription);
-            if (subData.status !== 'active' || new Date(subData.expiresAt) <= new Date()) {
-                alert('Abonimi juaj ka skaduar. Ju lutemi abonohuni përsëri.');
-                window.location.href = 'subscription.html';
-                return;
+            
+            // Clear viewingCompanyId from localStorage after use
+            if (targetCompanyId) {
+                localStorage.removeItem('viewingCompanyId');
             }
-
-            // Load company data
-            const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
-            companyData = companies.find(c => c.id === user.id || c.email === user.email);
-
-            if (!companyData) {
-                alert('Kompania juaj nuk u gjet. Ju lutemi kontaktoni mbështetjen.');
-                window.location.href = 'demo-sq-fixed.html';
-                return;
+            
+            // Show admin panel link if admin
+            if (isAdmin) {
+                const adminPanelLink = document.getElementById('adminPanelLink');
+                if (adminPanelLink) {
+                    adminPanelLink.classList.remove('hidden');
+                }
             }
 
             // Populate form

@@ -162,16 +162,26 @@ export async function POST(request: NextRequest) {
       const hasCities = validatedData.cities.length > 0
       const hasServices = validatedData.services.length > 0
       
+      // Update user with company name and role
+      const updatedUser = await tx.user.update({
+        where: { id: user.id },
+        data: {
+          companyName: validatedData.companyName, // ✅ Ruaj emrin e kompanisë tek useri
+          role: 'COMPANY' // ✅ Update role në COMPANY
+        }
+      })
+      console.log('[register] User updated with company name:', updatedUser.email, 'Company:', validatedData.companyName)
+      
       if (hasCities && hasServices) {
         const updatedCompany = await tx.company.update({
           where: { id: company.id },
           data: { status: 'APPROVED' }
         })
         console.log('[register] Company auto-approved:', updatedCompany.id, 'Status:', updatedCompany.status)
-        return { user, company: updatedCompany }
+        return { user: updatedUser, company: updatedCompany }
       }
 
-      return { user, company }
+      return { user: updatedUser, company }
     }).catch((e) => {
       console.error('[register] transaction error:', e)
       console.error('[register] Error details:', JSON.stringify(e, null, 2))

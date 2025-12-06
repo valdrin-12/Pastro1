@@ -438,8 +438,8 @@
                                     ` : ''}
                                 </div>
                             </div>
-                            ${company.status === 'pending' ? `
-                                <div class="flex space-x-2 ml-4">
+                            <div class="flex space-x-2 ml-4">
+                                ${company.status === 'pending' ? `
                                     <button onclick="approveCompany('${company.id}')" class="btn-success">
                                         <i data-lucide="check" class="h-4 w-4 inline mr-2"></i>
                                         Mirato
@@ -448,8 +448,12 @@
                                         <i data-lucide="x" class="h-4 w-4 inline mr-2"></i>
                                         Refuzo
                                     </button>
-                                </div>
-                            ` : ''}
+                                ` : ''}
+                                <button onclick="editCompany('${company.id}')" class="btn-primary">
+                                    <i data-lucide="pencil" class="h-4 w-4 inline mr-2"></i>
+                                    Edito Kompaninë
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -832,6 +836,14 @@
                     }
                 }
             }
+        }
+
+        // Edit company function - redirect to edit page with company ID
+        function editCompany(companyId) {
+            // Store company ID in localStorage for edit page
+            localStorage.setItem('viewingCompanyId', companyId);
+            // Redirect to edit company page
+            window.location.href = `edit-company-sq.html?id=${companyId}`;
         }
     </script>
 </body>

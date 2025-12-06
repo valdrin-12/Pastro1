@@ -1116,7 +1116,29 @@
                 <div class="flex items-center gap-2 md:space-x-4 flex-shrink-0 md:flex-initial justify-end ml-auto">
                     <!-- Desktop Navigation - Hidden on mobile -->
                     <nav class="hidden md:flex items-center space-x-4 desktop-nav">
-                        <span id="companyNameHeader" class="hidden text-gray-700 font-medium mr-2"></span>
+                        <!-- User Profile Dropdown -->
+                        <div id="userProfileDropdown" class="hidden relative">
+                            <button id="userProfileBtn" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                                <!-- Profile Icon -->
+                                <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <!-- User Name -->
+                                <span id="companyNameHeader" class="text-gray-900 font-medium"></span>
+                                <!-- Dropdown Arrow -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600">
+                                    <path d="m6 9 6 6 6-6"></path>
+                                </svg>
+                            </button>
+                            <!-- Dropdown Menu -->
+                            <div id="userDropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                                <button id="manageCompanyBtn" onclick="handleManageCompany()" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors" style="display: block;">Menaxho kompaninë</button>
+                                <button onclick="signOut()" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Ç'kyçu</button>
+                            </div>
+                        </div>
                         <button id="desktopLogoutBtn" onclick="signOut()" class="hidden border border-gray-700 bg-white text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Ç'kyçu</button>
                         <a id="desktopSignInBtn" href="signin-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Kyçu</a>
                         <a href="register-sq.html" class="border border-gray-700 bg-transparent text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-full transition-colors font-medium">Regjistro Kompani</a>
@@ -4109,34 +4131,44 @@
                     const isUser = !isAdmin && !isCompany && (user.role === 'user' || user.role === 'USER');
                     
                     if (isAdmin || isCompany || isUser) {
-                        // User is logged in - show Ç'kyçu, hide Kyçu
+                        // User is logged in - show user profile dropdown, hide Kyçu
+                        const userProfileDropdown = document.getElementById('userProfileDropdown');
                         const desktopLogoutBtn = document.getElementById('desktopLogoutBtn');
                         const desktopSignInBtn = document.getElementById('desktopSignInBtn');
                         const companyNameHeader = document.getElementById('companyNameHeader');
                         
+                        // Show user profile dropdown, hide simple logout button
+                        if (userProfileDropdown) {
+                            userProfileDropdown.classList.remove('hidden');
+                        }
                         if (desktopLogoutBtn) {
-                            desktopLogoutBtn.classList.remove('hidden');
-                            desktopLogoutBtn.style.setProperty('display', '', 'important');
+                            desktopLogoutBtn.classList.add('hidden');
+                            desktopLogoutBtn.style.setProperty('display', 'none', 'important');
                         }
                         if (desktopSignInBtn) {
                             desktopSignInBtn.classList.add('hidden');
                             desktopSignInBtn.style.setProperty('display', 'none', 'important');
                         }
                         
-                        // Show company name if it's a company user, "Admin" if it's admin, or email if it's a simple user
+                        // Show company name if it's a company user, "Admin" if it's admin, or user name if it's a simple user
                         if (companyNameHeader) {
                             if (isCompany && user.name) {
                                 companyNameHeader.textContent = user.name;
-                                companyNameHeader.classList.remove('hidden');
                             } else if (isAdmin) {
                                 companyNameHeader.textContent = 'Admin';
-                                companyNameHeader.classList.remove('hidden');
                             } else if (isUser) {
-                                // For simple users, show email or "Përdorues"
-                                companyNameHeader.textContent = user.email || 'Përdorues';
-                                companyNameHeader.classList.remove('hidden');
-                            } else {
-                                companyNameHeader.classList.add('hidden');
+                                // For simple users, show fullName, firstName + lastName, or firstName, or "Përdorues"
+                                let displayName = 'Përdorues';
+                                if (user.fullName) {
+                                    displayName = user.fullName;
+                                } else if (user.firstName && user.lastName) {
+                                    displayName = `${user.firstName} ${user.lastName}`;
+                                } else if (user.firstName) {
+                                    displayName = user.firstName;
+                                } else if (user.lastName) {
+                                    displayName = user.lastName;
+                                }
+                                companyNameHeader.textContent = displayName;
                             }
                         }
                         
@@ -4186,10 +4218,14 @@
         }
         
         function showSignInButtons() {
+            const userProfileDropdown = document.getElementById('userProfileDropdown');
             const desktopLogoutBtn = document.getElementById('desktopLogoutBtn');
             const desktopSignInBtn = document.getElementById('desktopSignInBtn');
             const companyNameHeader = document.getElementById('companyNameHeader');
             
+            if (userProfileDropdown) {
+                userProfileDropdown.classList.add('hidden');
+            }
             if (desktopLogoutBtn) {
                 desktopLogoutBtn.classList.add('hidden');
                 desktopLogoutBtn.style.setProperty('display', 'none', 'important');
@@ -4263,6 +4299,31 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Handle OAuth callback
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('oauth_success') === 'true') {
+                const userDataParam = urlParams.get('user_data');
+                if (userDataParam) {
+                    try {
+                        const userData = JSON.parse(decodeURIComponent(userDataParam));
+                        localStorage.setItem('currentUser', JSON.stringify(userData));
+                        console.log('OAuth user saved to localStorage:', userData);
+                        
+                        // Clean URL
+                        const cleanUrl = window.location.pathname;
+                        window.history.replaceState({}, document.title, cleanUrl);
+                        
+                        // Show success message
+                        alert('Mirë se erdhe! Identifikimi u krye me sukses.');
+                        
+                        // Update header
+                        checkUserAndUpdateHeader();
+                    } catch (error) {
+                        console.error('Error parsing OAuth user data:', error);
+                    }
+                }
+            }
+            
             // Highlight active nav link
             highlightActiveNavLink();
             
@@ -4344,6 +4405,149 @@
                 checkUserAndUpdateHeader();
             }, 100);
         });
+        
+        // Handle "Menaxho kompaninë" click - check if user has company
+        async function handleManageCompany() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('Ju duhet të jeni të kyçur për të menaxhuar kompaninë.');
+                window.location.href = 'signin-sq.html';
+                return;
+            }
+            
+            try {
+                const user = JSON.parse(currentUser);
+                
+                // Check if user is admin - redirect to admin panel
+                if (user.role === 'admin' || user.email === 'admin@pastro.com') {
+                    window.location.href = 'admin-approve-sq.html';
+                    return;
+                }
+                
+                // First check in localStorage
+                let hasCompany = user.companyName || user.company || user.name || 
+                                (user.role === 'company' || user.role === 'COMPANY');
+                
+                // Also check in localStorage companies
+                const storedCompanies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                const userCompany = storedCompanies.find(c => c.email === user.email);
+                if (userCompany) {
+                    hasCompany = true;
+                }
+                
+                // If not found locally and user has database ID, try to check in database
+                if (!hasCompany && user.fromDatabase && user.id && window.location.protocol !== 'file:') {
+                    try {
+                        // Try to check company profile from API
+                        let apiBase = 'http://localhost:3000';
+                        try {
+                            const test = await fetch(`${apiBase}/api/cities`, { method: 'GET', mode: 'cors' });
+                            if (!test.ok) throw new Error('Port 3000 not available');
+                        } catch {
+                            apiBase = 'http://localhost:3001';
+                        }
+                        
+                        const profileResponse = await fetch(`${apiBase}/api/company/profile`, {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${user.id}`, // Simple auth
+                                'Content-Type': 'application/json'
+                            },
+                            mode: 'cors',
+                            credentials: 'include'
+                        });
+                        
+                        if (profileResponse.ok) {
+                            const profileData = await profileResponse.json();
+                            if (profileData.success && profileData.company) {
+                                hasCompany = true;
+                            }
+                        }
+                    } catch (apiError) {
+                        console.warn('Could not check company in database:', apiError);
+                        // Continue with localStorage check result
+                    }
+                }
+                
+                if (hasCompany) {
+                    // User has a company - redirect to edit company page
+                    window.location.href = 'edit-company-sq.html';
+                } else {
+                    // User doesn't have a company - redirect to registration with message
+                    alert('Ju nuk keni regjistruar ende një kompani. Po të ridrejtojmë në faqen e regjistrimit...');
+                    window.location.href = 'register-sq.html';
+                }
+            } catch (e) {
+                console.error('Error checking company:', e);
+                alert('Ndodhi një gabim. Ju lutemi provoni përsëri.');
+            }
+        }
+        
+        // Make function globally available
+        window.handleManageCompany = handleManageCompany;
+        
+        // User Profile Dropdown Toggle
+        (function() {
+            const userProfileBtn = document.getElementById('userProfileBtn');
+            const userDropdownMenu = document.getElementById('userDropdownMenu');
+            const manageCompanyBtn = document.getElementById('manageCompanyBtn') || (userDropdownMenu ? userDropdownMenu.querySelector('button[onclick="handleManageCompany()"]') : null);
+            
+            // Show/hide "Menaxho kompaninë" based on user role
+            function updateDropdownMenu() {
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser && manageCompanyBtn) {
+                    try {
+                        const user = JSON.parse(currentUser);
+                        const isAdmin = user.role === 'admin' || user.email === 'admin@pastro.com';
+                        const isCompany = user.role === 'company' || user.role === 'COMPANY' || (user.name && user.role !== 'user' && user.role !== 'USER');
+                        const isUser = user.role === 'user' || user.role === 'USER';
+                        
+                        // Show "Menaxho kompaninë" for all logged-in users (they can check if they have company in handleManageCompany)
+                        // Hide only if user is not logged in (but this function is only called when user is logged in)
+                        if (isAdmin || isCompany || isUser) {
+                            manageCompanyBtn.style.display = 'block';
+                        } else {
+                            manageCompanyBtn.style.display = 'none';
+                        }
+                    } catch (e) {
+                        console.error('Error updating dropdown menu:', e);
+                        // On error, show the button anyway
+                        if (manageCompanyBtn) {
+                            manageCompanyBtn.style.display = 'block';
+                        }
+                    }
+                } else if (manageCompanyBtn) {
+                    // If no user, hide the button
+                    manageCompanyBtn.style.display = 'none';
+                }
+            }
+            
+            if (userProfileBtn && userDropdownMenu) {
+                // Update menu on load
+                updateDropdownMenu();
+                
+                // Toggle dropdown on button click
+                userProfileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    updateDropdownMenu(); // Update menu before showing
+                    userDropdownMenu.classList.toggle('hidden');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!userProfileBtn.contains(e.target) && !userDropdownMenu.contains(e.target)) {
+                        userDropdownMenu.classList.add('hidden');
+                    }
+                });
+                
+                // Update menu when user changes
+                window.addEventListener('storage', function(e) {
+                    if (e.key === 'currentUser') {
+                        updateDropdownMenu();
+                    }
+                });
+            }
+        })();
     </script>
 </body>
 </html>

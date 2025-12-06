@@ -436,6 +436,7 @@
                     id: Date.now().toString(),
                     firstName,
                     lastName,
+                    fullName: fullName,
                     name: fullName,
                     email: email,
                     password: password, // In production, this should be hashed
@@ -452,6 +453,7 @@
                     email: newUser.email,
                     firstName,
                     lastName,
+                    fullName: fullName,
                     name: fullName,
                     role: newUser.role,
                     fromDatabase: false
