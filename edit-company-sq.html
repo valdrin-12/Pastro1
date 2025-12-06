@@ -13,6 +13,16 @@
         .input-group {
             position: relative;
         }
+        .input-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            width: 1.25rem;
+            height: 1.25rem;
+            pointer-events: none;
+        }
         .btn-primary {
             background: #2563eb;
             color: white;
@@ -87,16 +97,53 @@
         <!-- Edit Form -->
         <div id="editForm" class="form-container p-8">
             <form id="companyEditForm" class="space-y-6">
-                <!-- Company Name -->
+                <!-- Company Name (Read-only) -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Emri i Kompanisë *</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Emri i Kompanisë</label>
                     <input
                         type="text"
                         id="companyName"
                         placeholder="Emri i kompanisë"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+                        readonly
+                        disabled
                     />
+                    <p class="text-xs text-gray-500 mt-1">Emri i kompanisë nuk mund të ndryshohet</p>
+                </div>
+
+                <!-- Phone -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Numri i Telefonit *</label>
+                    <div class="input-group">
+                        <i data-lucide="phone" class="input-icon"></i>
+                        <input
+                            type="tel"
+                            id="companyPhone"
+                            placeholder="+383 XX XXX XXX"
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Përshkrimi i Kompanisë</label>
+                    <textarea
+                        id="companyDescription"
+                        rows="4"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Tregoni klientëve për kompaninë dhe shërbimet tuaja..."
+                    ></textarea>
+                </div>
+
+                <!-- Operating Cities -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-4">Qytetet Operative *</label>
+                    <p class="text-sm text-gray-600 mb-4">Zgjidhni të gjitha qytetet ku kompania juaj ofron shërbime</p>
+                    <div id="citiesContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-4">
+                        <!-- Cities will be loaded dynamically -->
+                    </div>
                 </div>
 
                 <!-- Services Section -->
@@ -213,24 +260,53 @@
                     return;
                 }
             } else {
-                // Regular user flow - check subscription
-                const subscription = localStorage.getItem(`subscription_${user.id}`);
-                if (!subscription) {
-                    alert('Ju duhet të keni një abonim aktiv për të edituar kompaninë tuaj.');
-                    window.location.href = 'subscription.html';
-                    return;
+                // Regular user flow - load company data
+                // Try to load from API first if available
+                if (window.location.protocol !== 'file:') {
+                    try {
+                        let apiBase = 'http://localhost:3000';
+                        try {
+                            const test = await fetch(`${apiBase}/api/cities`, { method: 'GET', mode: 'cors' });
+                            if (!test.ok) throw new Error('Port 3000 not available');
+                        } catch {
+                            apiBase = 'http://localhost:3001';
+                        }
+                        
+                        // Try to get company profile from API
+                        const profileResponse = await fetch(`${apiBase}/api/company/profile`, {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${user.id}`,
+                                'Content-Type': 'application/json'
+                            },
+                            mode: 'cors',
+                            credentials: 'include'
+                        });
+                        
+                        if (profileResponse.ok) {
+                            const profileData = await profileResponse.json();
+                            if (profileData.success && profileData.company) {
+                                companyData = {
+                                    id: profileData.company.id,
+                                    name: profileData.company.name,
+                                    phone: profileData.company.phone,
+                                    description: profileData.company.description || '',
+                                    cities: profileData.company.cities || [],
+                                    services: profileData.company.services || [],
+                                    email: user.email
+                                };
+                            }
+                        }
+                    } catch (error) {
+                        console.warn('Could not fetch company from API, using localStorage:', error);
+                    }
                 }
-
-                const subData = JSON.parse(subscription);
-                if (subData.status !== 'active' || new Date(subData.expiresAt) <= new Date()) {
-                    alert('Abonimi juaj ka skaduar. Ju lutemi abonohuni përsëri.');
-                    window.location.href = 'subscription.html';
-                    return;
+                
+                // Fallback to localStorage
+                if (!companyData) {
+                    const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
+                    companyData = companies.find(c => c.id === user.id || c.email === user.email);
                 }
-
-                // Load company data for regular user
-                const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
-                companyData = companies.find(c => c.id === user.id || c.email === user.email);
 
                 if (!companyData) {
                     alert('Kompania juaj nuk u gjet. Ju lutemi kontaktoni mbështetjen.');
@@ -254,6 +330,11 @@
 
             // Populate form
             document.getElementById('companyName').value = companyData.name || '';
+            document.getElementById('companyPhone').value = companyData.phone || '';
+            document.getElementById('companyDescription').value = companyData.description || '';
+            
+            // Load cities
+            await loadCities();
             
             // Load services
             if (companyData.services && companyData.services.length > 0) {
@@ -265,6 +346,73 @@
                 addServiceRow();
             }
         });
+
+        // Load cities from API or use default list
+        async function loadCities() {
+            const citiesContainer = document.getElementById('citiesContainer');
+            let cities = [];
+            
+            // Try to fetch from API
+            if (window.location.protocol !== 'file:') {
+                try {
+                    let apiBase = 'http://localhost:3000';
+                    try {
+                        const test = await fetch(`${apiBase}/api/cities`, { method: 'GET', mode: 'cors' });
+                        if (!test.ok) throw new Error('Port 3000 not available');
+                    } catch {
+                        apiBase = 'http://localhost:3001';
+                    }
+                    
+                    const response = await fetch(`${apiBase}/api/cities`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        cities = data.cities || [];
+                    }
+                } catch (error) {
+                    console.warn('Could not fetch cities from API, using default list:', error);
+                }
+            }
+            
+            // Fallback to default cities list
+            if (cities.length === 0) {
+                cities = [
+                    'Prishtina', 'Prizren', 'Gjakova', 'Peja', 'Ferizaj', 'Gjilan',
+                    'Mitrovica', 'Vushtrri', 'Podujeva', 'Rahovec', 'Lipjan', 'Malisheva',
+                    'Suhareka', 'Kamenica', 'Viti', 'Skenderaj', 'Istog', 'Kline',
+                    'Dragash', 'Shtime', 'Kacanik', 'Novoberde', 'Hani i Elezit', 'Junik',
+                    'Mamusha', 'Partesh', 'Ranillug', 'Gracanica', 'Artana', 'Zubin Potok', 'Zvecan'
+                ].map(name => ({ name }));
+            }
+            
+            // Get company's current cities
+            const companyCities = companyData.cities || [];
+            const normalizedCompanyCities = companyCities.map(c => {
+                if (typeof c === 'string') return c.toLowerCase().trim();
+                return (c.name || c).toLowerCase().trim();
+            });
+            
+            // Render cities as checkboxes
+            citiesContainer.innerHTML = cities.map(city => {
+                const cityName = city.name || city;
+                const cityNameLower = cityName.toLowerCase().trim();
+                const isChecked = normalizedCompanyCities.some(cc => 
+                    cc === cityNameLower || 
+                    cc.replace(/\s+/g, '') === cityNameLower.replace(/\s+/g, '')
+                );
+                
+                return `
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded">
+                        <input 
+                            type="checkbox" 
+                            value="${cityName}" 
+                            class="city-checkbox rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            ${isChecked ? 'checked' : ''}
+                        >
+                        <span class="text-sm text-gray-700">${cityName}</span>
+                    </label>
+                `;
+            }).join('');
+        }
 
         function addServiceRow(serviceName = '', price = '') {
             const container = document.getElementById('servicesContainer');
@@ -327,12 +475,24 @@
         }
 
         // Handle form submission
-        document.getElementById('companyEditForm').addEventListener('submit', function(e) {
+        document.getElementById('companyEditForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const companyName = document.getElementById('companyName').value.trim();
-            if (!companyName) {
-                alert('Ju lutemi shkruani emrin e kompanisë.');
+            const companyPhone = document.getElementById('companyPhone').value.trim();
+            const companyDescription = document.getElementById('companyDescription').value.trim();
+            
+            if (!companyPhone) {
+                alert('Ju lutemi shkruani numrin e telefonit.');
+                return;
+            }
+
+            // Collect selected cities
+            const cityCheckboxes = document.querySelectorAll('.city-checkbox:checked');
+            const selectedCities = Array.from(cityCheckboxes).map(cb => cb.value);
+            
+            if (selectedCities.length === 0) {
+                alert('Ju lutemi zgjidhni të paktën një qytet ku operon kompania.');
                 return;
             }
 
@@ -358,16 +518,76 @@
                 return;
             }
 
-            // Update company data
+            // Update company data in localStorage
             const companies = JSON.parse(localStorage.getItem('pastroCompanies') || '[]');
-            const companyIndex = companies.findIndex(c => c.id === companyData.id);
+            const companyIndex = companies.findIndex(c => c.id === companyData.id || c.email === companyData.email);
             
             if (companyIndex !== -1) {
-                companies[companyIndex].name = companyName;
+                // Don't update name - it's readonly
+                companies[companyIndex].phone = companyPhone;
+                companies[companyIndex].description = companyDescription;
+                companies[companyIndex].cities = selectedCities;
                 companies[companyIndex].services = services;
                 
                 // Save to localStorage
                 localStorage.setItem('pastroCompanies', JSON.stringify(companies));
+                
+                // Try to update in database via API
+                if (window.location.protocol !== 'file:' && companyData.id) {
+                    try {
+                        let apiBase = 'http://localhost:3000';
+                        try {
+                            const test = await fetch(`${apiBase}/api/cities`, { method: 'GET', mode: 'cors' });
+                            if (!test.ok) throw new Error('Port 3000 not available');
+                        } catch {
+                            apiBase = 'http://localhost:3001';
+                        }
+                        
+                        // Fetch cities and services to map names to IDs
+                        const [citiesRes, servicesRes] = await Promise.all([
+                            fetch(`${apiBase}/api/cities`),
+                            fetch(`${apiBase}/api/services`)
+                        ]);
+                        
+                        if (citiesRes.ok && servicesRes.ok) {
+                            const citiesData = await citiesRes.json();
+                            const servicesData = await servicesRes.json();
+                            
+                            const dbCities = citiesData.cities || [];
+                            const dbServices = servicesData.services || [];
+                            
+                            // Map city names to IDs
+                            const cityIds = selectedCities
+                                .map(cityName => {
+                                    const normalize = (str) => str.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                                    const normalized = normalize(cityName);
+                                    const city = dbCities.find(c => normalize(c.name) === normalized);
+                                    return city ? city.id : null;
+                                })
+                                .filter(id => id !== null);
+                            
+                            // Map service names to IDs and prices
+                            const servicePayloads = services
+                                .map(service => {
+                                    const dbService = dbServices.find(s => s.name === service.name);
+                                    if (dbService && service.price > 0) {
+                                        return {
+                                            serviceId: dbService.id,
+                                            price: service.price
+                                        };
+                                    }
+                                    return null;
+                                })
+                                .filter(s => s !== null);
+                            
+                            // Update company via API (if endpoint exists)
+                            // For now, we'll just update localStorage
+                            console.log('Company updated locally. API update can be implemented if needed.');
+                        }
+                    } catch (error) {
+                        console.warn('Could not update company in database:', error);
+                    }
+                }
                 
                 // Show success message
                 document.getElementById('editForm').classList.add('hidden');
